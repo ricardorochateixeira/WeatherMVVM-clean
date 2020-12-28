@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">WeatherMVVM</string>
+    <string name="menu_all_cities">All Cities</string>
+    <string name="menu_favourite_cities">Favourite</string>
+    <string name="menu_hour">Each Hour</string>
+    <string name="menu_seven_days">7 Days</string>
+    <string name="main_page_text">How is the weather today?</string>
+
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/listCitiesFragment">
+    <fragment
+        android:id="@+id/listCitiesFragment"
+        android:name="com.ricardoteixeira.app.ui.listcities.ListCitiesFragment"
+        android:label="ListCitiesFragment" />
+    <fragment
+        android:id="@+id/eachHourFragment"
+        android:name="com.ricardoteixeira.app.ui.eachhour.EachHourFragment"
+        android:label="EachHourFragment" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.ricardoteixeira.app.ui.favorites.FavoriteFragment"
+        android:label="FavoriteFragment" />
+    <fragment
+        android:id="@+id/sevenDaysFragment"
+        android:name="com.ricardoteixeira.app.ui.sevendays.SevenDaysFragment"
+        android:label="SevenDaysFragment" />
+</navigation>
