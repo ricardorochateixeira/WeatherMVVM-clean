@@ -7,5 +7,5 @@ import com.ricardoteixeira.domain.models.WeatherCityEntity
 data class ListCitiesViewState(
     val isLoading: Boolean,
     val error: String?,
-    val result: List<WeatherCityDatabaseModel?>?
+    val result: List<WeatherCityEntity?>?
 )

@@ -2,9 +2,10 @@ package com.ricardoteixeira.app.utils
 
 import android.widget.ImageView
 import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+import com.ricardoteixeira.domain.models.WeatherCityEntity
 import com.ricardoteixeira.weathermvvm_clean.R
 
-fun ImageView.setWeatherImage(item: WeatherCityDatabaseModel?) {
+fun ImageView.setWeatherImage(item: WeatherCityEntity?) {
     item?.let {
         setImageResource(when (item.weatherId ) {
             in 200..299 -> R.drawable.ic_thunder

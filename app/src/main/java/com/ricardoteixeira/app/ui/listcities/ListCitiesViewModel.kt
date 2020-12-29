@@ -17,9 +17,12 @@ import com.ricardoteixeira.data.remote.mappers.toEntity
 import com.ricardoteixeira.data.remote.repository.InsertCityIntoDatabase
 import com.ricardoteixeira.data.remote.repository.UpdateCity
 import com.ricardoteixeira.data.remote.repository.WeatherRepository
+import com.ricardoteixeira.domain.models.WeatherCityEntity
 import com.ricardoteixeira.domain.usecases.DeleteCityUseCase
 import com.ricardoteixeira.domain.usecases.GetAllCitiesUseCase
 import com.ricardoteixeira.domain.usecases.FetchCityUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -34,12 +37,17 @@ class ListCitiesViewModel
     val mainState: LiveData<ListCitiesViewState>
         get() = _mutableMainState
 
+    private val cities: ArrayList<WeatherCityEntity> = arrayListOf()
+
+
     suspend fun fetchCity(cityName: String) {
         when (val data = fetchCityUseCase(cityName)) {
+
             is Result.Success -> {
+                cities.add(data.data)
+                println("testeeeee $cities")
                 _mutableMainState.value =
-                    _mutableMainState.value?.copy(error = null, result = mutableListOf(data.data.toDatabase()))
-                insertCityIntoDatabase(data.data)
+                    _mutableMainState.value?.copy(error = null, result = cities)
             }
 
             is Result.Failure -> _mutableMainState.value =
@@ -47,17 +55,30 @@ class ListCitiesViewModel
         }
     }
 
-    suspend fun insertCityIntoDatabase(city: WeatherCityApiModel) {
-        insertCityIntoDatabase.insertCityIntoDatabase(city.toDatabase())
-    }
-
     suspend fun getCities() {
-        weatherRepository.decideWhereToFetch().collect { result ->
-            when(result) {
-                is Result.Success -> _mutableMainState.value = ListCitiesViewState(isLoading = false, error = null, result = result.data)
+        GlobalScope.launch(Dispatchers.IO) {
+            val result = weatherRepository.decideWhereToFetch()
+            when (result) {
+                is Result.Success -> {
+                    cities.addAll(result.data)
+                    _mutableMainState.postValue(
+                        ListCitiesViewState(
+                            isLoading = false,
+                            error = null,
+                            result = cities
+                        )
+                    )
+                    println("testeeeee $cities")
+                }
 
-                is Result.Failure -> _mutableMainState.value = ListCitiesViewState(isLoading = false, error = result.error, result = null)
-            }
+                is Result.Failure -> _mutableMainState.postValue(
+                    ListCitiesViewState(
+                        isLoading = false,
+                        error = result.error,
+                        result = null
+                    )
+                )
+        }
         }
     }
 

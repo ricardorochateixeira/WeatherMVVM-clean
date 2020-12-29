@@ -14,7 +14,7 @@ interface WeatherCityDao {
     suspend fun deleteCity(cityId: Int): Int
 
     @Query("SELECT * FROM  city_weather WHERE is_delete_pending = 0  ORDER BY request_time_system DESC")
-    fun getAllCities(): Flow<List<WeatherCityDatabaseModel>>
+    fun getAllCities(): List<WeatherCityDatabaseModel>
 
     @Update
     suspend fun updateCity(city: WeatherCityDatabaseModel)

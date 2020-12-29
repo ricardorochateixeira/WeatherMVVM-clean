@@ -2,6 +2,7 @@ package com.ricardoteixeira.data.remote.repository
 
 import com.ricardoteixeira.app.framework.api.mappers.toDatabase
 import com.ricardoteixeira.app.framework.api.models.WeatherCityApiModel
+import com.ricardoteixeira.app.framework.db.mappers.toDatabase
 import com.ricardoteixeira.app.framework.db.mappers.toEntity
 import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
 import com.ricardoteixeira.app.utils.Result
@@ -17,36 +18,35 @@ class WeatherRepository(
 
     private val insertCityIntoDatabase:InsertCityIntoDatabase) {
 
-    fun decideWhereToFetch(): Flow<Result<List<WeatherCityDatabaseModel>>> = flow {
+    suspend fun decideWhereToFetch(): Result<List<WeatherCityEntity>> {
 
-            getAllCities.getCurrentListOfCities().collect{
-                if (it.isEmpty()) {
-                    emit(Result.Success(data = emptyList<WeatherCityDatabaseModel>()))
+            val cities = getAllCities.getCurrentListOfCities()
+                if (cities.isEmpty()) {
+                    return Result.Success(data = emptyList<WeatherCityEntity>())
                 } else {
-                    for (city in it){
+                    for (city in cities){
                         val timestamp = System.currentTimeMillis().toString()
                         val newTimestamp = timestamp.dropLast(3).toInt()
                         if ( newTimestamp - city.requestTime > 40000 ) {
-                            println("System ${System.currentTimeMillis() }")
-                            println("city ${city.requestTime }")
                             val newWeather = fetchCityFromApi.fetchWeatherFromApi(city.cityName!!)
-                            if (newWeather is Result.Success){
+                            return if (newWeather is Result.Success){
                                 insertCityIntoDatabase.insertCityIntoDatabase(newWeather.data.toDatabase())
-                                emit(Result.Success(data = it))
+                                Result.Success(data = cities.map { it.toEntity() })
+                            } else {
+                                Result.Failure(error = error("error"))
                             }
                         } else {
-                            emit(Result.Success(data = it))
+                            return Result.Success(data = cities.map { it.toEntity() })
                         }
                     }
-
-            }
+                }
+        return Result.Failure("Error")
         }
     }
-}
 
 interface FetchCityFromApi {
 
-    suspend fun fetchWeatherFromApi(cityName: String): Result<WeatherCityApiModel>
+    suspend fun fetchWeatherFromApi(cityName: String): Result<WeatherCityEntity>
 
 }
 
@@ -58,7 +58,7 @@ interface InsertCityIntoDatabase{
 
 interface GetAllCities {
 
-    suspend fun getCurrentListOfCities():Flow<List<WeatherCityDatabaseModel>>
+    suspend fun getCurrentListOfCities():List<WeatherCityDatabaseModel>
 
 }
 

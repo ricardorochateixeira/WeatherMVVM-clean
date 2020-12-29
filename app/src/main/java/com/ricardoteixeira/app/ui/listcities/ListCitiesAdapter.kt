@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ricardoteixeira.app.framework.db.mappers.toEntity
 import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
 import com.ricardoteixeira.app.utils.setWeatherImage
 import com.ricardoteixeira.domain.models.WeatherCityEntity
@@ -13,7 +14,7 @@ import com.ricardoteixeira.weathermvvm_clean.databinding.CityWeatherItemBinding
 import java.lang.IndexOutOfBoundsException
 
 
-class ListCitiesAdapter (private val listener: OnItemClickListener): ListAdapter<WeatherCityDatabaseModel, ListCitiesAdapter.ViewHolder>(DiffCallback()) {
+class ListCitiesAdapter (private val listener: OnItemClickListener): ListAdapter<WeatherCityEntity, ListCitiesAdapter.ViewHolder>(DiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,12 +29,12 @@ class ListCitiesAdapter (private val listener: OnItemClickListener): ListAdapter
 
     inner class ViewHolder(private val binding: CityWeatherItemBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(weatherCityDatabaseModel: WeatherCityDatabaseModel) {
+        fun bind(weatherCityEntity: WeatherCityEntity) {
             binding.apply {
-                cityName.text = weatherCityDatabaseModel.cityName
-                cityTemperature.text = "${weatherCityDatabaseModel.actualTemp.toString()} ºC"
-                description.text = weatherCityDatabaseModel.weatherDescription?.capitalize()
-                weatherImage.setWeatherImage(weatherCityDatabaseModel)
+                cityName.text = weatherCityEntity.cityName
+                cityTemperature.text = "${weatherCityEntity.actualTemp.toString()} ºC"
+                description.text = weatherCityEntity.weatherDescription?.capitalize()
+                weatherImage.setWeatherImage(weatherCityEntity)
             }
         }
 
@@ -43,30 +44,26 @@ class ListCitiesAdapter (private val listener: OnItemClickListener): ListAdapter
         fun onItemClick(city: WeatherCityDatabaseModel)
     }
 
-    class DiffCallback: DiffUtil.ItemCallback<WeatherCityDatabaseModel>() {
+    class DiffCallback: DiffUtil.ItemCallback<WeatherCityEntity>() {
         override fun areItemsTheSame(
-            oldItem: WeatherCityDatabaseModel,
-            newItem: WeatherCityDatabaseModel
+            oldItem: WeatherCityEntity,
+            newItem: WeatherCityEntity
         ): Boolean {
             return oldItem.cityId == newItem.cityId
         }
 
         override fun areContentsTheSame(
-            oldItem: WeatherCityDatabaseModel,
-            newItem: WeatherCityDatabaseModel
+            oldItem: WeatherCityEntity,
+            newItem: WeatherCityEntity
         ): Boolean {
             return oldItem == newItem
         }
 
     }
 
-    private val differ = AsyncListDiffer(this, DiffCallback())
-
-    fun getCity(index: Int): WeatherCityDatabaseModel? {
+    fun getCity(index: Int): WeatherCityEntity? {
         return try {
-
             currentList[index]
-
         } catch (e: IndexOutOfBoundsException) {
             e.printStackTrace()
             null

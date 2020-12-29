@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetAllCitiesImpl
     @Inject constructor(private val weatherDao: WeatherCityDao): GetAllCities {
 
-    override suspend fun getCurrentListOfCities(): Flow<List<WeatherCityDatabaseModel>> {
+    override suspend fun getCurrentListOfCities(): List<WeatherCityDatabaseModel> {
         return weatherDao.getAllCities()
     }
 }

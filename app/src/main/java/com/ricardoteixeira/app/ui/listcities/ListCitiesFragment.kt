@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.ricardoteixeira.app.framework.db.mappers.toDatabase
 import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
 import com.ricardoteixeira.app.ui.common.CityItemTouchHelperAdapter
 import com.ricardoteixeira.app.ui.common.CityItemTouchHelperCallback
@@ -46,7 +47,7 @@ class ListCitiesFragment(): Fragment(R.layout.list_cities_fragment), ListCitiesA
         observeUi(binding)
 
         viewModel.mainState.observe(viewLifecycleOwner, Observer {
-            citiesAdapter?.submitList(it.result)
+            citiesAdapter?.submitList(it.result?.reversed())
         })
         search_image.setOnClickListener { onSearchClicked(binding) }
     }
@@ -55,16 +56,6 @@ class ListCitiesFragment(): Fragment(R.layout.list_cities_fragment), ListCitiesA
         val cityName = search_cities.text.toString()
         GlobalScope.launch(Dispatchers.Main) {
             viewModel.fetchCity(cityName)
-            viewModel.mainState.observe(viewLifecycleOwner, Observer {
-                it.result?.let {
-                    val snackbar = Snackbar.make(binding.root, "City added successfully", Snackbar.LENGTH_LONG )
-                    snackbar.show()
-                }
-                it.error?.let {
-                    val snackbar = Snackbar.make(binding.root, "Problem adding city", Snackbar.LENGTH_LONG )
-                    snackbar.show()
-                }
-            })
             handleSearch()
         }
     }
@@ -77,17 +68,6 @@ class ListCitiesFragment(): Fragment(R.layout.list_cities_fragment), ListCitiesA
         GlobalScope.launch(Dispatchers.Main) {
             viewModel.getCities()
         }
-
-        viewModel.mainState.observe(viewLifecycleOwner, Observer{
-            it.result?.let {
-                    val snackbar = Snackbar.make(binding.root, "Cities Loaded Successfully", Snackbar.LENGTH_LONG )
-                    snackbar.show()
-                }
-                it.error?.let {
-                    val snackbar = Snackbar.make(binding.root, "Problem Loading Cities", Snackbar.LENGTH_LONG )
-                    snackbar.show()
-                }
-        })
     }
 
     private fun handleSearch() {
@@ -97,7 +77,7 @@ class ListCitiesFragment(): Fragment(R.layout.list_cities_fragment), ListCitiesA
 
     override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
         citiesAdapter?.getCity(position).let {
-            viewModel.isDeletePending(it)
+            viewModel.isDeletePending(it?.toDatabase())
             citiesAdapter?.notifyItemRemoved(position)
         }
     }
