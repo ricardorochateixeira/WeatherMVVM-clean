@@ -26,6 +26,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+const val FETCH_CITY_SUCCESS_MESSAGE = "City Added Successfully"
+const val FETCH_CITY_ERROR_MESSAGE = "Problem adding city! Try again."
+
+const val CITIES_LOADED_SUCCESS_MESSAGE = "Cities loaded successfully"
+const val CITIES_LOADED_ERROR_MESSAGE = "Problem while loading cities"
+
 class ListCitiesViewModel
 @ViewModelInject constructor(var fetchCityUseCase: FetchCityUseCase,
                              var insertCityIntoDatabase: InsertCityIntoDatabase,
@@ -37,21 +43,23 @@ class ListCitiesViewModel
     val mainState: LiveData<ListCitiesViewState>
         get() = _mutableMainState
 
-    private val cities: ArrayList<WeatherCityEntity> = arrayListOf()
+    val cities: ArrayList<WeatherCityEntity> = arrayListOf()
 
 
-    suspend fun fetchCity(cityName: String) {
+    suspend fun fetchCity(cityName: String){
         when (val data = fetchCityUseCase(cityName)) {
 
             is Result.Success -> {
+                if (cities.contains(data.data)) {
+                    cities.remove(data.data)
+                }
                 cities.add(data.data)
-                println("testeeeee $cities")
                 _mutableMainState.value =
-                    _mutableMainState.value?.copy(error = null, result = cities)
+                    _mutableMainState.value?.copy(error = null, result = cities, responseType = ResponseType(message = FETCH_CITY_SUCCESS_MESSAGE, uiComponentType = UIComponentType.SnackBar(), messageType = MessageType.Success()))
             }
 
             is Result.Failure -> _mutableMainState.value =
-                _mutableMainState.value?.copy(isLoading = false, error = data.error)
+                _mutableMainState.value?.copy(isLoading = false, error = data.error, responseType = ResponseType(message = FETCH_CITY_ERROR_MESSAGE, uiComponentType = UIComponentType.SnackBar(), messageType = MessageType.Error()))
         }
     }
 
@@ -65,29 +73,34 @@ class ListCitiesViewModel
                         ListCitiesViewState(
                             isLoading = false,
                             error = null,
-                            result = cities
+                            result = cities,
+                            responseType = ResponseType(
+                                message = CITIES_LOADED_SUCCESS_MESSAGE,
+                                uiComponentType = UIComponentType.SnackBar(),
+                                messageType = MessageType.Success()
+                            )
                         )
                     )
-                    println("testeeeee $cities")
                 }
 
                 is Result.Failure -> _mutableMainState.postValue(
                     ListCitiesViewState(
                         isLoading = false,
                         error = result.error,
-                        result = null
+                        result = null,
+                        responseType = ResponseType(message = CITIES_LOADED_ERROR_MESSAGE, uiComponentType = UIComponentType.SnackBar(), messageType = MessageType.Error())
                     )
                 )
         }
         }
     }
 
-    fun isDeletePending(cityDatabaseModel: WeatherCityDatabaseModel?) {
-        val cityUpdated = cityDatabaseModel?.copy(isDeletePending = true)
+    fun isDeletePending(cities: ArrayList<WeatherCityEntity>, cityWeatherEntity: WeatherCityEntity?) {
+        val cityUpdated = cityWeatherEntity?.copy(isUpdatePending = true)
+        cities.remove(cityWeatherEntity)
         viewModelScope.launch {
-            updateCity.updateCity(cityUpdated!!)
+            updateCity.updateCity(cityUpdated!!.toDatabase())
         }
     }
-
 
 }
