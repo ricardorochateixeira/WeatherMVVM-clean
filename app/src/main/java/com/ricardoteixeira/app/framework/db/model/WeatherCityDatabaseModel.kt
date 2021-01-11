@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
+import java.text.DateFormat
 
 @Parcelize
 @Entity(tableName = "city_weather")
@@ -40,10 +41,33 @@ data class WeatherCityDatabaseModel(
     @ColumnInfo(name = "is_delete_pending")
     var isDeletePending: Boolean = false,
 
+    @ColumnInfo(name = "humidity")
+    var humidity: Int?,
+
+    @ColumnInfo(name = "wind_speed")
+    var windSpeed: Double?,
+
+    @ColumnInfo(name = "is_favorite")
+    var isFavorite: Boolean = false,
+
     @ColumnInfo(name = "request_time_system")
-    val requestTimeSystem: Long = System.currentTimeMillis()
+    val requestTimeSystem: Long = System.currentTimeMillis(),
+
+    @ColumnInfo(name = "sunset")
+    val sunset: Int?,
+
+    @ColumnInfo(name = "sunrise")
+    val sunrise: Int?
+
 
 ): Parcelable {
+
+    val sunsetFormated: String
+        get() = DateFormat.getDateTimeInstance().format(sunset?.toLong())
+
+    val sunriseFormated: String
+        get() = DateFormat.getDateTimeInstance().format(sunrise?.toLong())
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

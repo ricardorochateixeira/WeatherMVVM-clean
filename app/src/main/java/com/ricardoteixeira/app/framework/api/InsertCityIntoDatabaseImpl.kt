@@ -2,7 +2,7 @@ package com.ricardoteixeira.app.framework.api
 
 import com.ricardoteixeira.app.framework.db.WeatherCityDao
 import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
-import com.ricardoteixeira.data.remote.repository.InsertCityIntoDatabase
+import com.ricardoteixeira.data.repository.InsertCityIntoDatabase
 import javax.inject.Inject
 
 class InsertCityIntoDatabaseImpl

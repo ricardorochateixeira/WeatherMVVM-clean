@@ -3,7 +3,7 @@ package com.ricardoteixeira.app.framework.db.mappers
 import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
 import com.ricardoteixeira.domain.models.WeatherCityEntity
 
-inline fun WeatherCityDatabaseModel.toEntity(): WeatherCityEntity{
+ fun WeatherCityDatabaseModel.toEntity(): WeatherCityEntity{
 
     return WeatherCityEntity(
         cityName = cityName,
@@ -15,6 +15,11 @@ inline fun WeatherCityDatabaseModel.toEntity(): WeatherCityEntity{
         weatherId = weatherId,
         weatherDescription = weatherDescription,
         isUpdatePending = isDeletePending,
-        requestTime = requestTime
+        isFavorite = isFavorite,
+        requestTime = requestTime,
+        humidity = humidity,
+        windSpeed = windSpeed,
+        sunrise = sunrise,
+        sunset = sunset
     )
 }

@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/grid"
     android:padding="4dp"
-    android:layout_margin="8dp"
-    >
+    android:layout_margin="8dp">
 
     <ImageView
         android:id="@+id/weather_image"
@@ -52,17 +51,8 @@
         app:layout_constraintTop_toTopOf="@id/city_name"
         app:layout_constraintBottom_toBottomOf="@+id/description"
         app:layout_constraintStart_toEndOf="@id/description"
-        android:layout_marginStart="16dp"
-        />
+        android:layout_marginStart="16dp" />
 
-    <ImageButton
-        android:id="@+id/favourite_city"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_margin="8dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_favorite_border" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

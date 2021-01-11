@@ -15,6 +15,11 @@ inline fun WeatherCityEntity.toDatabase(): WeatherCityDatabaseModel {
         feelsLikeTemp = feelsLikeTemp,
         weatherDescription = weatherDescription,
         isDeletePending = isUpdatePending,
-        requestTime = requestTime
+        isFavorite = isFavorite,
+        requestTime = requestTime,
+        humidity = humidity,
+        windSpeed = windSpeed,
+        sunrise = sunrise,
+        sunset = sunset
     )
 }

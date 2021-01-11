@@ -1,7 +1,8 @@
 package com.ricardoteixeira.di
 
-import com.ricardoteixeira.data.remote.repository.*
-import com.ricardoteixeira.domain.usecases.*
+import com.ricardoteixeira.data.repository.*
+import com.ricardoteixeira.domain.usecases.details.GetCityByIdUseCase
+import com.ricardoteixeira.domain.usecases.listcities.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,4 +26,13 @@ object ViewModelModule {
 
     @Provides
     fun providesUpdateCity(updateCity: UpdateCity): UpdateCityUseCase = UpdateCityUseCase(updateCity)
+
+    @Provides
+    fun providesGetCityPendingDelete(getCityPendingDelete: GetCityPendingDelete): GetCityPendingDeleteUseCase = GetCityPendingDeleteUseCase(getCityPendingDelete)
+
+    @Provides
+    fun providesRefreshCities(refreshCities: RefreshCities): RefreshCitiesUseCase = RefreshCitiesUseCase(refreshCities)
+
+    @Provides
+    fun providesGetCityById(getCityById: GetCityById): GetCityByIdUseCase = GetCityByIdUseCase(getCityById)
 }

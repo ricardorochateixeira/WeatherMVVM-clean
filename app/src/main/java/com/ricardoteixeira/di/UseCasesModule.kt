@@ -3,8 +3,8 @@ package com.ricardoteixeira.di
 import com.ricardoteixeira.app.framework.api.ApiHelper
 import com.ricardoteixeira.app.framework.api.ApiHelperImpl
 import com.ricardoteixeira.app.framework.api.InsertCityIntoDatabaseImpl
-import com.ricardoteixeira.app.framework.api.repositoryImpl.*
-import com.ricardoteixeira.data.remote.repository.*
+import com.ricardoteixeira.app.framework.repository.*
+import com.ricardoteixeira.data.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -34,4 +34,13 @@ abstract class UseCasesModule {
 
     @Binds
     abstract fun updateCity(updateCity: UpdateCityImpl): UpdateCity
+
+    @Binds
+    abstract fun getCityPendingDelete(getCityPendingDelete: GetCityPendingDeleteImpl): GetCityPendingDelete
+
+    @Binds
+    abstract fun refreshCitiesUseCase(refreshCities: RefreshCitiesImpl): RefreshCities
+
+    @Binds
+    abstract fun getCityByIdUseCase(getCityById: GetCityByIdImpl): GetCityById
 }

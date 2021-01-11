@@ -6,18 +6,30 @@
     app:startDestination="@id/listCitiesFragment">
     <fragment
         android:id="@+id/listCitiesFragment"
-        android:name="com.ricardoteixeira.app.ui.listcities.ListCitiesFragment"
-        android:label="ListCitiesFragment" />
+        android:name="com.ricardoteixeira.app.presentation.listcities.ListCitiesFragment"
+        android:label="ListCitiesFragment" >
+        <action
+            android:id="@+id/action_listCitiesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/eachHourFragment"
-        android:name="com.ricardoteixeira.app.ui.eachhour.EachHourFragment"
-        android:label="EachHourFragment" />
+        android:id="@+id/detailsFragment"
+        android:name="com.ricardoteixeira.app.presentation.details.DetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="cityId"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_detailsFragment_to_listCitiesFragment"
+            app:destination="@id/listCitiesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.ricardoteixeira.app.ui.favorites.FavoriteFragment"
+        android:name="com.ricardoteixeira.app.presentation.favorites.FavoriteFragment"
         android:label="FavoriteFragment" />
     <fragment
         android:id="@+id/sevenDaysFragment"
-        android:name="com.ricardoteixeira.app.ui.sevendays.SevenDaysFragment"
+        android:name="com.ricardoteixeira.app.presentation.sevendays.SevenDaysFragment"
         android:label="SevenDaysFragment" />
 </navigation>

@@ -11,7 +11,12 @@ data class WeatherCityEntity(
     val weatherDescription: String?,
     val weatherId: Int?,
     var isUpdatePending: Boolean = false,
-    val requestTime: Int
+    var isFavorite: Boolean = false,
+    val requestTime: Int,
+    val humidity: Int?,
+    val windSpeed: Double?,
+    val sunset: Int?,
+    val sunrise: Int?
 )
 
 

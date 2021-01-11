@@ -1,5 +1,8 @@
 package com.ricardoteixeira.app.utils
 
+import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+import com.ricardoteixeira.domain.models.WeatherCityEntity
+
 
 sealed class Result<out T: Any>{
 
