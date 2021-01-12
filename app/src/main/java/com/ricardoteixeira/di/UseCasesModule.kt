@@ -43,4 +43,7 @@ abstract class UseCasesModule {
 
     @Binds
     abstract fun getCityByIdUseCase(getCityById: GetCityByIdImpl): GetCityById
+
+    @Binds
+    abstract fun getFavoriteCities(getFavoriteCities: GetFavoriteCitiesImpl): GetFavoriteCities
 }

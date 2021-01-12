@@ -2,6 +2,7 @@ package com.ricardoteixeira.di
 
 import com.ricardoteixeira.data.repository.*
 import com.ricardoteixeira.domain.usecases.details.GetCityByIdUseCase
+import com.ricardoteixeira.domain.usecases.favorite.GetFavoriteCitiesUseCase
 import com.ricardoteixeira.domain.usecases.listcities.*
 import dagger.Module
 import dagger.Provides
@@ -35,4 +36,7 @@ object ViewModelModule {
 
     @Provides
     fun providesGetCityById(getCityById: GetCityById): GetCityByIdUseCase = GetCityByIdUseCase(getCityById)
+
+    @Provides
+    fun providesGetFavoriteCities(getFavoriteCities: GetFavoriteCities): GetFavoriteCitiesUseCase = GetFavoriteCitiesUseCase(getFavoriteCities)
 }

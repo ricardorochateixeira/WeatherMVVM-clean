@@ -95,3 +95,7 @@ interface RefreshCities {
 interface GetCityById {
     suspend fun getCityById(cityId: Int): Result<WeatherCityEntity>
 }
+
+interface GetFavoriteCities {
+    suspend fun getFavoriteCities(): List<WeatherCityEntity>
+}

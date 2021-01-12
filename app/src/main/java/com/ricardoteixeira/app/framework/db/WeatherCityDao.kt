@@ -27,6 +27,9 @@ interface WeatherCityDao {
     @Query("SELECT * FROM  city_weather WHERE cityId = :cityId")
     fun getCityById(cityId: Int): WeatherCityDatabaseModel?
 
+    @Query("SELECT * FROM  city_weather WHERE is_favorite = 1")
+    fun getFavoriteCities(): List<WeatherCityDatabaseModel?>
+
 
 
 }
