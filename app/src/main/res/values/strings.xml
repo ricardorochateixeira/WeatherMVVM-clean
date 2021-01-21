@@ -17,5 +17,20 @@
     <string name="favorites_title">Favorites</string>
     <string name="sunrise_text">Sunrise</string>
     <string name="sunset_text">Sunset</string>
+    <string name="forecast_title">How will be the weather in the next days?</string>
+    <string name="back_button_detail_screen_text">Button to go to main screen</string>
+    <string name="weather_image">Weather image</string>
+    <string name="favorite_button">Favorite button</string>
+    <string name="sort_button">Sort button</string>
+    <string name="search_button">Search button</string>
+    <string name="insert_city_name">Insert city name</string>
+
+    <string name="temperature_text_adapters"> %1$s ºC</string>
+    <string name="minimum_temperature_text_adapters"> %1$s ºC</string>
+    <string name="maximum_temperature_text_adapters"> %1$s ºC</string>
+    <string name="feels_like_temperature_text_adapters"> %1$s ºC</string>
+    <string name="wind_speed_text_adapters"> %1$s m/s</string>
+    <string name="humidity_text_adapters"> %1$s %%</string>
+
 
 </resources>

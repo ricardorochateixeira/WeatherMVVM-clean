@@ -2,7 +2,7 @@ package com.ricardoteixeira.di
 
 import com.ricardoteixeira.app.framework.api.ApiHelper
 import com.ricardoteixeira.app.framework.api.ApiHelperImpl
-import com.ricardoteixeira.app.framework.api.InsertCityIntoDatabaseImpl
+import com.ricardoteixeira.app.framework.repository.InsertCityIntoDatabaseImpl
 import com.ricardoteixeira.app.framework.repository.*
 import com.ricardoteixeira.data.repository.*
 import dagger.Binds
@@ -22,6 +22,9 @@ abstract class UseCasesModule {
 
     @Binds
     abstract fun provideInsertFromApi(insertCityFromApi: FetchCityFromApiImpl): FetchCityFromApi
+
+    @Binds
+    abstract fun provideInsertFutureFromApi(insertFutureWeatherFromApi: FetchFutureWeatherFromApiImpl): FetchFutureWeatherFromApi
 
     @Binds
     abstract fun provideInsertCityIntoDatabase(insertCityIntoDatabase: InsertCityIntoDatabaseImpl): InsertCityIntoDatabase
@@ -46,4 +49,5 @@ abstract class UseCasesModule {
 
     @Binds
     abstract fun getFavoriteCities(getFavoriteCities: GetFavoriteCitiesImpl): GetFavoriteCities
+
 }

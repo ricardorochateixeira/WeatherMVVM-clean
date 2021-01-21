@@ -1,8 +1,8 @@
-package com.ricardoteixeira.app.framework.api.models
+package com.ricardoteixeira.app.framework.api.models.currentweather
 
 import com.squareup.moshi.Json
 
-data class Main(
+data class MainCurrentWeather(
 
     @Json(name = "feels_like") var feelsLike: Double?,
 

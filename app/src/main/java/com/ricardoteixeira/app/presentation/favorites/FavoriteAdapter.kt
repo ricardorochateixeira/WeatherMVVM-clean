@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ricardoteixeira.app.presentation.listcities.ListCitiesAdapter
 import com.ricardoteixeira.app.utils.setWeatherImage
-import com.ricardoteixeira.domain.models.WeatherCityEntity
+import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+import com.ricardoteixeira.weathermvvm_clean.R
 import com.ricardoteixeira.weathermvvm_clean.databinding.CityFavoriteItemBinding
+import java.util.*
 
-class FavoriteAdapter: ListAdapter<WeatherCityEntity, FavoriteAdapter.ViewHolder>(
+class FavoriteAdapter: ListAdapter<CurrentWeatherEntityModel, FavoriteAdapter.ViewHolder>(
     ListCitiesAdapter.DiffCallback()
 ) {
     override fun onCreateViewHolder(
@@ -28,23 +30,14 @@ class FavoriteAdapter: ListAdapter<WeatherCityEntity, FavoriteAdapter.ViewHolder
     inner class ViewHolder(private val binding: CityFavoriteItemBinding):
         RecyclerView.ViewHolder(binding.root) {
 
-            init {
-                binding.apply {
-                    val position = adapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        val city = getItem(position)
-                    }
-                }
-            }
-
-        fun bind(weatherCityEntity: WeatherCityEntity) {
+        fun bind(currentWeatherEntityModel: CurrentWeatherEntityModel) {
             binding.apply {
-                cityNameFavorite.text = weatherCityEntity.cityName
-                cityTemperatureFavorite.text = "${weatherCityEntity.actualTemp.toString()} ºC"
-                descriptionFavorite.text = weatherCityEntity.weatherDescription?.capitalize()
-                weatherImageFavorite.setWeatherImage(weatherCityEntity)
-                minimumTemperatureValueFavorite.text = "${weatherCityEntity.tempMin.toString()} ºC"
-                maximumTemperatureValueFavorite.text = "${weatherCityEntity.tempMax.toString()} ºC"
+                cityNameFavorite.text = currentWeatherEntityModel.cityName
+                cityTemperatureFavorite.text = itemView.context.getString(R.string.temperature_text_adapters, currentWeatherEntityModel.actualTemp.toString())
+                descriptionFavorite.text = currentWeatherEntityModel.weatherDescription?.capitalize(Locale.ROOT)
+                weatherImageFavorite.setWeatherImage(currentWeatherEntityModel)
+                minimumTemperatureValueFavorite.text = itemView.context.getString(R.string.minimum_temperature_text_adapters, currentWeatherEntityModel.tempMin.toString())
+                maximumTemperatureValueFavorite.text = itemView.context.getString(R.string.maximum_temperature_text_adapters, currentWeatherEntityModel.tempMax.toString())
             }
         }
     }

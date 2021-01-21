@@ -2,9 +2,10 @@ package com.ricardoteixeira.data.repository
 
 import com.ricardoteixeira.app.framework.db.mappers.toDatabase
 import com.ricardoteixeira.app.framework.db.mappers.toEntity
-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
 import com.ricardoteixeira.app.utils.Result
-import com.ricardoteixeira.domain.models.WeatherCityEntity
+import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
 
 class WeatherRepository(
     private val getAllCities: GetAllCities,
@@ -14,11 +15,11 @@ class WeatherRepository(
     private val insertCityIntoDatabase: InsertCityIntoDatabase
 ) {
 
-    suspend fun decideWhereToFetch(): Result<List<WeatherCityEntity>> {
+    suspend fun decideWhereToFetch(): Result<List<CurrentWeatherEntityModel>> {
 
         val cities = getAllCities.getAllCities().toMutableList()
         if (cities.isEmpty()) {
-            return Result.Success(data = emptyList<WeatherCityEntity>())
+            return Result.Success(data = emptyList<CurrentWeatherEntityModel>())
         } else {
             for (city in cities) {
                 val timestamp = System.currentTimeMillis().toString()
@@ -37,8 +38,6 @@ class WeatherRepository(
                             weatherDescription = newWeather.data.weatherDescription,
                             requestTime = newWeather.data.requestTime)
                         insertCityIntoDatabase.insertCityIntoDatabase(newCity)
-                    } else {
-                        Result.Failure(error = error("error"))
                     }
                     return Result.Success(data = cities.map { it.toEntity() })
                 } else {
@@ -53,19 +52,19 @@ class WeatherRepository(
 
 interface FetchCityFromApi {
 
-    suspend fun fetchWeatherFromApi(cityName: String): Result<WeatherCityEntity>
+    suspend fun fetchWeatherFromApi(cityName: String): Result<CurrentWeatherEntityModel>
 
 }
 
 interface InsertCityIntoDatabase {
 
-    suspend fun insertCityIntoDatabase(city: WeatherCityDatabaseModel)
+    suspend fun insertCityIntoDatabase(city: CurrentWeatherDatabaseModel)
 
 }
 
 interface GetAllCities {
 
-    suspend fun getAllCities(): List<WeatherCityDatabaseModel>
+    suspend fun getAllCities(): List<CurrentWeatherDatabaseModel>
 
 }
 
@@ -81,21 +80,26 @@ interface DeleteCityFromDatabase {
 }
 
 interface UpdateCity {
-    suspend fun updateCity(city: WeatherCityDatabaseModel)
+    suspend fun updateCity(city: CurrentWeatherDatabaseModel)
 }
 
 interface GetCityPendingDelete {
-    suspend fun getCityPendingDelete(): WeatherCityEntity?
+    suspend fun getCityPendingDelete(): CurrentWeatherEntityModel?
 }
 
 interface RefreshCities {
-    suspend fun refreshCities(cities: MutableList<WeatherCityEntity>): Result<List<WeatherCityEntity?>>
+    suspend fun refreshCities(currentListOfCities: MutableList<CurrentWeatherEntityModel>): Result<List<CurrentWeatherEntityModel?>>
 }
 
 interface GetCityById {
-    suspend fun getCityById(cityId: Int): Result<WeatherCityEntity>
+    suspend fun getCityById(cityId: Int): Result<CurrentWeatherEntityModel>
 }
 
 interface GetFavoriteCities {
-    suspend fun getFavoriteCities(): List<WeatherCityEntity>
+    suspend fun getFavoriteCities(): List<CurrentWeatherEntityModel>
+}
+
+interface FetchFutureWeatherFromApi {
+
+    suspend fun fetchFutureWeatherFromApi(cityName: String): Result<FutureWeatherEntityModel>
 }

@@ -5,12 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ricardoteixeira.app.presentation.listcities.ListCitiesViewState
-import com.ricardoteixeira.domain.models.WeatherCityEntity
 import com.ricardoteixeira.domain.usecases.favorite.GetFavoriteCitiesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class FavoriteViewModel @ViewModelInject constructor(
     private val getFavoriteCitiesUseCase: GetFavoriteCitiesUseCase

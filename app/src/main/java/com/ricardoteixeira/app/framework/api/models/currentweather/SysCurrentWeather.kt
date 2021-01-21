@@ -1,8 +1,8 @@
-package com.ricardoteixeira.app.framework.api.models
+package com.ricardoteixeira.app.framework.api.models.currentweather
 
 import com.squareup.moshi.Json
 
-data class Sys(
+data class SysCurrentWeather(
 
     @field:Json(name = "country") var country: String?,
 

@@ -1,7 +1,7 @@
 package com.ricardoteixeira.app.framework.repository
 
 import com.ricardoteixeira.app.framework.api.ApiHelper
-import com.ricardoteixeira.app.framework.api.mappers.toDatabase
+import com.ricardoteixeira.app.framework.api.mappers.currentweather.toDatabase
 import com.ricardoteixeira.app.framework.db.WeatherCityDao
 import com.ricardoteixeira.app.utils.Result
 import com.ricardoteixeira.data.repository.InsertNewCity

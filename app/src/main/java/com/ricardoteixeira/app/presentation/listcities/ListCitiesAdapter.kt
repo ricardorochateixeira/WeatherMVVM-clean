@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ricardoteixeira.app.utils.setWeatherImage
-import com.ricardoteixeira.domain.models.WeatherCityEntity
+import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.weathermvvm_clean.R
 import com.ricardoteixeira.weathermvvm_clean.databinding.CityWeatherItemBinding
-import kotlinx.android.synthetic.main.city_weather_item.*
+import java.util.*
 
 
 class ListCitiesAdapter(
     private var listener: OnItemClickListener,
-) : ListAdapter<WeatherCityEntity, ListCitiesAdapter.ViewHolder>(DiffCallback()) {
+) : ListAdapter<CurrentWeatherEntityModel, ListCitiesAdapter.ViewHolder>(DiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,13 +44,13 @@ class ListCitiesAdapter(
             }
         }
 
-        fun bind(weatherCityEntity: WeatherCityEntity) {
+        fun bind(currentWeatherEntityModel: CurrentWeatherEntityModel) {
             binding.apply {
-                cityName.text = weatherCityEntity.cityName
-                cityTemperature.text = "${weatherCityEntity.actualTemp.toString()} ºC"
-                description.text = weatherCityEntity.weatherDescription?.capitalize()
-                weatherImage.setWeatherImage(weatherCityEntity)
-                if (weatherCityEntity.isFavorite) {
+                cityName.text = currentWeatherEntityModel.cityName
+                cityTemperature.text = itemView.context.getString(R.string.temperature_text_adapters, currentWeatherEntityModel.actualTemp.toString())
+                description.text = currentWeatherEntityModel.weatherDescription?.capitalize(Locale.ROOT)
+                weatherImage.setWeatherImage(currentWeatherEntityModel)
+                if (currentWeatherEntityModel.isFavorite) {
                     favouriteCity.setImageDrawable(AppCompatResources.getDrawable(root.context, R.drawable.ic_favorite))
                     itemView.isFocusable= false
                 } else {
@@ -63,7 +63,7 @@ class ListCitiesAdapter(
                         val city = getItem(position)
                         listener.onFavoriteClick(city)
                     }
-                    if (weatherCityEntity.isFavorite) {
+                    if (currentWeatherEntityModel.isFavorite) {
                         favouriteCity.setImageDrawable(AppCompatResources.getDrawable(root.context, R.drawable.ic_favorite))
                         itemView.isFocusable= false
                     } else {
@@ -76,28 +76,28 @@ class ListCitiesAdapter(
     }
 
     interface OnItemClickListener {
-        fun onCityClick(city: WeatherCityEntity)
+        fun onCityClick(current: CurrentWeatherEntityModel)
 
-        fun onFavoriteClick(city: WeatherCityEntity)
+        fun onFavoriteClick(current: CurrentWeatherEntityModel)
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<WeatherCityEntity>() {
+    class DiffCallback : DiffUtil.ItemCallback<CurrentWeatherEntityModel>() {
         override fun areItemsTheSame(
-            oldItem: WeatherCityEntity,
-            newItem: WeatherCityEntity
+            oldItem: CurrentWeatherEntityModel,
+            newItem: CurrentWeatherEntityModel
         ): Boolean {
             return oldItem.cityId == newItem.cityId
         }
 
         override fun areContentsTheSame(
-            oldItem: WeatherCityEntity,
-            newItem: WeatherCityEntity
+            oldItem: CurrentWeatherEntityModel,
+            newItem: CurrentWeatherEntityModel
         ): Boolean {
             return oldItem == newItem
         }
     }
 
-    fun getCity(index: Int): WeatherCityEntity? {
+    fun getCity(index: Int): CurrentWeatherEntityModel? {
         return try {
             currentList[index]
         } catch (e: IndexOutOfBoundsException) {

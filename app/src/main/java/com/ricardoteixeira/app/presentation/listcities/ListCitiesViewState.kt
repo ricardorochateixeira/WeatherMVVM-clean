@@ -1,12 +1,12 @@
 package com.ricardoteixeira.app.presentation.listcities
 
 import android.view.View
-import com.ricardoteixeira.domain.models.WeatherCityEntity
+import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 
 data class ListCitiesViewState(
     val isShowingSnackBar: Boolean,
     val error: String?,
-    val result: List<WeatherCityEntity>,
+    val result: List<CurrentWeatherEntityModel>,
     val responseType: ResponseType
 )
 

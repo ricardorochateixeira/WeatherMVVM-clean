@@ -1,4 +1,4 @@
-package com.ricardoteixeira.app.framework.db.model
+package com.ricardoteixeira.app.framework.db.model.current
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
@@ -10,7 +10,7 @@ import java.text.DateFormat
 @Parcelize
 @Entity(tableName = "city_weather")
 
-data class WeatherCityDatabaseModel(
+data class CurrentWeatherDatabaseModel(
     @PrimaryKey(autoGenerate = false)
     val cityId: Int?,
 
@@ -72,7 +72,7 @@ data class WeatherCityDatabaseModel(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as WeatherCityDatabaseModel
+        other as CurrentWeatherDatabaseModel
 
         if (cityId != other.cityId) return false
         if (cityName != other.cityName) return false

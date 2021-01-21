@@ -6,7 +6,7 @@
     android:id="@+id/first_Screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
+    android:background="@drawable/main_gradient"
     app:applyMotionScene="true"
     app:layoutDescription="@xml/motion">
 
@@ -18,15 +18,16 @@
         android:text="@string/main_page_text"
         android:textAlignment="center"
         android:textColor="@color/secondaryTextColor"
-        android:textSize="24sp"
+        android:textSize="@dimen/standard_subtitle_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:contentDescription="@string/sort_button"
         android:id="@+id/sort_cities"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
+        android:layout_width="@dimen/weather_smaller_image_size"
+        android:layout_height="@dimen/weather_smaller_image_size"
         android:src="@drawable/ic_sort_black"
         app:layout_constraintStart_toEndOf="@id/search_cities"
         app:layout_constraintTop_toTopOf="@id/search_cities" />
@@ -36,15 +37,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/list_cities_rv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/search_results_rv" />
 
     <ImageView
+        android:contentDescription="@string/search_button"
         android:id="@+id/search_image"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
+        android:layout_width="@dimen/weather_smaller_image_size"
+        android:layout_height="@dimen/weather_smaller_image_size"
         android:src="@drawable/ic_search"
         app:layout_constraintEnd_toStartOf="@id/search_cities"
         app:layout_constraintTop_toTopOf="@id/search_cities" />
@@ -54,16 +55,20 @@
         android:id="@+id/search_results_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/double_standard_margin"
         app:layout_constraintTop_toBottomOf="@id/search_cities" />
     <EditText
         android:id="@+id/search_cities"
-        android:layout_width="254dp"
-        android:layout_height="54dp"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/text_view_width_bigger"
+        android:layout_height="@dimen/text_view_bigger_height"
+        android:layout_margin="@dimen/double_standard_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_name" />
+        app:layout_constraintTop_toBottomOf="@id/app_name"
+        android:inputType="text"
+        android:gravity="center"
+        android:autofillHints="City"
+        android:hint="@string/insert_city_name"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
@@ -76,7 +81,7 @@
         android:id="@+id/list_cities_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/double_standard_margin"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"

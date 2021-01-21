@@ -1,5 +1,6 @@
 package com.ricardoteixeira.app.presentation.details
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -7,20 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.ricardoteixeira.app.presentation.listcities.ListCitiesFragmentDirections
 import com.ricardoteixeira.app.utils.setWeatherImage
-import com.ricardoteixeira.domain.models.WeatherCityEntity
 import com.ricardoteixeira.weathermvvm_clean.R
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.city_weather_item.*
-import kotlinx.android.synthetic.main.city_weather_item.city_name
 import kotlinx.android.synthetic.main.details_fragment.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.util.*
 
 @AndroidEntryPoint
 class DetailsFragment: Fragment(R.layout.details_fragment) {
@@ -29,6 +22,7 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
 
     var cityId = 0
 
+    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -41,15 +35,15 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
             getCityById(cityId)
         }
 
-        viewModel.detailState.observe(viewLifecycleOwner, Observer {
+        viewModel.detailState.observe(viewLifecycleOwner, {
             city_name_details.text = it?.cityName
             weather_image_detail.setWeatherImage(it)
-            actual_temp_detail.text = "${it?.actualTemp} ªC"
-            feels_like_value.text = "${it?.feelsLikeTemp} ªC"
-            maximum_temperature_value.text = "${it?.tempMax} ªC"
-            minimum_temperature_value.text = "${it?.tempMin} ªC"
-            wind_speed_value.text = "${it?.windSpeed} m/s"
-            humidity_value.text = "${it?.actualTemp} %"
+            actual_temp_detail.text = getString(R.string.temperature_text_adapters, it?.actualTemp.toString())
+            feels_like_value.text = getString(R.string.feels_like_temperature_text_adapters, it?.feelsLikeTemp.toString())
+            maximum_temperature_value.text = getString(R.string.feels_like_temperature_text_adapters, it?.tempMax.toString())
+            minimum_temperature_value.text = getString(R.string.feels_like_temperature_text_adapters, it?.tempMin.toString())
+            wind_speed_value.text = getString(R.string.wind_speed_text_adapters, it?.windSpeed.toString())
+            humidity_value.text = getString(R.string.humidity_text_adapters, it?.humidity.toString())
             sunset_value.text = SimpleDateFormat("hh:mm a").format(it?.sunset?.toLong()
                 ?.times(1000))
             sunrise_value.text = SimpleDateFormat("hh:mm a").format(it?.sunrise?.toLong()

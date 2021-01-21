@@ -4,37 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
+    android:background="@drawable/main_gradient"
     android:textAlignment="textStart">
 
     <ImageView
         android:id="@+id/back_btn"
+        android:contentDescription="@string/back_button_detail_screen_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/standard_margin"
         app:layout_constraintTop_toTopOf="@+id/city_name_details"
         app:layout_constraintBottom_toBottomOf="@+id/city_name_details" />
 
     <TextView
         android:id="@+id/city_name_details"
-        android:layout_width="264dp"
+        android:layout_width="@dimen/text_view_width_bigger"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/standard_margin"
         android:textAlignment="center"
-        android:textSize="32sp"
+        android:textSize="@dimen/standard_title_size"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="8dp"
+        android:padding="@dimen/standard_padding"
         tools:layout_editor_absoluteX="8dp" />
 
     <ImageView
+        android:contentDescription="@string/weather_image"
         android:id="@+id/weather_image_detail"
-        android:layout_width="144dp"
-        android:layout_height="144dp"
-        android:layout_margin="16dp"
+        android:layout_width="@dimen/weather_bigger_image_size"
+        android:layout_height="@dimen/weather_bigger_image_size"
+        android:layout_margin="@dimen/double_standard_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/city_name_details" />
 
@@ -42,7 +44,7 @@
         android:id="@+id/actual_temp_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="32sp"
+        android:textSize="@dimen/standard_title_size"
         app:layout_constraintBottom_toBottomOf="@id/weather_image_detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/weather_image_detail"
@@ -51,46 +53,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/standard_margin"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/weather_image_detail">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/maximum_temperature_text"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:layout_width="0dp"
-                android:paddingStart="8dp"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/half_standard_padding"
                 android:text="@string/maximum_temperature"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
 
             <TextView
                 android:id="@+id/minimum_temperature_value"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:gravity="center"
-                android:paddingStart="8dp"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             android:orientation="horizontal">
 
             <TextView
@@ -98,30 +100,30 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:gravity="center"
-                android:paddingStart="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/minimum_temperature_text"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
 
             <TextView
                 android:id="@+id/maximum_temperature_value"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:gravity="center"
-                android:paddingStart="8dp"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             android:orientation="horizontal">
 
             <TextView
@@ -129,30 +131,30 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:gravity="center"
-                android:paddingStart="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/feels_like_temperature_text"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
 
             <TextView
                 android:id="@+id/feels_like_value"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:gravity="center"
-                android:paddingStart="8dp"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             android:orientation="horizontal">
 
             <TextView
@@ -160,30 +162,30 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:gravity="center"
-                android:paddingStart="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/wind_speed_text"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
 
             <TextView
                 android:id="@+id/wind_speed_value"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:gravity="center"
-                android:paddingStart="8dp"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             android:orientation="horizontal">
 
             <TextView
@@ -191,30 +193,30 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingStart="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/humidity_text"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
 
             <TextView
                 android:id="@+id/humidity_value"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingStart="8dp"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/standard_margin"
             android:orientation="horizontal">
 
             <TextView
@@ -222,23 +224,23 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingStart="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/sunrise_text"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
 
             <TextView
                 android:id="@+id/sunrise_value"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingStart="8dp"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
         </LinearLayout>
 
         <LinearLayout
@@ -253,23 +255,23 @@
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingStart="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/sunset_text"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
 
             <TextView
                 android:id="@+id/sunset_value"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingStart="8dp"
-                android:textAlignment="textStart"
-                android:textSize="16sp"
-                android:padding="4dp"/>
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/standard_padding"
+                android:paddingEnd="@dimen/standard_padding"
+                android:textSize="@dimen/standard_text_size"
+                android:padding="@dimen/half_standard_padding"/>
         </LinearLayout>
 
     </LinearLayout>

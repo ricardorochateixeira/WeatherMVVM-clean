@@ -6,7 +6,6 @@ import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -15,11 +14,10 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.ricardoteixeira.app.presentation.common.CityItemTouchHelperAdapter
 import com.ricardoteixeira.app.presentation.common.CityItemTouchHelperCallback
-import com.ricardoteixeira.app.utils.FilterPreferences
 import com.ricardoteixeira.app.utils.PreferencesManager
 import com.ricardoteixeira.app.utils.SortOrder
 import com.ricardoteixeira.app.utils.hideKeyboard
-import com.ricardoteixeira.domain.models.WeatherCityEntity
+import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.weathermvvm_clean.R
 import com.ricardoteixeira.weathermvvm_clean.databinding.ListCitiesFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,7 +61,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         search_image.setOnClickListener { searchCity() }
 
 
-        viewModel.mainState.observe(viewLifecycleOwner, Observer<ListCitiesViewState> {
+        viewModel.mainState.observe(viewLifecycleOwner, {
 
             citiesAdapter.submitList(it.result)
 
@@ -152,11 +150,11 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         handleSearch()
     }
 
-    override fun onCityClick(city: WeatherCityEntity) {
-        viewModel.updateCityId(city.cityId!!)
+    override fun onCityClick(current: CurrentWeatherEntityModel) {
+        viewModel.updateCityId(current.cityId!!)
         findNavController().navigate(
             ListCitiesFragmentDirections.actionListCitiesFragmentToDetailsFragment(
-                city.cityId!!
+                current.cityId
             )
         )
     }
@@ -176,8 +174,8 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         }
     }
 
-    override fun onFavoriteClick(city: WeatherCityEntity) {
-        viewModel.favoriteCity(city)
+    override fun onFavoriteClick(current: CurrentWeatherEntityModel) {
+        viewModel.favoriteCity(current)
     }
 
     private fun filterMenu() {

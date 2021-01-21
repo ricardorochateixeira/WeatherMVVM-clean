@@ -5,25 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ricardoteixeira.app.presentation.listcities.*
 import com.ricardoteixeira.app.utils.PreferencesManager
 import com.ricardoteixeira.app.utils.Result
-import com.ricardoteixeira.app.utils.SortOrder
-import com.ricardoteixeira.domain.models.WeatherCityEntity
+import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.domain.usecases.details.GetCityByIdUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class DetailsViewModel
 @ViewModelInject constructor(private val getCityByIdUseCase: GetCityByIdUseCase,
-                             private val preferences: PreferencesManager): ViewModel() {
+                             val preferences: PreferencesManager): ViewModel() {
 
-
-    private val _mutableDetailState: MutableLiveData<WeatherCityEntity?> = MutableLiveData()
-    val detailState: LiveData<WeatherCityEntity?>
+    private val _mutableDetailState: MutableLiveData<CurrentWeatherEntityModel?> = MutableLiveData()
+    val detailState: LiveData<CurrentWeatherEntityModel?>
         get() = _mutableDetailState
 
     private val cityIdFlow = preferences.cityIdFlow

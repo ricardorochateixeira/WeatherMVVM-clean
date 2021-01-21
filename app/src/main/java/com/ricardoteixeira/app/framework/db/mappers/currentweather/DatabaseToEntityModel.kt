@@ -1,11 +1,10 @@
 package com.ricardoteixeira.app.framework.db.mappers
 
-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
-import com.ricardoteixeira.domain.models.WeatherCityEntity
+import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
+import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+fun CurrentWeatherDatabaseModel.toEntity(): CurrentWeatherEntityModel {
 
- fun WeatherCityDatabaseModel.toEntity(): WeatherCityEntity{
-
-    return WeatherCityEntity(
+    return CurrentWeatherEntityModel(
         cityName = cityName,
         cityId = cityId,
         actualTemp = actualTemp,

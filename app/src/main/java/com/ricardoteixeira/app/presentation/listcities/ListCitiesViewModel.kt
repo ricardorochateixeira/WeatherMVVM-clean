@@ -3,21 +3,19 @@ package com.ricardoteixeira.app.presentation.listcities
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.ricardoteixeira.app.framework.db.mappers.toDatabase
-import com.ricardoteixeira.app.utils.FilterPreferences
 import com.ricardoteixeira.app.utils.PreferencesManager
 import com.ricardoteixeira.app.utils.Result
 import com.ricardoteixeira.app.utils.SortOrder
 import com.ricardoteixeira.data.repository.InsertCityIntoDatabase
 import com.ricardoteixeira.data.repository.UpdateCity
 import com.ricardoteixeira.data.repository.WeatherRepository
-import com.ricardoteixeira.domain.models.WeatherCityEntity
+import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherUseCase
 import com.ricardoteixeira.domain.usecases.listcities.DeleteCityUseCase
 import com.ricardoteixeira.domain.usecases.listcities.FetchCityUseCase
 import com.ricardoteixeira.domain.usecases.listcities.GetCityPendingDeleteUseCase
 import com.ricardoteixeira.domain.usecases.listcities.RefreshCitiesUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 const val FETCH_CITY_SUCCESS_MESSAGE = "City Added Successfully"
@@ -42,6 +40,7 @@ class ListCitiesViewModel
     var getCityPendingDeleteUseCase: GetCityPendingDeleteUseCase,
     var deleteCityUseCase: DeleteCityUseCase,
     var refreshCitiesUseCase: RefreshCitiesUseCase,
+    val fetchFutureWeatherUseCase: FetchFutureWeatherUseCase,
     private val preferences: PreferencesManager
 ) : ViewModel() {
 
@@ -49,21 +48,26 @@ class ListCitiesViewModel
     val mainState: LiveData<ListCitiesViewState>
         get() = _mutableMainState
 
-    var cities: ArrayList<WeatherCityEntity> = arrayListOf()
-    var citiesList: List<WeatherCityEntity> = listOf()
+    var currents: ArrayList<CurrentWeatherEntityModel> = arrayListOf()
+    var citiesList: List<CurrentWeatherEntityModel> = listOf()
 
     val preferencesFlow = preferences.preferencesFlow.asLiveData()
 
 
     fun fetchCity(cityName: String) {
-        viewModelScope.launch {
-            citiesList = cities.toList()
+        viewModelScope.launch(Dispatchers.IO) {
+            citiesList = currents.toList()
+            val teste = fetchFutureWeatherUseCase(cityName)
+            when(teste) {
+                is Result.Success -> println("testeeeeeeeviewmodel ${teste.data}")
+                is Result.Failure -> println("testeeeeeeeviewmodel ${teste.error}")
+            }
             when (val data = fetchCityUseCase(cityName)) {
                 is Result.Success -> {
-                    cities.add(0, data.data)
-                    citiesList = cities.toList()
-                    _mutableMainState.value =
-                        _mutableMainState.value?.copy(
+                    currents.add(0, data.data)
+                    citiesList = currents.toList()
+                        _mutableMainState.postValue(
+                            ListCitiesViewState(
                             isShowingSnackBar = true, error = null, result = citiesList,
                             responseType = ResponseType(
                                 uiComponentType = UIComponentType.SnackBar(
@@ -72,17 +76,20 @@ class ListCitiesViewModel
                                 ), messageType = MessageType.Success()
                             )
                         )
+                        )
                 }
 
-                is Result.Failure -> _mutableMainState.value =
-                    _mutableMainState.value?.copy(
+                is Result.Failure -> _mutableMainState.postValue(
+                    ListCitiesViewState(
                         isShowingSnackBar = true,
+                        result = citiesList,
                         error = data.error,
                         responseType = ResponseType(
                             uiComponentType = UIComponentType.SnackBar(message = FETCH_CITY_ERROR_MESSAGE),
                             messageType = MessageType.Error()
                         )
                     )
+                )
             }
         }
     }
@@ -97,7 +104,7 @@ class ListCitiesViewModel
                             ListCitiesViewState(
                                 isShowingSnackBar = true,
                                 error = null,
-                                result = listOf<WeatherCityEntity>(),
+                                result = listOf<CurrentWeatherEntityModel>(),
                                 responseType = ResponseType(
                                     uiComponentType = UIComponentType.SnackBar(message = CITIES_EMPTY_LOADED_SUCCESS_MESSAGE),
                                     messageType = MessageType.Success()
@@ -105,9 +112,9 @@ class ListCitiesViewModel
                             )
                         )
                     } else {
-                        cities = arrayListOf()
-                        cities.addAll(result.data.filter { !it.isUpdatePending })
-                        citiesList = cities.toList()
+                        currents = arrayListOf()
+                        currents.addAll(result.data.filter { !it.isUpdatePending })
+                        citiesList = currents.toList()
                         _mutableMainState.postValue(
                             ListCitiesViewState(
                                 isShowingSnackBar = true,
@@ -126,7 +133,7 @@ class ListCitiesViewModel
                     ListCitiesViewState(
                         isShowingSnackBar = true,
                         error = result.error,
-                        result = listOf<WeatherCityEntity>(),
+                        result = listOf<CurrentWeatherEntityModel>(),
                         responseType = ResponseType(
                             uiComponentType = UIComponentType.SnackBar(
                                 message = CITIES_LOADED_ERROR_MESSAGE
@@ -138,11 +145,11 @@ class ListCitiesViewModel
         }
     }
 
-    fun isDeletePending(cityWeatherEntity: WeatherCityEntity?) {
-        val cityUpdated = cityWeatherEntity?.copy(isUpdatePending = true)
-        val index = cities.indexOf(cityWeatherEntity)
-        cities[index].isUpdatePending = true
-        citiesList = cities.filter { !it.isUpdatePending }.toList()
+    fun isDeletePending(cityCurrentWeatherEntityModel: CurrentWeatherEntityModel?) {
+        val cityUpdated = cityCurrentWeatherEntityModel?.copy(isUpdatePending = true)
+        val index = currents.indexOf(cityCurrentWeatherEntityModel)
+        currents[index].isUpdatePending = true
+        citiesList = currents.filter { !it.isUpdatePending }.toList()
         _mutableMainState.value = ListCitiesViewState(
             isShowingSnackBar = true, error = null, result = citiesList,
             responseType = ResponseType(
@@ -158,19 +165,19 @@ class ListCitiesViewModel
         }
     }
 
-    fun favoriteCity(city: WeatherCityEntity) {
+    fun favoriteCity(current: CurrentWeatherEntityModel) {
 
-        val index = cities.indexOf(city)
+        val index = currents.indexOf(current)
 
-        if (city.isFavorite) {
-            city.isFavorite = false
+        if (current.isFavorite) {
+            current.isFavorite = false
             viewModelScope.launch {
-                updateCity.updateCity(city.toDatabase())
+                updateCity.updateCity(current.toDatabase())
             }
 
-            cities[index].isFavorite = false
+            currents[index].isFavorite = false
 
-            citiesList = cities.toList()
+            citiesList = currents.toList()
             _mutableMainState.value?.copy(
                 isShowingSnackBar = true, error = null, result = citiesList,
                 responseType = ResponseType(
@@ -180,14 +187,14 @@ class ListCitiesViewModel
             )
 
         } else {
-            city.isFavorite = true
+            current.isFavorite = true
 
             viewModelScope.launch {
-                updateCity.updateCity(city.toDatabase())
+                updateCity.updateCity(current.toDatabase())
             }
 
-            cities[index].isFavorite = true
-            citiesList = cities.toList()
+            currents[index].isFavorite = true
+            citiesList = currents.toList()
 
             _mutableMainState.value?.copy(
                 isShowingSnackBar = true,
@@ -203,10 +210,10 @@ class ListCitiesViewModel
     }
 
     fun restoreCity() {
-        val index = cities.indexOfFirst { it.isUpdatePending }
-        cities[index].isUpdatePending = false
-        citiesList = cities.toList()
-        val cityUpdated = cities[index]
+        val index = currents.indexOfFirst { it.isUpdatePending }
+        currents[index].isUpdatePending = false
+        citiesList = currents.toList()
+        val cityUpdated = currents[index]
         _mutableMainState.value =
             ListCitiesViewState(
                 isShowingSnackBar = true, error = null, result = citiesList,
@@ -232,12 +239,10 @@ class ListCitiesViewModel
                     deleteCityUseCase(city.cityId!!)
                 }
             }
-            val index = cities.indexOfFirst { it.isUpdatePending }
-            if (index == -1) {
-
-            } else {
-                cities.remove(cities[index])
-                citiesList = cities.toList()
+            val index = currents.indexOfFirst { it.isUpdatePending }
+            if (index != -1) {
+                currents.remove(currents[index])
+                citiesList = currents.toList()
                 _mutableMainState.postValue(
                     ListCitiesViewState(
                         isShowingSnackBar = true, error = null, result = citiesList,
@@ -259,7 +264,7 @@ class ListCitiesViewModel
 
     fun refreshCities(sortOrder: SortOrder) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = refreshCitiesUseCase(cities.toMutableList())
+            val result = refreshCitiesUseCase(currents.toMutableList())
 
             when (result) {
                 is Result.Success -> {

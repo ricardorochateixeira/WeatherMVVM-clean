@@ -3,6 +3,7 @@ package com.ricardoteixeira.di
 import com.ricardoteixeira.data.repository.*
 import com.ricardoteixeira.domain.usecases.details.GetCityByIdUseCase
 import com.ricardoteixeira.domain.usecases.favorite.GetFavoriteCitiesUseCase
+import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherUseCase
 import com.ricardoteixeira.domain.usecases.listcities.*
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,9 @@ object ViewModelModule {
 
     @Provides
     fun provideInsertCityUseCase(fetchCityFromApi: FetchCityFromApi): FetchCityUseCase = FetchCityUseCase(fetchCityFromApi)
+
+    @Provides
+    fun provideInsertFutureCityUseCase(fetchFutureWeatherFromApi: FetchFutureWeatherFromApi): FetchFutureWeatherUseCase = FetchFutureWeatherUseCase(fetchFutureWeatherFromApi)
 
     @Provides
     fun provideInsertCityIntoDatabase(insertCityIntoDatabase: InsertCityIntoDatabase): InsertCityIntoDatabaseUseCase = InsertCityIntoDatabaseUseCase(insertCityIntoDatabase)
@@ -39,4 +43,6 @@ object ViewModelModule {
 
     @Provides
     fun providesGetFavoriteCities(getFavoriteCities: GetFavoriteCities): GetFavoriteCitiesUseCase = GetFavoriteCitiesUseCase(getFavoriteCities)
+
+
 }

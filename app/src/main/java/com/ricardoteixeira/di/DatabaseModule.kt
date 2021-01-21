@@ -22,4 +22,7 @@ object  DatabaseModule {
 
     @Provides
     fun provideWeatherCityDao(database: WeatherCityDatabase) = database.weatherCityDao()
+
+    @Provides
+    fun provideFutureWeatherDao(database: WeatherCityDatabase) = database.futureWeatherDao()
 }

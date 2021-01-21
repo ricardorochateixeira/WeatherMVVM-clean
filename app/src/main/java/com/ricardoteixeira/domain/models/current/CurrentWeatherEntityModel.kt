@@ -1,7 +1,7 @@
-package com.ricardoteixeira.domain.models
+package com.ricardoteixeira.domain.models.current
 
 
-data class WeatherCityEntity(
+data class CurrentWeatherEntityModel(
     val cityName: String?,
     val cityId: Int?,
     val actualTemp: Double?,
