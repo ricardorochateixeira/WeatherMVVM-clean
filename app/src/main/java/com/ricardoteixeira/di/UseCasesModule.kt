@@ -2,8 +2,11 @@ package com.ricardoteixeira.di
 
 import com.ricardoteixeira.app.framework.api.ApiHelper
 import com.ricardoteixeira.app.framework.api.ApiHelperImpl
-import com.ricardoteixeira.app.framework.repository.InsertCityIntoDatabaseImpl
-import com.ricardoteixeira.app.framework.repository.*
+import com.ricardoteixeira.app.framework.repository.details.GetCityByIdImpl
+import com.ricardoteixeira.app.framework.repository.favorites.GetFavoriteCitiesImpl
+import com.ricardoteixeira.app.framework.repository.future.FetchFutureWeatherFromApiImpl
+import com.ricardoteixeira.app.framework.repository.future.GetFutureWeatherFromDatabaseImpl
+import com.ricardoteixeira.app.framework.repository.listcities.*
 import com.ricardoteixeira.data.repository.*
 import dagger.Binds
 import dagger.Module
@@ -49,5 +52,8 @@ abstract class UseCasesModule {
 
     @Binds
     abstract fun getFavoriteCities(getFavoriteCities: GetFavoriteCitiesImpl): GetFavoriteCities
+
+    @Binds
+    abstract fun getFutureWeatherFromDatabase(getFutureWeatherFromDatabase: GetFutureWeatherFromDatabaseImpl): GetFutureWeatherFromDatabase
 
 }

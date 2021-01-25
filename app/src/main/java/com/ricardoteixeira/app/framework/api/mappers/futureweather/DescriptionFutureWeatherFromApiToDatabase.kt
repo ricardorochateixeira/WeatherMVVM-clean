@@ -6,6 +6,7 @@ import com.ricardoteixeira.app.framework.db.model.future.DescriptionFutureWeathe
 fun DescriptionFutureWeatherApi.toDatabase(): DescriptionFutureWeatherDatabase {
 
     return DescriptionFutureWeatherDatabase(
+        id= id,
         description = description,
         main = main
     )

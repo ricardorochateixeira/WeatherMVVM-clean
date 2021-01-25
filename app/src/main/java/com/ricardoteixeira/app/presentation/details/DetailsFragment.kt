@@ -51,6 +51,7 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
         })
 
         back_btn.setOnClickListener { goBack() }
+        go_to_future_btn.setOnClickListener { goToFutureScreen(cityId) }
     }
 
     private fun getCityById(cityid: Int) {
@@ -61,5 +62,9 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
 
     private fun goBack() {
         findNavController().navigate(DetailsFragmentDirections.actionDetailsFragmentToListCitiesFragment())
+    }
+
+    private fun goToFutureScreen(cityId:Int) {
+        findNavController().navigate(DetailsFragmentDirections.actionDetailsFragmentToSevenDaysFragment(cityId))
     }
 }

@@ -18,6 +18,17 @@
         app:layout_constraintTop_toTopOf="@+id/city_name_details"
         app:layout_constraintBottom_toBottomOf="@+id/city_name_details" />
 
+    <ImageView
+        android:id="@+id/go_to_future_btn"
+        android:contentDescription="@string/back_button_detail_screen_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_front"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/standard_margin"
+        app:layout_constraintTop_toTopOf="@+id/city_name_details"
+        app:layout_constraintBottom_toBottomOf="@+id/city_name_details" />
+
     <TextView
         android:id="@+id/city_name_details"
         android:layout_width="@dimen/text_view_width_bigger"

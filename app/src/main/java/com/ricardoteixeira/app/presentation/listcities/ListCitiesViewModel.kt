@@ -11,10 +11,7 @@ import com.ricardoteixeira.data.repository.UpdateCity
 import com.ricardoteixeira.data.repository.WeatherRepository
 import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherUseCase
-import com.ricardoteixeira.domain.usecases.listcities.DeleteCityUseCase
-import com.ricardoteixeira.domain.usecases.listcities.FetchCityUseCase
-import com.ricardoteixeira.domain.usecases.listcities.GetCityPendingDeleteUseCase
-import com.ricardoteixeira.domain.usecases.listcities.RefreshCitiesUseCase
+import com.ricardoteixeira.domain.usecases.listcities.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -33,10 +30,10 @@ const val UPDATE_CITY_ERROR_MESSAGE = "Cities updated failed!"
 
 class ListCitiesViewModel
 @ViewModelInject constructor(
-    var fetchCityUseCase: FetchCityUseCase,
+    var fetchCityFromApiUseCase: FetchCityFromApiUseCase,
     var insertCityIntoDatabase: InsertCityIntoDatabase,
     var weatherRepository: WeatherRepository,
-    var updateCity: UpdateCity,
+    var updateCity: UpdateCityUseCase,
     var getCityPendingDeleteUseCase: GetCityPendingDeleteUseCase,
     var deleteCityUseCase: DeleteCityUseCase,
     var refreshCitiesUseCase: RefreshCitiesUseCase,
@@ -62,7 +59,7 @@ class ListCitiesViewModel
                 is Result.Success -> println("testeeeeeeeviewmodel ${teste.data}")
                 is Result.Failure -> println("testeeeeeeeviewmodel ${teste.error}")
             }
-            when (val data = fetchCityUseCase(cityName)) {
+            when (val data = fetchCityFromApiUseCase(cityName)) {
                 is Result.Success -> {
                     currents.add(0, data.data)
                     citiesList = currents.toList()
@@ -161,7 +158,7 @@ class ListCitiesViewModel
         )
 
         viewModelScope.launch(Dispatchers.IO) {
-            updateCity.updateCity(cityUpdated!!.toDatabase())
+            updateCity(cityUpdated!!.toDatabase())
         }
     }
 
@@ -172,7 +169,7 @@ class ListCitiesViewModel
         if (current.isFavorite) {
             current.isFavorite = false
             viewModelScope.launch {
-                updateCity.updateCity(current.toDatabase())
+                updateCity(current.toDatabase())
             }
 
             currents[index].isFavorite = false
@@ -190,7 +187,7 @@ class ListCitiesViewModel
             current.isFavorite = true
 
             viewModelScope.launch {
-                updateCity.updateCity(current.toDatabase())
+                updateCity(current.toDatabase())
             }
 
             currents[index].isFavorite = true
@@ -226,7 +223,7 @@ class ListCitiesViewModel
             )
 
         viewModelScope.launch(Dispatchers.IO) {
-            updateCity.updateCity(cityUpdated.toDatabase())
+            updateCity(cityUpdated.toDatabase())
         }
     }
 

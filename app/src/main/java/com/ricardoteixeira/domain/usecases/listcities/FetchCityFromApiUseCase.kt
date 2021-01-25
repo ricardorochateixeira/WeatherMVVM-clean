@@ -6,7 +6,7 @@ import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.domain.usecases.common.BaseUseCase
 import javax.inject.Inject
 
-class FetchCityUseCase
+class FetchCityFromApiUseCase
     @Inject constructor(private var fetchNewCity: FetchCityFromApi) :
     BaseUseCase<String, Result<CurrentWeatherEntityModel>> {
 

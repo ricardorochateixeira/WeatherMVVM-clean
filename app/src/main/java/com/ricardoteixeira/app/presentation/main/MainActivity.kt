@@ -39,9 +39,11 @@ class MainActivity : AppCompatActivity() {
             if (it.cityId == 0){
                 val menu = bottom_nav.menu
                 menu.getItem(1).isEnabled = false
+                menu.getItem(2).isEnabled = false
             } else {
                 val menu = bottom_nav.menu
                 menu.getItem(1).isEnabled = true
+                menu.getItem(2).isEnabled = true
             }
         }
 

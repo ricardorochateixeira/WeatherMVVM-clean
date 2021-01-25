@@ -17,7 +17,7 @@
     <string name="favorites_title">Favorites</string>
     <string name="sunrise_text">Sunrise</string>
     <string name="sunset_text">Sunset</string>
-    <string name="forecast_title">How will be the weather in the next days?</string>
+    <string name="forecast_title">How will be the weather in %1$s in the next days?</string>
     <string name="back_button_detail_screen_text">Button to go to main screen</string>
     <string name="weather_image">Weather image</string>
     <string name="favorite_button">Favorite button</string>

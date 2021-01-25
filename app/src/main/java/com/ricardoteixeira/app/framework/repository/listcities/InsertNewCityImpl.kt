@@ -1,4 +1,4 @@
-package com.ricardoteixeira.app.framework.repository
+package com.ricardoteixeira.app.framework.repository.listcities
 
 import com.ricardoteixeira.app.framework.api.ApiHelper
 import com.ricardoteixeira.app.framework.api.mappers.currentweather.toDatabase

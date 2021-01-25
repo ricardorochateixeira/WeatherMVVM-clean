@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.ricardoteixeira.app.presentation.listcities.ListCitiesAdapter
 import com.ricardoteixeira.weathermvvm_clean.R
 import com.ricardoteixeira.weathermvvm_clean.databinding.FavoriteFragmentBinding
-import com.ricardoteixeira.weathermvvm_clean.databinding.ListCitiesFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,7 +31,7 @@ class FavoriteFragment: Fragment(R.layout.favorite_fragment) {
 
         getFavoriteCities()
 
-        viewModel.mainState.observe(viewLifecycleOwner, {
+        viewModel.favoriteState.observe(viewLifecycleOwner, {
             favoriteAdapter.submitList(it.result)
         })
     }

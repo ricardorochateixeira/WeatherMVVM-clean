@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_detailsFragment_to_listCitiesFragment"
             app:destination="@id/listCitiesFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_sevenDaysFragment"
+            app:destination="@id/sevenDaysFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
@@ -30,6 +33,11 @@
         android:label="FavoriteFragment" />
     <fragment
         android:id="@+id/sevenDaysFragment"
-        android:name="com.ricardoteixeira.app.presentation.sevendays.SevenDaysFragment"
-        android:label="SevenDaysFragment" />
+        android:name="com.ricardoteixeira.app.presentation.future.FutureDaysFragment"
+        android:label="SevenDaysFragment" >
+        <argument
+            android:name="cityId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

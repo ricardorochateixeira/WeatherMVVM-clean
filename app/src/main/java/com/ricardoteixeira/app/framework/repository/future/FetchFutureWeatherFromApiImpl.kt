@@ -1,4 +1,4 @@
-package com.ricardoteixeira.app.framework.repository
+package com.ricardoteixeira.app.framework.repository.future
 
 import com.ricardoteixeira.app.framework.api.WeatherService
 import com.ricardoteixeira.app.framework.api.mappers.toDatabase

@@ -1,4 +1,4 @@
-package com.ricardoteixeira.app.framework.repository
+package com.ricardoteixeira.app.framework.repository.favorites
 
 import com.ricardoteixeira.app.framework.db.WeatherCityDao
 import com.ricardoteixeira.app.framework.db.mappers.toEntity

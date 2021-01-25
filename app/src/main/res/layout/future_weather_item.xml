@@ -10,15 +10,18 @@
 
     <TextView
         android:id="@+id/future_weather_date"
-        android:layout_width="@dimen/text_view_width_bigger"
-        android:layout_height="@dimen/text_view_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/standard_text_size"
+        android:padding="@dimen/standard_padding"
+        android:text="Date"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="@dimen/standard_margin" />
 
     <ImageView
         android:contentDescription="@string/weather_image"
-        android:id="@+id/future_Weather_image"
+        android:id="@+id/future_weather_image"
         android:layout_margin="@dimen/standard_margin"
         android:layout_marginBottom="@dimen/half_standard_margin"
         android:layout_width="@dimen/weather_standard_image_size"
@@ -26,5 +29,21 @@
         app:layout_constraintTop_toBottomOf="@id/future_weather_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/future_weather_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/standard_subtitle_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="20"
+        android:padding="@dimen/standard_padding"
+        android:layout_margin="@dimen/standard_margin"
+        android:layout_marginStart="@dimen/standard_margin" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

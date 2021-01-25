@@ -18,13 +18,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="@dimen/standard_padding"
-        android:text="@string/forecast_title"
         tools:layout_editor_absoluteX="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_future_weather"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/standard_margin"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

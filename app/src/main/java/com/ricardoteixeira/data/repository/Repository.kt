@@ -100,6 +100,9 @@ interface GetFavoriteCities {
 }
 
 interface FetchFutureWeatherFromApi {
-
     suspend fun fetchFutureWeatherFromApi(cityName: String): Result<FutureWeatherEntityModel>
+}
+
+interface GetFutureWeatherFromDatabase{
+    suspend fun getFutureWeatherFromDatabase(cityId: Int): FutureWeatherEntityModel
 }

@@ -4,6 +4,7 @@ import com.ricardoteixeira.data.repository.*
 import com.ricardoteixeira.domain.usecases.details.GetCityByIdUseCase
 import com.ricardoteixeira.domain.usecases.favorite.GetFavoriteCitiesUseCase
 import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherUseCase
+import com.ricardoteixeira.domain.usecases.futureweather.GetFutureWeatherFromDatabaseUseCase
 import com.ricardoteixeira.domain.usecases.listcities.*
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ import dagger.hilt.android.components.ApplicationComponent
 object ViewModelModule {
 
     @Provides
-    fun provideInsertCityUseCase(fetchCityFromApi: FetchCityFromApi): FetchCityUseCase = FetchCityUseCase(fetchCityFromApi)
+    fun provideInsertCityUseCase(fetchCityFromApi: FetchCityFromApi): FetchCityFromApiUseCase = FetchCityFromApiUseCase(fetchCityFromApi)
 
     @Provides
     fun provideInsertFutureCityUseCase(fetchFutureWeatherFromApi: FetchFutureWeatherFromApi): FetchFutureWeatherUseCase = FetchFutureWeatherUseCase(fetchFutureWeatherFromApi)
@@ -44,5 +45,7 @@ object ViewModelModule {
     @Provides
     fun providesGetFavoriteCities(getFavoriteCities: GetFavoriteCities): GetFavoriteCitiesUseCase = GetFavoriteCitiesUseCase(getFavoriteCities)
 
+    @Provides
+    fun provideGetFutureWeatherFromDatabase(getFutureWeatherFromDatabase: GetFutureWeatherFromDatabase): GetFutureWeatherFromDatabaseUseCase = GetFutureWeatherFromDatabaseUseCase(getFutureWeatherFromDatabase)
 
 }

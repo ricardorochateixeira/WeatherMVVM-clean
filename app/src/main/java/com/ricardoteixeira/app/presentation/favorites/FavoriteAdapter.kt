@@ -2,9 +2,9 @@ package com.ricardoteixeira.app.presentation.favorites
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ricardoteixeira.app.presentation.listcities.ListCitiesAdapter
 import com.ricardoteixeira.app.utils.setWeatherImage
 import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.weathermvvm_clean.R
@@ -12,7 +12,7 @@ import com.ricardoteixeira.weathermvvm_clean.databinding.CityFavoriteItemBinding
 import java.util.*
 
 class FavoriteAdapter: ListAdapter<CurrentWeatherEntityModel, FavoriteAdapter.ViewHolder>(
-    ListCitiesAdapter.DiffCallback()
+    DiffCallback()
 ) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -42,4 +42,19 @@ class FavoriteAdapter: ListAdapter<CurrentWeatherEntityModel, FavoriteAdapter.Vi
         }
     }
 
+    class DiffCallback : DiffUtil.ItemCallback<CurrentWeatherEntityModel>() {
+        override fun areItemsTheSame(
+            oldItem: CurrentWeatherEntityModel,
+            newItem: CurrentWeatherEntityModel
+        ): Boolean {
+            return oldItem.cityId == newItem.cityId
+        }
+
+        override fun areContentsTheSame(
+            oldItem: CurrentWeatherEntityModel,
+            newItem: CurrentWeatherEntityModel
+        ): Boolean {
+            return oldItem == newItem
+        }
+    }
 }

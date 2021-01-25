@@ -13,14 +13,14 @@ class FavoriteViewModel @ViewModelInject constructor(
     private val getFavoriteCitiesUseCase: GetFavoriteCitiesUseCase
 ): ViewModel() {
 
-    private val _mutableMainState: MutableLiveData<FavoriteViewState> = MutableLiveData()
-    val mainState: LiveData<FavoriteViewState>
-        get() = _mutableMainState
+    private val _mutableFavoriteState: MutableLiveData<FavoriteViewState> = MutableLiveData()
+    val favoriteState: LiveData<FavoriteViewState>
+        get() = _mutableFavoriteState
 
     fun getFavoriteCities() {
         viewModelScope.launch(Dispatchers.IO) {
             val cities = getFavoriteCitiesUseCase(Unit)
-            _mutableMainState.postValue(
+            _mutableFavoriteState.postValue(
                 FavoriteViewState(
                     error = null,
                     result = cities
