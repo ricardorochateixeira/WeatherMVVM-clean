@@ -46,7 +46,7 @@ class PreferencesManager @Inject constructor(@ApplicationContext context: Contex
             }
         }
         .map { preferences ->
-            val cityId = preferences[PreferencesKeys.CITY_ID]
+            val cityId = preferences[PreferencesKeys.CITY_ID] ?: 0
             CityIdToShowDetails(cityId!!)
         }
 

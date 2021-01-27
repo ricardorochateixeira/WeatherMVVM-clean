@@ -24,7 +24,7 @@ buildscript {
         testExtJunitVersion = "1.1.2"
         versionRetrofit = "2.9.0"
         versionMoshi = "1.11.0"
-
+        recyclerviewAnimationVersion = '3.0.0'
     }
 
     repositories {

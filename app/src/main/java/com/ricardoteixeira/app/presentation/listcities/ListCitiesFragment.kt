@@ -60,6 +60,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         getAllCities()
         search_image.setOnClickListener { searchCity() }
 
+        // search_cities.setOnClickListener { handleSearchPress() }
 
         viewModel.mainState.observe(viewLifecycleOwner, {
 
@@ -81,14 +82,28 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         }
         )
 
-        viewModel.preferencesFlow.observe(viewLifecycleOwner) { filterPreferences ->
+        viewModel.preferencesFlow.observe(viewLifecycleOwner, { filterPreferences ->
             viewModel.sortCities(filterPreferences.sortOrder)
             updateCityOrder(filterPreferences.sortOrder)
-
             swipeRefreshLayout.setOnRefreshListener {
                 refreshItems(filterPreferences.sortOrder)
             }
         }
+        )
+    }
+
+    private fun handleSearchPress() {
+        if (binding.listCitiesRv.visibility == View.VISIBLE) {
+            println("testeeee1 ${binding.root.currentState}")
+            binding.listCitiesRv.visibility = View.GONE
+            binding.root.transitionToEnd()
+            println("testeeee1 ${binding.root.currentState}")
+        } else if (binding.listCitiesRv.visibility == View.GONE) {
+            println("testeeee2 ${binding.root.currentState}")
+            binding.listCitiesRv.visibility = View.VISIBLE
+            binding.root.transitionToStart()
+        }
+
     }
 
     private fun refreshItems(sortOrder: SortOrder) {

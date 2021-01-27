@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.motion.widget.MotionLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/first_Screen"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/first_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_gradient"
-    app:applyMotionScene="true"
+    android:animateLayoutChanges="true"
+    tools:context="com.ricardoteixeira.app.presentation.main.MainActivity"
     app:layoutDescription="@xml/motion">
 
     <TextView
@@ -22,6 +24,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:contentDescription="@string/back_button_list_cities_fragment"
+        android:id="@+id/list_cities_back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/double_standard_margin"
+        android:padding="@dimen/standard_padding"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:contentDescription="@string/sort_button"
@@ -50,13 +63,19 @@
         app:layout_constraintEnd_toStartOf="@id/search_cities"
         app:layout_constraintTop_toTopOf="@id/search_cities" />
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_results_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/double_standard_margin"
+        android:orientation="vertical"
+        android:alpha="0.0"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_cities" />
+
     <EditText
         android:id="@+id/search_cities"
         android:layout_width="@dimen/text_view_width_bigger"
@@ -67,12 +86,15 @@
         app:layout_constraintTop_toBottomOf="@id/app_name"
         android:inputType="text"
         android:gravity="center"
+        android:focusable="true"
+        android:clickable="true"
         android:autofillHints="City"
         android:hint="@string/insert_city_name"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="@dimen/double_standard_margin"
         android:id="@+id/swipeRefreshLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_cities" >
@@ -82,12 +104,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="@dimen/double_standard_margin"
+        android:alpha="1.0"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_cities" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
 
 

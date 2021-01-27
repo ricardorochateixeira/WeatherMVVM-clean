@@ -50,7 +50,6 @@ class ListCitiesViewModel
 
     val preferencesFlow = preferences.preferencesFlow.asLiveData()
 
-
     fun fetchCity(cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             citiesList = currents.toList()
@@ -333,6 +332,7 @@ class ListCitiesViewModel
     fun updateCitySort(sortOrder: SortOrder) = viewModelScope.launch {
         preferences.updateSortOrder(sortOrder)
     }
+
 }
 
 

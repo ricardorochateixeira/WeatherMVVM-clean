@@ -1,31 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MotionScene
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="urn:oasis:names:tc:xliff:document:1.2"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:motion="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    >
 
     <Transition
-        motion:constraintSetEnd="@+id/end"
-        motion:constraintSetStart="@+id/start"
-        motion:duration="1000">
+        app:constraintSetEnd="@+id/end"
+        app:constraintSetStart="@+id/start"
+        app:duration="1000">
         <OnClick
-            motion:clickAction="toggle"
-            motion:targetId="@id/search_cities" />
+            app:clickAction="toggle"
+            app:targetId="@id/search_cities" />
     </Transition>
 
-    <ConstraintSet
-        android:id="@+id/start">
-        <Constraint
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@null"
-            android:alpha="0.0"
-            android:src="@drawable/ic_back"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
+    <ConstraintSet android:id="@+id/start">
 
         <Constraint
             android:id="@+id/app_name"
@@ -35,102 +24,100 @@
             android:text="@string/main_page_text"
             android:textAlignment="center"
             android:textColor="@color/secondaryTextColor"
-            android:textSize="24sp"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
+            android:textSize="@dimen/standard_subtitle_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
-            android:id="@+id/list_cities_rv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="16dp"
-            android:alpha="1.0"
-            app:layout_constraintTop_toBottomOf="@id/search_cities"
-            android:keyboardNavigationCluster="false"/>
-
-        <Constraint
+            android:contentDescription="@string/back_button_list_cities_fragment"
+            android:id="@+id/list_cities_back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/progress"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/double_standard_margin"
+            android:padding="@dimen/standard_padding"
+            android:src="@drawable/ic_back"
+            android:alpha="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"
-            motion:layout_constraintBottom_toBottomOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <Constraint
             android:id="@+id/search_results_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:alpha="0.0"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/double_standard_margin"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_cities"
-            android:keyboardNavigationCluster="false"/>
-        <Constraint
-            motion:layout_constraintEnd_toStartOf="parent"
-            android:id="@+id/imageView" />
-        <Constraint
-            motion:layout_constraintEnd_toStartOf="@+id/search_cities"
-            android:id="@+id/imageView2" />
+            motion:alpha="1.0" />
 
+        <Constraint
+            android:id="@+id/list_cities_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/double_standard_margin"
+            motion:alpha="1.0"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_cities" />
     </ConstraintSet>
 
 
-    <ConstraintSet
-        android:id="@+id/end">
-        <Constraint
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@null"
-            android:alpha="1.0"
-            android:src="@drawable/ic_back"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
+    <ConstraintSet android:id="@+id/end">
 
         <Constraint
             android:id="@+id/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="64dp"
             android:text="@string/main_page_text"
             android:textAlignment="center"
             android:textColor="@color/secondaryTextColor"
-            android:textSize="24sp"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" />
+            android:textSize="@dimen/standard_subtitle_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Constraint
-            android:id="@+id/list_cities_rv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="16dp"
-            android:alpha="0.0"
-            app:layout_constraintTop_toBottomOf="@id/search_cities"
-            android:keyboardNavigationCluster="false"/>
-
-        <Constraint
+            android:contentDescription="@string/back_button_list_cities_fragment"
+            android:id="@+id/list_cities_back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/progress"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/double_standard_margin"
+            android:padding="@dimen/standard_padding"
+            android:src="@drawable/ic_back"
+            android:alpha="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <Constraint
             android:id="@+id/search_results_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:alpha="1.0"
-            android:layout_margin="16dp"
+            android:layout_margin="@dimen/double_standard_margin"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            motion:alpha="1.0"
+            app:layout_constraintTop_toBottomOf="@id/search_cities"/>
+
+        <Constraint
+            android:id="@+id/list_cities_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/double_standard_margin"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_cities"
-            android:keyboardNavigationCluster="false"/>
+            motion:alpha=".0"/>
+
     </ConstraintSet>
+
 </MotionScene>

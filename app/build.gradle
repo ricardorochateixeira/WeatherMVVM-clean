@@ -99,6 +99,12 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$versionRetrofit"
 
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'
+
+    implementation "jp.wasabeef:recyclerview-animators:$recyclerviewAnimationVersion"
+
+    //Location
+    implementation "com.google.android.gms:play-services-location:17.1.0"
+    implementation "com.google.android.gms:play-services-maps:17.0.0"
 }
 
 kapt {

@@ -36,7 +36,6 @@ class FutureWeatherAdapter :
                 futureWeatherTemperature.text = itemView.context.getString(R.string.temperature_text_adapters, generalFutureWeatherEntity.mainFutureWeather?.temp.toString())
                 generalFutureWeatherEntity.descriptionFutureWeather?.get(0)?.id?.let {
                     futureWeatherImage.setWeatherImageFuture(it)
-                    println("testeeee $it")
                 }
             }
         }

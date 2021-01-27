@@ -31,6 +31,7 @@
     <string name="feels_like_temperature_text_adapters"> %1$s ºC</string>
     <string name="wind_speed_text_adapters"> %1$s m/s</string>
     <string name="humidity_text_adapters"> %1$s %%</string>
+    <string name="back_button_list_cities_fragment">Back button</string>
 
 
 </resources>
