@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="112dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/grid"
     android:padding="@dimen/half_standard_padding"
     android:layout_marginBottom="@dimen/half_standard_margin"
+    android:background="@drawable/grid"
     android:layout_marginTop="@dimen/half_standard_margin">
 
     <ImageView
@@ -20,6 +20,8 @@
 
     <TextView
         android:id="@+id/city_name"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_width="@dimen/text_view_width"
         android:layout_height="@dimen/text_view_height"
         android:text="@string/city_name"
@@ -32,6 +34,8 @@
     <TextView
         android:id="@+id/description"
         android:layout_width="@dimen/text_view_width"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_height="@dimen/text_view_height"
         android:textSize="@dimen/standard_text_size"
         android:text="@string/description"

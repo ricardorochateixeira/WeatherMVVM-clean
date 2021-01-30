@@ -1,5 +1,6 @@
 package com.ricardoteixeira.app.presentation.main
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.graph = graph
+
 
         bottom_nav.setupWithNavController(navController)
 

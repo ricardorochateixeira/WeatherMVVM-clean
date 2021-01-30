@@ -9,7 +9,7 @@
 
     <dimen name="weather_standard_image_size">72dp</dimen>
     <dimen name="weather_bigger_image_size">144dp</dimen>
-    <dimen name="weather_smaller_image_size">46dp</dimen>
+    <dimen name="weather_smaller_image_size">32dp</dimen>
 
     <dimen name="standard_text_size">16sp</dimen>
     <dimen name="standard_title_size">32sp</dimen>

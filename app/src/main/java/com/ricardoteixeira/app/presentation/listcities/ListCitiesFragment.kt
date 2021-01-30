@@ -67,12 +67,12 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
             }
         }
 
-        getAllCities()
+
 
         onInitialEditTextClick()
 
         search_cities.setOnClickListener {
-            teste()
+            transition()
         }
 
         viewModel.mainState.observe(viewLifecycleOwner, {
@@ -114,13 +114,13 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
             }
         })
 
-
         viewModel.cities.observe(viewLifecycleOwner, {
             searchAdapter.submitList(it)
         })
 
         viewModel.preferencesFlow.observe(viewLifecycleOwner, { filterPreferences ->
-            viewModel.sortCities(filterPreferences.sortOrder)
+            //viewModel.sortCities(filterPreferences.sortOrder)
+            getAllCities(filterPreferences.sortOrder)
             updateCityOrder(filterPreferences.sortOrder)
             swipeRefreshLayout.setOnRefreshListener {
                 refreshItems(filterPreferences.sortOrder)
@@ -182,6 +182,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
 
     override fun onCityClick(current: CurrentWeatherEntityModel) {
         viewModel.updateCityId(current.cityId!!)
+        search_cities.clearFocus()
         findNavController().navigate(
             ListCitiesFragmentDirections.actionListCitiesFragmentToDetailsFragment(
                 current.cityId
@@ -189,8 +190,8 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         )
     }
 
-    private fun getAllCities() {
-        viewModel.getCities()
+    private fun getAllCities(sortOrder: SortOrder) {
+        viewModel.getCities(sortOrder)
     }
 
     override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
@@ -201,6 +202,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
 
     override fun onFavoriteClick(current: CurrentWeatherEntityModel) {
         viewModel.favoriteCity(current)
+        citiesAdapter.notifyDataSetChanged()
     }
 
     private fun filterMenu() {
@@ -216,7 +218,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
                 R.id.action_sort_by_name -> {
                     viewModel.onSortOrderSelected(SortOrder.BY_NAME)
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.getCities()
+                        viewModel.getCities(SortOrder.BY_NAME)
                     }
                     true
                 }
@@ -224,14 +226,14 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
                 R.id.action_sort_by_date_created -> {
                     viewModel.onSortOrderSelected(SortOrder.BY_DATE)
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.getCities()
+                        viewModel.getCities(SortOrder.BY_DATE)
                     }
                     true
                 }
                 R.id.action_sort_by_favorite -> {
                     viewModel.onSortOrderSelected(SortOrder.BY_FAVORITE)
                     viewLifecycleOwner.lifecycleScope.launch {
-                        viewModel.getCities()
+                        viewModel.getCities(SortOrder.BY_FAVORITE)
                     }
                     true
                 }
@@ -266,11 +268,11 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
 
     private fun onInitialEditTextClick() {
         search_cities.setOnFocusChangeListener { _, _ ->
-            first_screen.transitionToEnd()
+                first_screen.transitionToEnd()
         }
     }
 
-    fun teste () {
+    private fun transition () {
         if (first_screen.currentState == first_screen.startState) {
             first_screen.transitionToEnd()
         } else {

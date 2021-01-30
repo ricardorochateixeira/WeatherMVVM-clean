@@ -1,9 +1,11 @@
 package com.ricardoteixeira.data.repository
 
+import com.ricardoteixeira.app.framework.db.mappers.futureweather.toDatabase
 import com.ricardoteixeira.app.framework.db.mappers.toDatabase
 import com.ricardoteixeira.app.framework.db.mappers.toEntity
 import com.ricardoteixeira.app.framework.db.model.city.CityDatabaseModel
 import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
+import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
 import com.ricardoteixeira.app.utils.Result
 import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
@@ -12,9 +14,13 @@ import kotlinx.coroutines.flow.Flow
 class WeatherRepository(
     private val getAllCities: GetAllCities,
 
-    private val fetchCityFromApi: FetchCityByNameFromApi,
+    private val fetchCityByIdFromApi: FetchCityByIdFromApi,
 
-    private val insertCityIntoDatabase: InsertCityIntoDatabase
+    private val fetchFutureWeatherByIdFromApi: FetchFutureWeatherByIdFromApi,
+
+    private val insertCityIntoDatabase: InsertCurrentWeatherIntoDatabase,
+
+    private val insertFutureWeatherIntoDatabase: InsertFutureWeatherIntoDatabase
 ) {
 
     suspend fun decideWhereToFetch(): Result<List<CurrentWeatherEntityModel>> {
@@ -27,7 +33,9 @@ class WeatherRepository(
                 val timestamp = System.currentTimeMillis().toString()
                 val newTimestamp = timestamp.dropLast(3).toInt()
                 if (newTimestamp - city.requestTime > 40000) {
-                    val newWeather = fetchCityFromApi.fetchWeatherByNameFromApi(city.cityName!!)
+                    val newWeather = fetchCityByIdFromApi.fetchWeatherByIdFromApi(city.cityId!!)
+                    val newFutureWeather = fetchFutureWeatherByIdFromApi.fetchFutureWeatherByIdFromApi(city.cityId!!)
+
                     if (newWeather is Result.Success) {
                         val index = cities.indexOf(city)
                         val newCity = newWeather.data.toDatabase()
@@ -38,9 +46,15 @@ class WeatherRepository(
                             feelsLikeTemp = newWeather.data.feelsLikeTemp,
                             weatherId = newWeather.data.weatherId,
                             weatherDescription = newWeather.data.weatherDescription,
-                            requestTime = newWeather.data.requestTime)
-                        insertCityIntoDatabase.insertCityIntoDatabase(newCity)
+                            requestTime = newWeather.data.requestTime
+                        )
+                        insertCityIntoDatabase.insertCurrentWeatherIntoDatabase(newCity)
                     }
+
+                    if (newFutureWeather is Result.Success) {
+                        insertFutureWeatherIntoDatabase.insertFutureWeatherIntoDatabase(newFutureWeather.data.toDatabase())
+                    }
+
                     return Result.Success(data = cities.map { it.toEntity() })
                 } else {
                     return Result.Success(data = cities.map { it.toEntity() }
@@ -72,11 +86,15 @@ interface FetchFutureWeatherByIdFromApi {
     suspend fun fetchFutureWeatherByIdFromApi(cityId: Int): Result<FutureWeatherEntityModel>
 }
 
+interface InsertCurrentWeatherIntoDatabase {
 
+    suspend fun insertCurrentWeatherIntoDatabase(city: CurrentWeatherDatabaseModel)
 
-interface InsertCityIntoDatabase {
+}
 
-    suspend fun insertCityIntoDatabase(city: CurrentWeatherDatabaseModel)
+interface InsertFutureWeatherIntoDatabase {
+
+    suspend fun insertFutureWeatherIntoDatabase(city: FutureWeatherDatabaseModel)
 
 }
 
@@ -117,7 +135,7 @@ interface GetFavoriteCities {
     suspend fun getFavoriteCities(): List<CurrentWeatherEntityModel>
 }
 
-interface GetFutureWeatherFromDatabase{
+interface GetFutureWeatherFromDatabase {
     suspend fun getFutureWeatherFromDatabase(cityId: Int): FutureWeatherEntityModel
 }
 

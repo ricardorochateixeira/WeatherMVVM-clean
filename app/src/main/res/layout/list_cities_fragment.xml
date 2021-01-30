@@ -9,8 +9,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@drawable/main_gradient"
+    android:background="@color/primaryColor"
     app:layoutDescription="@xml/list_cities_fragment_scene"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     >
 
 
@@ -33,7 +35,6 @@
         android:layout_marginTop="160dp"
         android:text="@string/main_page_text"
         android:textAlignment="center"
-        android:textColor="@color/secondaryTextColor"
         android:textSize="@dimen/standard_subtitle_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,8 +62,10 @@
         android:layout_height="@dimen/weather_smaller_image_size"
         android:contentDescription="@string/sort_button"
         android:src="@drawable/ic_sort_black"
+        android:layout_marginLeft="@dimen/standard_margin"
         app:layout_constraintStart_toEndOf="@id/search_cities"
-        app:layout_constraintTop_toTopOf="@id/search_cities" />
+        app:layout_constraintBottom_toBottomOf="@id/search_cities"
+        />
 
     <ProgressBar
         android:id="@+id/progress"

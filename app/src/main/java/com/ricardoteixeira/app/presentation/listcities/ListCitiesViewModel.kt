@@ -6,8 +6,7 @@ import com.ricardoteixeira.app.framework.db.mappers.toDatabase
 import com.ricardoteixeira.app.utils.PreferencesManager
 import com.ricardoteixeira.app.utils.Result
 import com.ricardoteixeira.app.utils.SortOrder
-import com.ricardoteixeira.data.repository.FetchFutureWeatherByIdFromApi
-import com.ricardoteixeira.data.repository.InsertCityIntoDatabase
+import com.ricardoteixeira.data.repository.InsertCurrentWeatherIntoDatabase
 import com.ricardoteixeira.data.repository.WeatherRepository
 import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherByIdUseCase
@@ -36,7 +35,7 @@ class ListCitiesViewModel
     val fetchFutureWeatherByNameUseCase: FetchFutureWeatherByNameUseCase,
     var fetchCityByIdFromApiUseCase: FetchCurrentWeatherByIdFromApiUseCase,
     val fetchFutureWeatherByIdUseCase: FetchFutureWeatherByIdUseCase,
-    var insertCityIntoDatabase: InsertCityIntoDatabase,
+    var insertCityIntoDatabase: InsertCurrentWeatherIntoDatabase,
     var weatherRepository: WeatherRepository,
     var updateCity: UpdateCityUseCase,
     var getCityPendingDeleteUseCase: GetCityPendingDeleteUseCase,
@@ -67,42 +66,6 @@ class ListCitiesViewModel
     }
 
     val cities = citiesFlow.asLiveData()
-
-    fun fetchWeatherByName(cityName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            citiesList = currents.toList()
-            fetchFutureWeatherByNameUseCase(cityName)
-            when (val data = fetchCityByNameFromApiUseCase(cityName)) {
-                is Result.Success -> {
-                    currents.add(0, data.data)
-                    citiesList = currents.toList()
-                        _mutableMainState.postValue(
-                            ListCitiesViewState(
-                            isShowingSnackBar = true, error = null, result = citiesList,
-                            responseType = ResponseType(
-                                uiComponentType = UIComponentType.SnackBar(
-                                    message = FETCH_CITY_SUCCESS_MESSAGE,
-                                    undoCallback = false
-                                ), messageType = MessageType.Success()
-                            )
-                        )
-                        )
-                }
-
-                is Result.Failure -> _mutableMainState.postValue(
-                    ListCitiesViewState(
-                        isShowingSnackBar = true,
-                        result = citiesList,
-                        error = data.error,
-                        responseType = ResponseType(
-                            uiComponentType = UIComponentType.SnackBar(message = FETCH_CITY_ERROR_MESSAGE),
-                            messageType = MessageType.Error()
-                        )
-                    )
-                )
-            }
-        }
-    }
 
     fun fetchWeatherById(cityId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -140,7 +103,7 @@ class ListCitiesViewModel
         }
     }
 
-    fun getCities() {
+    fun getCities(sortOrder: SortOrder) {
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = weatherRepository.decideWhereToFetch()) {
                 is Result.Success -> {
@@ -160,17 +123,41 @@ class ListCitiesViewModel
                         currents = arrayListOf()
                         currents.addAll(result.data.filter { !it.isUpdatePending })
                         citiesList = currents.toList()
-                        _mutableMainState.postValue(
-                            ListCitiesViewState(
-                                isShowingSnackBar = true,
-                                error = null,
-                                result = citiesList,
-                                responseType = ResponseType(
-                                    uiComponentType = UIComponentType.SnackBar(message = CITIES_LOADED_SUCCESS_MESSAGE),
-                                    messageType = MessageType.Success()
+                        when (sortOrder) {
+                            SortOrder.BY_DATE -> _mutableMainState.postValue(
+                                ListCitiesViewState(
+                                    isShowingSnackBar = true,
+                                    error = null,
+                                    result = citiesList.sortedByDescending { it.requestTime },
+                                    responseType = ResponseType(
+                                        uiComponentType = UIComponentType.None(),
+                                        messageType = MessageType.Success()
+                                    )
                                 )
                             )
-                        )
+                            SortOrder.BY_NAME -> _mutableMainState.postValue(
+                                ListCitiesViewState(
+                                    isShowingSnackBar = true,
+                                    error = null,
+                                    result = citiesList.sortedBy { it.cityName },
+                                    responseType = ResponseType(
+                                        uiComponentType = UIComponentType.None(),
+                                        messageType = MessageType.Success()
+                                    )
+                                )
+                            )
+                            SortOrder.BY_FAVORITE -> _mutableMainState.postValue(
+                                ListCitiesViewState(
+                                    isShowingSnackBar = true,
+                                    error = null,
+                                    result = citiesList.sortedByDescending { it.isFavorite },
+                                    responseType = ResponseType(
+                                        uiComponentType = UIComponentType.None(),
+                                        messageType = MessageType.Success()
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
 
@@ -309,11 +296,10 @@ class ListCitiesViewModel
 
     fun refreshCities(sortOrder: SortOrder) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = refreshCitiesUseCase(currents.toMutableList())
 
-            when (result) {
+            when (refreshCitiesUseCase(currents.toMutableList())) {
                 is Result.Success -> {
-                    sortCities(sortOrder)
+                    getCities(sortOrder)
                 }
 
                 is Result.Failure -> {
@@ -338,44 +324,6 @@ class ListCitiesViewModel
 
     fun updateCityId(cityId: Int) = viewModelScope.launch {
         preferences.updateCityId(cityId)
-    }
-
-    fun sortCities(sortOrder: SortOrder) {
-        when (sortOrder) {
-            SortOrder.BY_DATE -> _mutableMainState.postValue(
-                ListCitiesViewState(
-                    isShowingSnackBar = true,
-                    error = null,
-                    result = citiesList.sortedByDescending { it.requestTime },
-                    responseType = ResponseType(
-                        uiComponentType = UIComponentType.None(),
-                        messageType = MessageType.Success()
-                    )
-                )
-            )
-            SortOrder.BY_NAME -> _mutableMainState.postValue(
-                ListCitiesViewState(
-                    isShowingSnackBar = true,
-                    error = null,
-                    result = citiesList.sortedBy { it.cityName },
-                    responseType = ResponseType(
-                        uiComponentType = UIComponentType.None(),
-                        messageType = MessageType.Success()
-                    )
-                )
-            )
-            SortOrder.BY_FAVORITE -> _mutableMainState.postValue(
-                ListCitiesViewState(
-                    isShowingSnackBar = true,
-                    error = null,
-                    result = citiesList.sortedByDescending { it.isFavorite },
-                    responseType = ResponseType(
-                        uiComponentType = UIComponentType.None(),
-                        messageType = MessageType.Success()
-                    )
-                )
-            )
-        }
     }
 
     fun updateCitySort(sortOrder: SortOrder) = viewModelScope.launch {

@@ -6,7 +6,7 @@
         android:topRightRadius="10dp" />
     <stroke
         android:width="2dp"
-        android:color="?android:attr/colorAccent"/>
+        android:color="?android:attr/colorAccent" />
 
     <solid
         android:color="?android:attr/colorAccent" />

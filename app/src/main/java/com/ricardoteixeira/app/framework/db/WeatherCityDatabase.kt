@@ -10,7 +10,7 @@ import com.ricardoteixeira.app.framework.db.model.future.WeatherConverter
 
 @Database(entities = [CurrentWeatherDatabaseModel::class,
                      FutureWeatherDatabaseModel::class,
-                     CityDatabaseModel::class], version = 1)
+                     CityDatabaseModel::class], version = 2)
 @TypeConverters(WeatherConverter::class)
 
 abstract class WeatherCityDatabase: RoomDatabase() {

@@ -36,8 +36,8 @@ class FavoriteAdapter: ListAdapter<CurrentWeatherEntityModel, FavoriteAdapter.Vi
                 cityTemperatureFavorite.text = itemView.context.getString(R.string.temperature_text_adapters, currentWeatherEntityModel.actualTemp?.toInt().toString())
                 descriptionFavorite.text = currentWeatherEntityModel.weatherDescription?.capitalize(Locale.ROOT)
                 weatherImageFavorite.setWeatherImage(currentWeatherEntityModel)
-                minimumTemperatureValueFavorite.text = itemView.context.getString(R.string.minimum_temperature_text_adapters, currentWeatherEntityModel.tempMin?.toInt().toString())
                 maximumTemperatureValueFavorite.text = itemView.context.getString(R.string.maximum_temperature_text_adapters, currentWeatherEntityModel.tempMax?.toInt().toString())
+                minimumTemperatureValueFavorite.text = itemView.context.getString(R.string.minimum_temperature_text_adapters, currentWeatherEntityModel.tempMin?.toInt().toString())
             }
         }
     }

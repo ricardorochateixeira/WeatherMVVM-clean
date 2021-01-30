@@ -30,10 +30,15 @@ object ViewModelModule {
     fun provideInsertFutureCityByIdUseCase(fetchFutureWeatherFromApi: FetchFutureWeatherByIdFromApi): FetchFutureWeatherByIdUseCase = FetchFutureWeatherByIdUseCase(fetchFutureWeatherFromApi)
 
     @Provides
-    fun provideInsertCityIntoDatabase(insertCityIntoDatabase: InsertCityIntoDatabase): InsertCityIntoDatabaseUseCase = InsertCityIntoDatabaseUseCase(insertCityIntoDatabase)
+    fun provideInsertCityIntoDatabase(insertCityIntoDatabase: InsertCurrentWeatherIntoDatabase): InsertCityIntoDatabaseUseCase = InsertCityIntoDatabaseUseCase(insertCityIntoDatabase)
 
     @Provides
-    fun provideWeatherRepository(getAllCities: GetAllCities, fetchCityFromApi: FetchCityByNameFromApi, insertCityIntoDatabase:InsertCityIntoDatabase):WeatherRepository =  WeatherRepository(getAllCities, fetchCityFromApi,insertCityIntoDatabase)
+    fun provideWeatherRepository(getAllCities: GetAllCities,
+                                  fetchCityByIdFromApi: FetchCityByIdFromApi,
+                                 fetchFutureWeatherByIdFromApi: FetchFutureWeatherByIdFromApi,
+                                 insertCityIntoDatabase: InsertCurrentWeatherIntoDatabase,
+                                 insertFutureWeatherIntoDatabase: InsertFutureWeatherIntoDatabase):WeatherRepository =
+        WeatherRepository(getAllCities, fetchCityByIdFromApi, fetchFutureWeatherByIdFromApi, insertCityIntoDatabase, insertFutureWeatherIntoDatabase)
 
     @Provides
     fun providesDeleteCityFromDatabase(deleteCityFromDatabase: DeleteCityFromDatabase): DeleteCityUseCase = DeleteCityUseCase(deleteCityFromDatabase)

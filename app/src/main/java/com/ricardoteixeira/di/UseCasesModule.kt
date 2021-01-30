@@ -7,6 +7,7 @@ import com.ricardoteixeira.app.framework.repository.favorites.GetFavoriteCitiesI
 import com.ricardoteixeira.app.framework.repository.future.FetchFutureWeatherByIdFromApiImpl
 import com.ricardoteixeira.app.framework.repository.future.FetchFutureWeatherByNameFromApiImpl
 import com.ricardoteixeira.app.framework.repository.future.GetFutureWeatherFromDatabaseImpl
+import com.ricardoteixeira.app.framework.repository.future.InsertFutureWeatherIntoDatabaseImpl
 import com.ricardoteixeira.app.framework.repository.listcities.*
 import com.ricardoteixeira.app.framework.repository.splash.InsertCityInformationIntoDatabaseImpl
 import com.ricardoteixeira.data.repository.*
@@ -35,10 +36,13 @@ abstract class UseCasesModule {
     abstract fun provideInsertByIdFromApi(insertCityFromApi: FetchCityByIdFromApiImpl): FetchCityByIdFromApi
 
     @Binds
-    abstract fun provideInsertByIdFutureFromApi(insertFutureWeatherFromApi: FetchFutureWeatherByIdFromApiImpl): FetchFutureWeatherByIdFromApi
+    abstract fun provideInsertByIdFutureFromApi(fetchFutureWeatherFromApi: FetchFutureWeatherByIdFromApiImpl): FetchFutureWeatherByIdFromApi
 
     @Binds
-    abstract fun provideInsertCityIntoDatabase(insertCityIntoDatabase: InsertCityIntoDatabaseImpl): InsertCityIntoDatabase
+    abstract fun provideInsertCurrentWeatherIntoDatabase(insertCurrentWeatherIntoDatabase: InsertCurrentWeatherIntoDatabaseImpl): InsertCurrentWeatherIntoDatabase
+
+    @Binds
+    abstract fun provideInsertFutureWeatherIntoDatabase(insertFutureWeatherIntoDatabase: InsertFutureWeatherIntoDatabaseImpl): InsertFutureWeatherIntoDatabase
 
     @Binds
     abstract fun provideGetAllCities(getAllCities: GetAllCitiesImpl): GetAllCities
@@ -68,6 +72,6 @@ abstract class UseCasesModule {
     abstract fun insertCityInformationIntoDatabase(insertCityInformationIntoDatabase: InsertCityInformationIntoDatabaseImpl): InsertCityInformationIntoDatabase
 
     @Binds
-    abstract fun GETcITIESbYnAME(getCitiesByName: GetCitiesByNameImpl): GetCitiesByName
+    abstract fun getCitiesByName(getCitiesByName: GetCitiesByNameImpl): GetCitiesByName
 
 }
