@@ -28,6 +28,12 @@ android {
         }
     }
 
+
+        dataBinding {
+            enabled = true
+        }
+
+
     buildFeatures {
         viewBinding true
     }
@@ -105,6 +111,12 @@ dependencies {
     //Location
     implementation "com.google.android.gms:play-services-location:17.1.0"
     implementation "com.google.android.gms:play-services-maps:17.0.0"
+
+    //country converter
+    implementation 'com.neovisionaries:nv-i18n:1.22'
+
+    // LeakCanary debugImplementation (should only run in debug builds)
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
 }
 
 kapt {

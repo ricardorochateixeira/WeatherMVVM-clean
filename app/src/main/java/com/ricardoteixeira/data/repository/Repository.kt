@@ -2,15 +2,17 @@ package com.ricardoteixeira.data.repository
 
 import com.ricardoteixeira.app.framework.db.mappers.toDatabase
 import com.ricardoteixeira.app.framework.db.mappers.toEntity
+import com.ricardoteixeira.app.framework.db.model.city.CityDatabaseModel
 import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
 import com.ricardoteixeira.app.utils.Result
 import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
+import kotlinx.coroutines.flow.Flow
 
 class WeatherRepository(
     private val getAllCities: GetAllCities,
 
-    private val fetchCityFromApi: FetchCityFromApi,
+    private val fetchCityFromApi: FetchCityByNameFromApi,
 
     private val insertCityIntoDatabase: InsertCityIntoDatabase
 ) {
@@ -25,7 +27,7 @@ class WeatherRepository(
                 val timestamp = System.currentTimeMillis().toString()
                 val newTimestamp = timestamp.dropLast(3).toInt()
                 if (newTimestamp - city.requestTime > 40000) {
-                    val newWeather = fetchCityFromApi.fetchWeatherFromApi(city.cityName!!)
+                    val newWeather = fetchCityFromApi.fetchWeatherByNameFromApi(city.cityName!!)
                     if (newWeather is Result.Success) {
                         val index = cities.indexOf(city)
                         val newCity = newWeather.data.toDatabase()
@@ -50,11 +52,27 @@ class WeatherRepository(
     }
 }
 
-interface FetchCityFromApi {
+interface FetchCityByNameFromApi {
 
-    suspend fun fetchWeatherFromApi(cityName: String): Result<CurrentWeatherEntityModel>
+    suspend fun fetchWeatherByNameFromApi(cityName: String): Result<CurrentWeatherEntityModel>
 
 }
+
+interface FetchFutureWeatherByNameFromApi {
+    suspend fun fetchFutureWeatherByNameFromApi(cityName: String): Result<FutureWeatherEntityModel>
+}
+
+interface FetchCityByIdFromApi {
+
+    suspend fun fetchWeatherByIdFromApi(cityId: Int): Result<CurrentWeatherEntityModel>
+
+}
+
+interface FetchFutureWeatherByIdFromApi {
+    suspend fun fetchFutureWeatherByIdFromApi(cityId: Int): Result<FutureWeatherEntityModel>
+}
+
+
 
 interface InsertCityIntoDatabase {
 
@@ -99,10 +117,14 @@ interface GetFavoriteCities {
     suspend fun getFavoriteCities(): List<CurrentWeatherEntityModel>
 }
 
-interface FetchFutureWeatherFromApi {
-    suspend fun fetchFutureWeatherFromApi(cityName: String): Result<FutureWeatherEntityModel>
-}
-
 interface GetFutureWeatherFromDatabase{
     suspend fun getFutureWeatherFromDatabase(cityId: Int): FutureWeatherEntityModel
+}
+
+interface InsertCityInformationIntoDatabase {
+    suspend fun insertCityInformationIntoDatabase(city: CityDatabaseModel)
+}
+
+interface GetCitiesByName {
+    fun getCitiesByName(searchQuery: String): Flow<List<CityDatabaseModel>>
 }

@@ -1,39 +1,44 @@
 package com.ricardoteixeira.app.presentation.listcities
 
 import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.ricardoteixeira.app.framework.db.model.city.CityDatabaseModel
 import com.ricardoteixeira.app.presentation.common.CityItemTouchHelperAdapter
 import com.ricardoteixeira.app.presentation.common.CityItemTouchHelperCallback
-import com.ricardoteixeira.app.utils.PreferencesManager
-import com.ricardoteixeira.app.utils.SortOrder
-import com.ricardoteixeira.app.utils.hideKeyboard
+import com.ricardoteixeira.app.utils.*
 import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import com.ricardoteixeira.weathermvvm_clean.R
 import com.ricardoteixeira.weathermvvm_clean.databinding.ListCitiesFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.city_weather_item.*
+import kotlinx.android.synthetic.main.details_fragment.*
 import kotlinx.android.synthetic.main.list_cities_fragment.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
-    ListCitiesAdapter.OnItemClickListener, CityItemTouchHelperAdapter {
+    ListCitiesAdapter.OnItemClickListener, CityItemTouchHelperAdapter, SearchAdapter.OnItemClickListener {
 
     private val viewModel: ListCitiesViewModel by viewModels()
 
     private lateinit var citiesAdapter: ListCitiesAdapter
+    private lateinit var searchAdapter: SearchAdapter
+
     private var itemTouchHelper: ItemTouchHelper? = null
 
     private var _binding: ListCitiesFragmentBinding? = null
@@ -55,15 +60,25 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
                     ItemTouchHelper(CityItemTouchHelperCallback(this@ListCitiesFragment))
                 itemTouchHelper?.attachToRecyclerView(this)
             }
+
+            searchResultsRv.apply {
+                searchAdapter = SearchAdapter(this@ListCitiesFragment)
+                adapter = searchAdapter
+            }
         }
 
         getAllCities()
-        search_image.setOnClickListener { searchCity() }
 
-        // search_cities.setOnClickListener { handleSearchPress() }
+        onInitialEditTextClick()
+
+        search_cities.setOnClickListener {
+            teste()
+        }
 
         viewModel.mainState.observe(viewLifecycleOwner, {
-
+            search_cities.setText("")
+            search_cities.clearFocus()
+            first_screen.transitionToStart()
             citiesAdapter.submitList(it.result)
 
             if (it.result.isNotEmpty()) {
@@ -82,6 +97,28 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         }
         )
 
+        list_cities_back_btn.setOnClickListener {
+            onBackPressed()
+        }
+
+        search_cities.addTextChangedListener(object: TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                viewModel.searchQuery.value = p0.toString()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+
+
+        viewModel.cities.observe(viewLifecycleOwner, {
+            searchAdapter.submitList(it)
+        })
+
         viewModel.preferencesFlow.observe(viewLifecycleOwner, { filterPreferences ->
             viewModel.sortCities(filterPreferences.sortOrder)
             updateCityOrder(filterPreferences.sortOrder)
@@ -90,20 +127,6 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
             }
         }
         )
-    }
-
-    private fun handleSearchPress() {
-        if (binding.listCitiesRv.visibility == View.VISIBLE) {
-            println("testeeee1 ${binding.root.currentState}")
-            binding.listCitiesRv.visibility = View.GONE
-            binding.root.transitionToEnd()
-            println("testeeee1 ${binding.root.currentState}")
-        } else if (binding.listCitiesRv.visibility == View.GONE) {
-            println("testeeee2 ${binding.root.currentState}")
-            binding.listCitiesRv.visibility = View.VISIBLE
-            binding.root.transitionToStart()
-        }
-
     }
 
     private fun refreshItems(sortOrder: SortOrder) {
@@ -129,9 +152,9 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
 
     private fun displaySnackbar(message: String, undoCallback: Boolean) {
         if (!undoCallback) {
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
         } else {
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
                 .setAction(R.string.text_undo, SnackbarUndoListener(object : SnackBarUndoCallback {
                     override fun undo() {
                         restoreCity()
@@ -155,15 +178,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         viewModel.restoreCity()
     }
 
-    private fun displayToast(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
-    }
-
-    private fun searchCity() {
-        val cityName = search_cities.text.toString()
-        viewModel.fetchCity(cityName)
-        handleSearch()
-    }
+    private fun displayToast(message: String) { }
 
     override fun onCityClick(current: CurrentWeatherEntityModel) {
         viewModel.updateCityId(current.cityId!!)
@@ -176,11 +191,6 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
 
     private fun getAllCities() {
         viewModel.getCities()
-    }
-
-    private fun handleSearch() {
-        search_cities.setText("")
-        hideKeyboard()
     }
 
     override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
@@ -232,5 +242,40 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
 
     private fun updateCityOrder(sortOrder: SortOrder) {
         viewModel.updateCitySort(sortOrder)
+    }
+
+    override fun onCityClick(current: CityDatabaseModel) {
+        viewModel.fetchWeatherById(current.cityId!!)
+
+        search_cities.setText("")
+        search_cities.clearFocus()
+        hideKeyboard()
+        Handler().postDelayed({
+            first_screen.transitionToStart()
+        }, 1000)
+
+    }
+
+    private fun onBackPressed() {
+        search_cities.setText("")
+        search_cities.clearFocus()
+        hideKeyboard()
+        first_screen.transitionToStart()
+
+    }
+
+    private fun onInitialEditTextClick() {
+        search_cities.setOnFocusChangeListener { _, _ ->
+            first_screen.transitionToEnd()
+        }
+    }
+
+    fun teste () {
+        if (first_screen.currentState == first_screen.startState) {
+            first_screen.transitionToEnd()
+        } else {
+            hideKeyboard()
+            first_screen.transitionToStart()
+        }
     }
 }

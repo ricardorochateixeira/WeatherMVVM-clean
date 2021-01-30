@@ -6,8 +6,12 @@ import com.ricardoteixeira.app.utils.Result
 
 interface ApiHelper {
 
-    suspend fun getWeather(q: String): Result<CurrentWeatherApiModel>
+    suspend fun getWeatherByName(q: String): Result<CurrentWeatherApiModel>
 
-    suspend fun getFutureWeather(q: String):Result<FutureWeatherApiModel>
+    suspend fun getFutureWeatherByName(q: String):Result<FutureWeatherApiModel>
+
+    suspend fun getWeatherById(id: Int): Result<CurrentWeatherApiModel>
+
+    suspend fun getFutureWeatherById(id: Int):Result<FutureWeatherApiModel>
 
 }

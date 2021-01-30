@@ -10,8 +10,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@drawable/main_gradient"
-    app:layoutDescription="@xml/list_cities_fragment_scene"
-    >
+    app:layoutDescription="@xml/list_cities_fragment_scene">
 
 
     <ImageView
@@ -47,10 +46,10 @@
         android:gravity="center"
         android:focusable="true"
         android:focusedByDefault="true"
-        android:autofillHints="Porto"
         android:clickable="true"
         android:inputType="text"
         android:hint="@string/insert_city_name"
+        android:autofillHints="Porto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_name" />
@@ -92,7 +91,7 @@
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/double_standard_margin"
+        android:layout_margin="@dimen/standard_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_cities"
         >
@@ -101,7 +100,6 @@
             android:id="@+id/list_cities_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/double_standard_margin"
             android:scrollbars="vertical"
             android:alpha="1.0"
             android:orientation="vertical"

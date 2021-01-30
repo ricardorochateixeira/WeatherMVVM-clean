@@ -33,5 +33,7 @@
     <string name="humidity_text_adapters"> %1$s %%</string>
     <string name="back_button_list_cities_fragment">Back button</string>
 
+    <string name="search_city_text">%1$s, %2$s</string>
+    <string name="splash_screen_text">We are setting up the application for you. Please wait a moment</string>
 
 </resources>

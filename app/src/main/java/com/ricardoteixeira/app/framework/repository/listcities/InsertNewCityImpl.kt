@@ -13,7 +13,7 @@ class InsertNewCityImpl
 ): InsertNewCity {
 
     override suspend fun insertNewCity(cityName: String)  {
-        val result = apiHelper.getWeather(cityName)
+        val result = apiHelper.getWeatherByName(cityName)
 
         when (result) {
             is Result.Success -> weatherDao.insertCity(city = result.data.toDatabase())

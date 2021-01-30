@@ -14,7 +14,7 @@ import java.util.*
 
 
 class ListCitiesAdapter(
-    private var listener: OnItemClickListener,
+    private var listener: OnItemClickListener
 ) : ListAdapter<CurrentWeatherEntityModel, ListCitiesAdapter.ViewHolder>(DiffCallback()) {
 
 
@@ -47,7 +47,7 @@ class ListCitiesAdapter(
         fun bind(currentWeatherEntityModel: CurrentWeatherEntityModel) {
             binding.apply {
                 cityName.text = currentWeatherEntityModel.cityName
-                cityTemperature.text = itemView.context.getString(R.string.temperature_text_adapters, currentWeatherEntityModel.actualTemp.toString())
+                cityTemperature.text = itemView.context.getString(R.string.temperature_text_adapters, currentWeatherEntityModel.actualTemp?.toInt().toString())
                 description.text = currentWeatherEntityModel.weatherDescription?.capitalize(Locale.ROOT)
                 weatherImage.setWeatherImage(currentWeatherEntityModel)
                 if (currentWeatherEntityModel.isFavorite) {

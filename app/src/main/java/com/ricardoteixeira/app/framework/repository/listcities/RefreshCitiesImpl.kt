@@ -4,16 +4,16 @@ import com.ricardoteixeira.app.framework.db.WeatherCityDao
 import com.ricardoteixeira.app.framework.db.mappers.toDatabase
 import com.ricardoteixeira.app.framework.db.mappers.toEntity
 import com.ricardoteixeira.app.utils.Result
-import com.ricardoteixeira.data.repository.FetchCityFromApi
+import com.ricardoteixeira.data.repository.FetchCityByNameFromApi
 import com.ricardoteixeira.data.repository.RefreshCities
 import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import javax.inject.Inject
 
 class RefreshCitiesImpl
-    @Inject constructor(private val weatherCityDao: WeatherCityDao, private val fetchCityFromApi: FetchCityFromApi): RefreshCities {
+    @Inject constructor(private val weatherCityDao: WeatherCityDao, private val fetchCityFromApi: FetchCityByNameFromApi): RefreshCities {
     override suspend fun refreshCities(currentListOfCities: MutableList<CurrentWeatherEntityModel>): Result<List<CurrentWeatherEntityModel?>> {
         for (city in currentListOfCities) {
-            val newWeather = city.cityName?.let { fetchCityFromApi.fetchWeatherFromApi(it) }
+            val newWeather = city.cityName?.let { fetchCityFromApi.fetchWeatherByNameFromApi(it) }
             if (newWeather is Result.Success) {
                 weatherCityDao.insertCity(newWeather.data.toDatabase())
                 val index = currentListOfCities.indexOf(city)

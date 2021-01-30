@@ -3,6 +3,7 @@ package com.ricardoteixeira.di
 import android.app.Application
 import androidx.room.Room
 import com.ricardoteixeira.app.framework.db.WeatherCityDatabase
+import com.ricardoteixeira.app.framework.db.model.city.CityDatabaseModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,4 +26,7 @@ object  DatabaseModule {
 
     @Provides
     fun provideFutureWeatherDao(database: WeatherCityDatabase) = database.futureWeatherDao()
+
+    @Provides
+    fun provideCityDao(database: WeatherCityDatabase) = database.cityDao()
 }

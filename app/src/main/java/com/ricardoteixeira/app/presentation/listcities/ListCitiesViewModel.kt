@@ -6,13 +6,15 @@ import com.ricardoteixeira.app.framework.db.mappers.toDatabase
 import com.ricardoteixeira.app.utils.PreferencesManager
 import com.ricardoteixeira.app.utils.Result
 import com.ricardoteixeira.app.utils.SortOrder
+import com.ricardoteixeira.data.repository.FetchFutureWeatherByIdFromApi
 import com.ricardoteixeira.data.repository.InsertCityIntoDatabase
-import com.ricardoteixeira.data.repository.UpdateCity
 import com.ricardoteixeira.data.repository.WeatherRepository
 import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
-import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherUseCase
+import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherByIdUseCase
+import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherByNameUseCase
 import com.ricardoteixeira.domain.usecases.listcities.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 const val FETCH_CITY_SUCCESS_MESSAGE = "City Added Successfully"
@@ -30,14 +32,17 @@ const val UPDATE_CITY_ERROR_MESSAGE = "Cities updated failed!"
 
 class ListCitiesViewModel
 @ViewModelInject constructor(
-    var fetchCityFromApiUseCase: FetchCityFromApiUseCase,
+    var fetchCityByNameFromApiUseCase: FetchCurrentWeatherByNameFromApiUseCase,
+    val fetchFutureWeatherByNameUseCase: FetchFutureWeatherByNameUseCase,
+    var fetchCityByIdFromApiUseCase: FetchCurrentWeatherByIdFromApiUseCase,
+    val fetchFutureWeatherByIdUseCase: FetchFutureWeatherByIdUseCase,
     var insertCityIntoDatabase: InsertCityIntoDatabase,
     var weatherRepository: WeatherRepository,
     var updateCity: UpdateCityUseCase,
     var getCityPendingDeleteUseCase: GetCityPendingDeleteUseCase,
     var deleteCityUseCase: DeleteCityUseCase,
     var refreshCitiesUseCase: RefreshCitiesUseCase,
-    val fetchFutureWeatherUseCase: FetchFutureWeatherUseCase,
+    val getCitiesByNameUseCase: GetCitiesByNameUseCase,
     private val preferences: PreferencesManager
 ) : ViewModel() {
 
@@ -50,15 +55,24 @@ class ListCitiesViewModel
 
     val preferencesFlow = preferences.preferencesFlow.asLiveData()
 
-    fun fetchCity(cityName: String) {
+    val searchQuery = MutableStateFlow("")
+
+    private val citiesFlow = searchQuery.flatMapLatest {
+
+         if (it.isBlank()) {
+             getCitiesByNameUseCase("afsfasfafdfafdsdf")
+        } else {
+             getCitiesByNameUseCase(it)
+         }
+    }
+
+    val cities = citiesFlow.asLiveData()
+
+    fun fetchWeatherByName(cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             citiesList = currents.toList()
-            val teste = fetchFutureWeatherUseCase(cityName)
-            when(teste) {
-                is Result.Success -> println("testeeeeeeeviewmodel ${teste.data}")
-                is Result.Failure -> println("testeeeeeeeviewmodel ${teste.error}")
-            }
-            when (val data = fetchCityFromApiUseCase(cityName)) {
+            fetchFutureWeatherByNameUseCase(cityName)
+            when (val data = fetchCityByNameFromApiUseCase(cityName)) {
                 is Result.Success -> {
                     currents.add(0, data.data)
                     citiesList = currents.toList()
@@ -90,9 +104,44 @@ class ListCitiesViewModel
         }
     }
 
+    fun fetchWeatherById(cityId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            citiesList = currents.toList()
+            fetchFutureWeatherByIdUseCase(cityId)
+            when (val data = fetchCityByIdFromApiUseCase(cityId)) {
+                is Result.Success -> {
+                    currents.add(0, data.data)
+                    citiesList = currents.toList()
+                    _mutableMainState.postValue(
+                        ListCitiesViewState(
+                            isShowingSnackBar = true, error = null, result = citiesList,
+                            responseType = ResponseType(
+                                uiComponentType = UIComponentType.SnackBar(
+                                    message = FETCH_CITY_SUCCESS_MESSAGE,
+                                    undoCallback = false
+                                ), messageType = MessageType.Success()
+                            )
+                        )
+                    )
+                }
+
+                is Result.Failure -> _mutableMainState.postValue(
+                    ListCitiesViewState(
+                        isShowingSnackBar = true,
+                        result = citiesList,
+                        error = data.error,
+                        responseType = ResponseType(
+                            uiComponentType = UIComponentType.SnackBar(message = FETCH_CITY_ERROR_MESSAGE),
+                            messageType = MessageType.Error()
+                        )
+                    )
+                )
+            }
+        }
+    }
+
     fun getCities() {
         viewModelScope.launch(Dispatchers.IO) {
-
             when (val result = weatherRepository.decideWhereToFetch()) {
                 is Result.Success -> {
                     if (result.data.isEmpty()) {

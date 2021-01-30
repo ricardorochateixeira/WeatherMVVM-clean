@@ -4,9 +4,11 @@ import com.ricardoteixeira.app.framework.api.ApiHelper
 import com.ricardoteixeira.app.framework.api.ApiHelperImpl
 import com.ricardoteixeira.app.framework.repository.details.GetCityByIdImpl
 import com.ricardoteixeira.app.framework.repository.favorites.GetFavoriteCitiesImpl
-import com.ricardoteixeira.app.framework.repository.future.FetchFutureWeatherFromApiImpl
+import com.ricardoteixeira.app.framework.repository.future.FetchFutureWeatherByIdFromApiImpl
+import com.ricardoteixeira.app.framework.repository.future.FetchFutureWeatherByNameFromApiImpl
 import com.ricardoteixeira.app.framework.repository.future.GetFutureWeatherFromDatabaseImpl
 import com.ricardoteixeira.app.framework.repository.listcities.*
+import com.ricardoteixeira.app.framework.repository.splash.InsertCityInformationIntoDatabaseImpl
 import com.ricardoteixeira.data.repository.*
 import dagger.Binds
 import dagger.Module
@@ -24,10 +26,16 @@ abstract class UseCasesModule {
     abstract fun provideApiHelper(apiHelper: ApiHelperImpl): ApiHelper
 
     @Binds
-    abstract fun provideInsertFromApi(insertCityFromApi: FetchCityFromApiImpl): FetchCityFromApi
+    abstract fun provideInsertFromApi(insertCityFromApi: FetchCityByNameFromApiImpl): FetchCityByNameFromApi
 
     @Binds
-    abstract fun provideInsertFutureFromApi(insertFutureWeatherFromApi: FetchFutureWeatherFromApiImpl): FetchFutureWeatherFromApi
+    abstract fun provideInsertFutureFromApi(insertFutureWeatherFromApi: FetchFutureWeatherByNameFromApiImpl): FetchFutureWeatherByNameFromApi
+
+    @Binds
+    abstract fun provideInsertByIdFromApi(insertCityFromApi: FetchCityByIdFromApiImpl): FetchCityByIdFromApi
+
+    @Binds
+    abstract fun provideInsertByIdFutureFromApi(insertFutureWeatherFromApi: FetchFutureWeatherByIdFromApiImpl): FetchFutureWeatherByIdFromApi
 
     @Binds
     abstract fun provideInsertCityIntoDatabase(insertCityIntoDatabase: InsertCityIntoDatabaseImpl): InsertCityIntoDatabase
@@ -55,5 +63,11 @@ abstract class UseCasesModule {
 
     @Binds
     abstract fun getFutureWeatherFromDatabase(getFutureWeatherFromDatabase: GetFutureWeatherFromDatabaseImpl): GetFutureWeatherFromDatabase
+
+    @Binds
+    abstract fun insertCityInformationIntoDatabase(insertCityInformationIntoDatabase: InsertCityInformationIntoDatabaseImpl): InsertCityInformationIntoDatabase
+
+    @Binds
+    abstract fun GETcITIESbYnAME(getCitiesByName: GetCitiesByNameImpl): GetCitiesByName
 
 }

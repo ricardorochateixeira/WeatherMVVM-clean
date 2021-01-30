@@ -38,12 +38,12 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
         viewModel.detailState.observe(viewLifecycleOwner, {
             city_name_details.text = it?.cityName
             weather_image_detail.setWeatherImage(it)
-            actual_temp_detail.text = getString(R.string.temperature_text_adapters, it?.actualTemp.toString())
-            feels_like_value.text = getString(R.string.feels_like_temperature_text_adapters, it?.feelsLikeTemp.toString())
-            maximum_temperature_value.text = getString(R.string.feels_like_temperature_text_adapters, it?.tempMax.toString())
-            minimum_temperature_value.text = getString(R.string.feels_like_temperature_text_adapters, it?.tempMin.toString())
-            wind_speed_value.text = getString(R.string.wind_speed_text_adapters, it?.windSpeed.toString())
-            humidity_value.text = getString(R.string.humidity_text_adapters, it?.humidity.toString())
+            actual_temp_detail.text = getString(R.string.temperature_text_adapters, it?.actualTemp?.toInt().toString())
+            feels_like_value.text = getString(R.string.feels_like_temperature_text_adapters, it?.feelsLikeTemp?.toInt().toString())
+            maximum_temperature_value.text = getString(R.string.feels_like_temperature_text_adapters, it?.tempMax?.toInt().toString())
+            minimum_temperature_value.text = getString(R.string.feels_like_temperature_text_adapters, it?.tempMin?.toInt().toString())
+            wind_speed_value.text = getString(R.string.wind_speed_text_adapters, it?.windSpeed?.toInt().toString())
+            humidity_value.text = getString(R.string.humidity_text_adapters, it?.humidity?.toString())
             sunset_value.text = SimpleDateFormat("hh:mm a").format(it?.sunset?.toLong()
                 ?.times(1000))
             sunrise_value.text = SimpleDateFormat("hh:mm a").format(it?.sunrise?.toLong()
@@ -51,7 +51,6 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
         })
 
         back_btn.setOnClickListener { goBack() }
-        go_to_future_btn.setOnClickListener { goToFutureScreen(cityId) }
     }
 
     private fun getCityById(cityid: Int) {
@@ -64,7 +63,4 @@ class DetailsFragment: Fragment(R.layout.details_fragment) {
         findNavController().navigate(DetailsFragmentDirections.actionDetailsFragmentToListCitiesFragment())
     }
 
-    private fun goToFutureScreen(cityId:Int) {
-        findNavController().navigate(DetailsFragmentDirections.actionDetailsFragmentToSevenDaysFragment(cityId))
-    }
 }

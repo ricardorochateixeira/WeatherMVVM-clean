@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 
 @Entity(tableName = "future_weather")
-
 data class FutureWeatherDatabaseModel(
     @PrimaryKey(autoGenerate = false)
     val cityId: Int?,

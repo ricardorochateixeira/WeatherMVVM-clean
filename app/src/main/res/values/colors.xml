@@ -12,4 +12,7 @@
     <color name="secondaryTextColor">#000000</color>
     <color name="lightGray">#BDC3C7</color>
     <color name="darkGray">#839192</color>
+    <color name="gradientOne">#5DADE2</color>
+    <color name="gradientTwo">#85C1E9</color>
+    <color name="background">#AED6F1</color>
 </resources>
