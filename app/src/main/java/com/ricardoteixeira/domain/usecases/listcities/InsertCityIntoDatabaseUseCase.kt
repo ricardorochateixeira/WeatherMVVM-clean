@@ -7,8 +7,9 @@ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
 import javax.inject.Inject
 
 class InsertCityIntoDatabaseUseCase
-@Inject constructor(private val insertCityIntoDatabase: InsertCurrentWeatherIntoDatabase):
+@Inject constructor(private val insertCityIntoDatabase: InsertCurrentWeatherIntoDatabase) :
     BaseUseCase<CurrentWeatherApiModel, Unit> {
+
     override suspend fun invoke(params: CurrentWeatherApiModel) {
         insertCityIntoDatabase.insertCurrentWeatherIntoDatabase(params.toDatabase())
     }

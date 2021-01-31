@@ -6,7 +6,7 @@ import com.ricardoteixeira.data.repository.InsertCityInformationIntoDatabase
 import javax.inject.Inject
 
 class InsertCityInformationIntoDatabaseImpl
-@Inject constructor(private val cityDao: CityDao): InsertCityInformationIntoDatabase {
+@Inject constructor(private val cityDao: CityDao) : InsertCityInformationIntoDatabase {
     override suspend fun insertCityInformationIntoDatabase(city: CityDatabaseModel) {
         cityDao.insertCity(city)
     }

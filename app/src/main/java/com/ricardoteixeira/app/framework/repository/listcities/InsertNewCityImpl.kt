@@ -8,11 +8,12 @@ import com.ricardoteixeira.data.repository.InsertNewCity
 import javax.inject.Inject
 
 class InsertNewCityImpl
-@Inject constructor(private val weatherDao: WeatherCityDao,
-                    private val apiHelper: ApiHelper
-): InsertNewCity {
+@Inject constructor(
+    private val weatherDao: WeatherCityDao,
+    private val apiHelper: ApiHelper
+) : InsertNewCity {
 
-    override suspend fun insertNewCity(cityName: String)  {
+    override suspend fun insertNewCity(cityName: String) {
         val result = apiHelper.getWeatherByName(cityName)
 
         when (result) {
@@ -21,5 +22,4 @@ class InsertNewCityImpl
             is Result.Failure -> result.error
         }
     }
-
 }

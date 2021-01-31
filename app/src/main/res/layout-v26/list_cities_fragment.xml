@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.constraintlayout.motion.widget.MotionLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/first_screen"
@@ -12,8 +11,7 @@
     android:background="?android:attr/colorPrimary"
     app:layoutDescription="@xml/list_cities_fragment_scene"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    >
+    android:focusableInTouchMode="true">
 
     <ImageView
         android:id="@+id/list_cities_back_btn"
@@ -61,10 +59,9 @@
         android:layout_height="@dimen/weather_smaller_image_size"
         android:contentDescription="@string/sort_button"
         android:src="@drawable/ic_sort_black"
-        android:layout_marginLeft="@dimen/standard_margin"
+        android:layout_marginStart="@dimen/standard_margin"
         app:layout_constraintStart_toEndOf="@id/search_cities"
-        app:layout_constraintBottom_toBottomOf="@id/search_cities"
-        />
+        app:layout_constraintBottom_toBottomOf="@id/search_cities" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -86,8 +83,7 @@
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/search_cities"
-        tools:listitem="@layout/search_item"
-        />
+        tools:listitem="@layout/search_item" />
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -96,8 +92,7 @@
         android:layout_height="0dp"
         android:layout_margin="@dimen/double_standard_margin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_cities"
-        >
+        app:layout_constraintTop_toBottomOf="@id/search_cities">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_cities_rv"
@@ -110,7 +105,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_cities"
-            tools:listitem="@layout/city_weather_item"/>
+            tools:listitem="@layout/city_weather_item" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

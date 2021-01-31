@@ -13,7 +13,8 @@ import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherByIdU
 import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherByNameUseCase
 import com.ricardoteixeira.domain.usecases.listcities.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 
 const val FETCH_CITY_SUCCESS_MESSAGE = "City Added Successfully"
@@ -60,11 +61,11 @@ class ListCitiesViewModel
 
     private val citiesFlow = searchQuery.flatMapLatest {
 
-         if (it.isBlank()) {
-             getCitiesByNameUseCase("afsfasfafdfafdsdf")
+        if (it.isBlank()) {
+            getCitiesByNameUseCase("afsfasfafdfafdsdf")
         } else {
-             getCitiesByNameUseCase(it)
-         }
+            getCitiesByNameUseCase(it)
+        }
     }
 
     val cities = citiesFlow.asLiveData()
@@ -166,7 +167,8 @@ class ListCitiesViewModel
                                 ListCitiesViewState(
                                     isShowingSnackBar = true,
                                     error = null,
-                                    result = citiesList.filter { !it.isUpdatePending }.sortedByDescending { it.requestTime },
+                                    result = citiesList.filter { !it.isUpdatePending }
+                                        .sortedByDescending { it.requestTime },
                                     responseType = ResponseType(
                                         uiComponentType = UIComponentType.None(),
                                         messageType = MessageType.Success()
@@ -177,7 +179,8 @@ class ListCitiesViewModel
                                 ListCitiesViewState(
                                     isShowingSnackBar = true,
                                     error = null,
-                                    result = citiesList.filter { !it.isUpdatePending }.sortedBy { it.cityName },
+                                    result = citiesList.filter { !it.isUpdatePending }
+                                        .sortedBy { it.cityName },
                                     responseType = ResponseType(
                                         uiComponentType = UIComponentType.None(),
                                         messageType = MessageType.Success()
@@ -188,7 +191,8 @@ class ListCitiesViewModel
                                 ListCitiesViewState(
                                     isShowingSnackBar = true,
                                     error = null,
-                                    result = citiesList.filter { !it.isUpdatePending }.sortedByDescending { it.isFavorite },
+                                    result = citiesList.filter { !it.isUpdatePending }
+                                        .sortedByDescending { it.isFavorite },
                                     responseType = ResponseType(
                                         uiComponentType = UIComponentType.None(),
                                         messageType = MessageType.Success()
@@ -221,7 +225,9 @@ class ListCitiesViewModel
         citiesArrayList[index].isUpdatePending = true
         citiesList = citiesArrayList.toList()
         _mutableMainState.value = ListCitiesViewState(
-            isShowingSnackBar = true, error = null, result = citiesList.filter { !it.isUpdatePending },
+            isShowingSnackBar = true,
+            error = null,
+            result = citiesList.filter { !it.isUpdatePending },
             responseType = ResponseType(
                 uiComponentType = UIComponentType.SnackBar(
                     message = ITEM_PENDING,

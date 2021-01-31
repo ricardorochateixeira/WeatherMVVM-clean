@@ -4,8 +4,9 @@ import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabase
 import com.ricardoteixeira.data.repository.UpdateCity
 import com.ricardoteixeira.domain.usecases.common.BaseUseCase
 
-class UpdateCityUseCase(val updateCity: UpdateCity):
+class UpdateCityUseCase(val updateCity: UpdateCity) :
     BaseUseCase<CurrentWeatherDatabaseModel, Unit> {
+
     override suspend fun invoke(params: CurrentWeatherDatabaseModel) {
         return updateCity.updateCity(params)
     }

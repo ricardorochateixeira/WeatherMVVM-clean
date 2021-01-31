@@ -12,11 +12,12 @@ import com.ricardoteixeira.domain.usecases.details.GetCityByIdUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class DetailsViewModel
-@ViewModelInject constructor(private val getCityByIdUseCase: GetCityByIdUseCase,
-                             val preferences: PreferencesManager): ViewModel() {
+@ViewModelInject constructor(
+    private val getCityByIdUseCase: GetCityByIdUseCase,
+    val preferences: PreferencesManager
+) : ViewModel() {
 
     private val _mutableDetailState: MutableLiveData<CurrentWeatherEntityModel?> = MutableLiveData()
     val detailState: LiveData<CurrentWeatherEntityModel?>

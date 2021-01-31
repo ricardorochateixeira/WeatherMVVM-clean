@@ -1,9 +1,9 @@
 package com.ricardoteixeira.app.framework.api.mappers.futureweather
 
-import com.ricardoteixeira.app.framework.api.models.futureweather.GeneralFutureWeatherApi
 import com.ricardoteixeira.app.framework.api.models.futureweather.DescriptionFutureWeatherApi
-import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
+import com.ricardoteixeira.app.framework.api.models.futureweather.GeneralFutureWeatherApi
 import com.ricardoteixeira.app.framework.db.model.future.DescriptionFutureWeatherDatabase
+import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
 
 fun GeneralFutureWeatherApi.toDatabase(): GeneralFutureWeatherDatabase {
 
@@ -16,7 +16,7 @@ fun GeneralFutureWeatherApi.toDatabase(): GeneralFutureWeatherDatabase {
 
 }
 
-fun provideWeatherList (descriptionFutureWeatherApi: List<DescriptionFutureWeatherApi?>?): List<DescriptionFutureWeatherDatabase> {
+fun provideWeatherList(descriptionFutureWeatherApi: List<DescriptionFutureWeatherApi?>?): List<DescriptionFutureWeatherDatabase> {
     lateinit var descriptionFutureWeatherDatabase: List<DescriptionFutureWeatherDatabase>
 
     if (descriptionFutureWeatherApi != null) {

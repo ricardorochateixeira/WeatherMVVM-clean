@@ -33,7 +33,10 @@ class FutureWeatherAdapter :
         fun bind(generalFutureWeatherEntity: GeneralFutureWeatherEntity) {
             binding.apply {
                 futureWeatherDate.text = generalFutureWeatherEntity.dtTxt
-                futureWeatherTemperature.text = itemView.context.getString(R.string.temperature_text_adapters, generalFutureWeatherEntity.mainFutureWeather?.temp?.toInt().toString())
+                futureWeatherTemperature.text = itemView.context.getString(
+                    R.string.temperature_text_adapters,
+                    generalFutureWeatherEntity.mainFutureWeather?.temp?.toInt().toString()
+                )
                 generalFutureWeatherEntity.descriptionFutureWeather?.get(0)?.id?.let {
                     futureWeatherImage.setWeatherImageFuture(it)
                 }

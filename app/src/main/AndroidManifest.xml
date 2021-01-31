@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name="com.ricardoteixeira.BaseApplication"
         android:allowBackup="true"
@@ -16,11 +17,10 @@
         android:theme="@style/Theme.WeatherMVVMclean">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value = "AIzaSyDMYLQGt81kHrxhhZw8NR8kjeefIsGdjw8" />
+            android:value="AIzaSyDMYLQGt81kHrxhhZw8NR8kjeefIsGdjw8" />
         <activity
             android:name="com.ricardoteixeira.app.presentation.main.MainActivity"
-            android:windowSoftInputMode="stateHidden"
-            >
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

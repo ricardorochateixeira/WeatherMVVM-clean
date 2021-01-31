@@ -1,7 +1,6 @@
 package com.ricardoteixeira.app.presentation.listcities
 
 import android.os.Bundle
-import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent

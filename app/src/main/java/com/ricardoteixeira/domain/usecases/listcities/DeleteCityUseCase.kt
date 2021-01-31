@@ -5,9 +5,10 @@ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
 import javax.inject.Inject
 
 class DeleteCityUseCase
-@Inject constructor(private val deleteCityFromDatabase: DeleteCityFromDatabase):
+@Inject constructor(private val deleteCityFromDatabase: DeleteCityFromDatabase) :
     BaseUseCase<Int, Unit> {
-    override suspend fun invoke(params: Int){
+
+    override suspend fun invoke(params: Int) {
         return deleteCityFromDatabase.deleteCityFromDatabase(params)
     }
 }

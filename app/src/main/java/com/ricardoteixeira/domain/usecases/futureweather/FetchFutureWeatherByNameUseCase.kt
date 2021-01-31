@@ -8,7 +8,8 @@ import javax.inject.Inject
 
 class FetchFutureWeatherByNameUseCase
 @Inject constructor(private var fetchFutureWeather: FetchFutureWeatherByNameFromApi) :
-    BaseUseCase<String, Result<FutureWeatherEntityModel>>{
+    BaseUseCase<String, Result<FutureWeatherEntityModel>> {
+
     override suspend fun invoke(params: String): Result<FutureWeatherEntityModel> {
         return fetchFutureWeather.fetchFutureWeatherByNameFromApi(params)
     }

@@ -10,7 +10,10 @@ import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import javax.inject.Inject
 
 class RefreshCitiesImpl
-    @Inject constructor(private val weatherCityDao: WeatherCityDao, private val fetchCityFromApi: FetchCityByNameFromApi): RefreshCities {
+@Inject constructor(
+    private val weatherCityDao: WeatherCityDao,
+    private val fetchCityFromApi: FetchCityByNameFromApi
+) : RefreshCities {
     override suspend fun refreshCities(currentListOfCities: MutableList<CurrentWeatherEntityModel>): Result<List<CurrentWeatherEntityModel?>> {
         for (city in currentListOfCities) {
             val newWeather = city.cityName?.let { fetchCityFromApi.fetchWeatherByNameFromApi(it) }
@@ -18,13 +21,15 @@ class RefreshCitiesImpl
                 weatherCityDao.insertCity(newWeather.data.toDatabase())
                 val index = currentListOfCities.indexOf(city)
                 val newWeatherToInsert = newWeather.data.toDatabase().toEntity()
-                currentListOfCities[index].copy(actualTemp = newWeatherToInsert.actualTemp,
-                tempMin = newWeatherToInsert.tempMin,
-                tempMax = newWeatherToInsert.tempMax,
-                feelsLikeTemp = newWeatherToInsert.feelsLikeTemp,
-                weatherId = newWeatherToInsert.weatherId,
-                weatherDescription = newWeatherToInsert.weatherDescription,
-                requestTime = newWeatherToInsert.requestTime)
+                currentListOfCities[index].copy(
+                    actualTemp = newWeatherToInsert.actualTemp,
+                    tempMin = newWeatherToInsert.tempMin,
+                    tempMax = newWeatherToInsert.tempMax,
+                    feelsLikeTemp = newWeatherToInsert.feelsLikeTemp,
+                    weatherId = newWeatherToInsert.weatherId,
+                    weatherDescription = newWeatherToInsert.weatherDescription,
+                    requestTime = newWeatherToInsert.requestTime
+                )
                 weatherCityDao.insertCity(currentListOfCities[index].toDatabase())
             } else {
                 Result.Failure(error = "Error fetching city")

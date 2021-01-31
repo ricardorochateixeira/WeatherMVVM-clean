@@ -25,47 +25,48 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                })
-                .addInterceptor(addInterceptor())
-                .build()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+            .addInterceptor(addInterceptor())
+            .build()
 
     }
 
     @Provides
     @Singleton
     fun provideMoshiBuilder(): Moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(provideMoshiBuilder()).asLenient())
-            .build()
+        .baseUrl(BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(MoshiConverterFactory.create(provideMoshiBuilder()).asLenient())
+        .build()
 
     @Provides
     @Singleton
     fun addInterceptor() = Interceptor { chain ->
         val url = chain.request()
-                .url
-                .newBuilder()
-                .addQueryParameter("appid", "5586edf09c94c8895b3c5ade2f3a2048")
-                .build()
+            .url
+            .newBuilder()
+            .addQueryParameter("appid", "5586edf09c94c8895b3c5ade2f3a2048")
+            .build()
 
         val request = chain.request()
-                .newBuilder()
-                .url(url)
-                .build()
+            .newBuilder()
+            .url(url)
+            .build()
         return@Interceptor chain.proceed(request)
     }
 
     @Provides
     @Singleton
-    fun provideWeatherService(retrofit: Retrofit): WeatherService = retrofit.create(WeatherService::class.java)
+    fun provideWeatherService(retrofit: Retrofit): WeatherService =
+        retrofit.create(WeatherService::class.java)
 
 
 }

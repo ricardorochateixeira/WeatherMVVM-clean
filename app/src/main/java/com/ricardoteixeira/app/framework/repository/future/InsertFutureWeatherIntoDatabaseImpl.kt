@@ -9,16 +9,16 @@ import com.ricardoteixeira.data.repository.InsertFutureWeatherIntoDatabase
 import javax.inject.Inject
 
 class InsertFutureWeatherIntoDatabaseImpl
-@Inject constructor(private val futureWeatherDao: FutureWeatherDao): InsertFutureWeatherIntoDatabase{
+@Inject constructor(private val futureWeatherDao: FutureWeatherDao) :
+    InsertFutureWeatherIntoDatabase {
     override suspend fun insertFutureWeatherIntoDatabase(city: FutureWeatherDatabaseModel) {
         futureWeatherDao.insertCity(city)
     }
-
 }
 
 
 class InsertCityIntoDatabaseImpl
-@Inject constructor(private val weatherDao: WeatherCityDao): InsertCurrentWeatherIntoDatabase {
+@Inject constructor(private val weatherDao: WeatherCityDao) : InsertCurrentWeatherIntoDatabase {
 
     override suspend fun insertCurrentWeatherIntoDatabase(city: CurrentWeatherDatabaseModel) {
         weatherDao.insertCity(city)

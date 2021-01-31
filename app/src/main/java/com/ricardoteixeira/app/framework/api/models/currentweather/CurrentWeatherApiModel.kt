@@ -22,7 +22,7 @@ data class CurrentWeatherApiModel(
 
     @Json(name = "visibility") var visibility: Int?,
 
-    @Json(name = "weather")var descriptionCurrentWeather: List<DescriptionCurrentWeather?>?,
+    @Json(name = "weather") var descriptionCurrentWeather: List<DescriptionCurrentWeather?>?,
 
     @Json(name = "wind") var windCurrentWeather: WindCurrentWeather?
 )

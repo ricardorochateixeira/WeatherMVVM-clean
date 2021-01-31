@@ -5,7 +5,7 @@ import com.ricardoteixeira.data.repository.DeleteCityFromDatabase
 import javax.inject.Inject
 
 class DeleteCityFromDatabaseImpl
-    @Inject constructor(private val weatherDao: WeatherCityDao): DeleteCityFromDatabase {
+@Inject constructor(private val weatherDao: WeatherCityDao) : DeleteCityFromDatabase {
     override suspend fun deleteCityFromDatabase(cityId: Int) {
         weatherDao.deleteCity(cityId)
     }

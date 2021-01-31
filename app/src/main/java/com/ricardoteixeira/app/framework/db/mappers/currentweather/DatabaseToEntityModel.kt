@@ -2,6 +2,7 @@ package com.ricardoteixeira.app.framework.db.mappers
 
 import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
 import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+
 fun CurrentWeatherDatabaseModel.toEntity(): CurrentWeatherEntityModel {
 
     return CurrentWeatherEntityModel(

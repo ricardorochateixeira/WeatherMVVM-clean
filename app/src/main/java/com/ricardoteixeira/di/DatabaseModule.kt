@@ -3,7 +3,6 @@ package com.ricardoteixeira.di
 import android.app.Application
 import androidx.room.Room
 import com.ricardoteixeira.app.framework.db.WeatherCityDatabase
-import com.ricardoteixeira.app.framework.db.model.city.CityDatabaseModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
-object  DatabaseModule {
+object DatabaseModule {
 
     @Provides
     @Singleton

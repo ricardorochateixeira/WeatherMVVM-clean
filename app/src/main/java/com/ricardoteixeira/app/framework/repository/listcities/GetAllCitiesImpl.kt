@@ -6,10 +6,9 @@ import com.ricardoteixeira.data.repository.GetAllCities
 import javax.inject.Inject
 
 class GetAllCitiesImpl
-    @Inject constructor(private val weatherDao: WeatherCityDao): GetAllCities {
+@Inject constructor(private val weatherDao: WeatherCityDao) : GetAllCities {
 
     override suspend fun getAllCities(): List<CurrentWeatherDatabaseModel> {
         return weatherDao.getCities()
     }
-
 }

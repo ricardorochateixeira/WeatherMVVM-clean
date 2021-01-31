@@ -1,29 +1,18 @@
 package com.ricardoteixeira.app.presentation.main
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.NavInflater
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
 import com.ricardoteixeira.app.utils.PreferencesManager
-import com.ricardoteixeira.app.utils.readJson
 import com.ricardoteixeira.weathermvvm_clean.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import javax.inject.Inject
 
 const val MY_PERMISSION_ACCESS_FINE_LOCATION = 1

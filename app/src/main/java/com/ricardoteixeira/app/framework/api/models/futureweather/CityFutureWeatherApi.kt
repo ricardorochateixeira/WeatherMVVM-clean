@@ -2,7 +2,7 @@ package com.ricardoteixeira.app.framework.api.models.futureweather
 
 import com.squareup.moshi.Json
 
-data class CityFutureWeatherApi (
+data class CityFutureWeatherApi(
     @Json(name = "country")
     var country: String?,
     @Json(name = "id")
@@ -17,4 +17,4 @@ data class CityFutureWeatherApi (
     var sunset: Int?,
     @Json(name = "timezone")
     var timezone: Int?
-    )
+)

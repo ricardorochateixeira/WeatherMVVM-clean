@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class FavoriteViewModel @ViewModelInject constructor(
     private val getFavoriteCitiesUseCase: GetFavoriteCitiesUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val _mutableFavoriteState: MutableLiveData<FavoriteViewState> = MutableLiveData()
     val favoriteState: LiveData<FavoriteViewState>

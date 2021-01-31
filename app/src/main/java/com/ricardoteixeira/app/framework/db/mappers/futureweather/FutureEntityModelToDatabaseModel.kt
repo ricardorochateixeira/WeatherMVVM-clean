@@ -1,9 +1,9 @@
 package com.ricardoteixeira.app.framework.db.mappers.futureweather
 
-import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
 import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
-import com.ricardoteixeira.domain.models.future.GeneralFutureWeatherEntity
+import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
 import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
+import com.ricardoteixeira.domain.models.future.GeneralFutureWeatherEntity
 
 fun FutureWeatherEntityModel.toDatabase(): FutureWeatherDatabaseModel {
 

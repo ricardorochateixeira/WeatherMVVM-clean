@@ -8,10 +8,10 @@ interface ApiHelper {
 
     suspend fun getWeatherByName(q: String): Result<CurrentWeatherApiModel>
 
-    suspend fun getFutureWeatherByName(q: String):Result<FutureWeatherApiModel>
+    suspend fun getFutureWeatherByName(q: String): Result<FutureWeatherApiModel>
 
     suspend fun getWeatherById(id: Int): Result<CurrentWeatherApiModel>
 
-    suspend fun getFutureWeatherById(id: Int):Result<FutureWeatherApiModel>
+    suspend fun getFutureWeatherById(id: Int): Result<FutureWeatherApiModel>
 
 }

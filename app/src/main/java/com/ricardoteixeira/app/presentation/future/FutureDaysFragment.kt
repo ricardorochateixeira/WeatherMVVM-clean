@@ -6,13 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ricardoteixeira.app.presentation.details.DetailsFragmentArgs
 import com.ricardoteixeira.weathermvvm_clean.R
-import com.ricardoteixeira.weathermvvm_clean.databinding.FavoriteFragmentBinding
 import com.ricardoteixeira.weathermvvm_clean.databinding.FutureFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.future_fragment.*
 
 @AndroidEntryPoint
-class FutureDaysFragment: Fragment(R.layout.future_fragment) {
+class FutureDaysFragment : Fragment(R.layout.future_fragment) {
 
     private val viewModel: FutureDaysViewModel by viewModels()
     private lateinit var futureWeatherAdapter: FutureWeatherAdapter

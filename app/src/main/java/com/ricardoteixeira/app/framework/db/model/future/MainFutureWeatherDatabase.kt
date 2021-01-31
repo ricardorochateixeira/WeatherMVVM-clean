@@ -1,8 +1,6 @@
 package com.ricardoteixeira.app.framework.db.model.future
 
-import com.squareup.moshi.Json
-
-data class MainFutureWeatherDatabase (
+data class MainFutureWeatherDatabase(
     var feelsLike: Double?,
     var temp: Double?,
     var tempKf: Double?,

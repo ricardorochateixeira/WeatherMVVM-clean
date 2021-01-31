@@ -7,7 +7,7 @@ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
 import javax.inject.Inject
 
 class FetchCurrentWeatherByNameFromApiUseCase
-    @Inject constructor(private var fetchNewCity: FetchCityByNameFromApi) :
+@Inject constructor(private var fetchNewCity: FetchCityByNameFromApi) :
     BaseUseCase<String, Result<CurrentWeatherEntityModel>> {
 
     override suspend fun invoke(params: String): Result<CurrentWeatherEntityModel> {

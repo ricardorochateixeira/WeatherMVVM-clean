@@ -34,7 +34,8 @@ class WeatherRepository(
                 val newTimestamp = timestamp.dropLast(3).toInt()
                 if (newTimestamp - city.requestTime > 40000) {
                     val newWeather = fetchCityByIdFromApi.fetchWeatherByIdFromApi(city.cityId!!)
-                    val newFutureWeather = fetchFutureWeatherByIdFromApi.fetchFutureWeatherByIdFromApi(city.cityId!!)
+                    val newFutureWeather =
+                        fetchFutureWeatherByIdFromApi.fetchFutureWeatherByIdFromApi(city.cityId)
 
                     if (newWeather is Result.Success) {
                         val index = cities.indexOf(city)
@@ -52,7 +53,9 @@ class WeatherRepository(
                     }
 
                     if (newFutureWeather is Result.Success) {
-                        insertFutureWeatherIntoDatabase.insertFutureWeatherIntoDatabase(newFutureWeather.data.toDatabase())
+                        insertFutureWeatherIntoDatabase.insertFutureWeatherIntoDatabase(
+                            newFutureWeather.data.toDatabase()
+                        )
                     }
 
                     return Result.Success(data = cities.map { it.toEntity() })
@@ -67,9 +70,7 @@ class WeatherRepository(
 }
 
 interface FetchCityByNameFromApi {
-
     suspend fun fetchWeatherByNameFromApi(cityName: String): Result<CurrentWeatherEntityModel>
-
 }
 
 interface FetchFutureWeatherByNameFromApi {
@@ -77,9 +78,7 @@ interface FetchFutureWeatherByNameFromApi {
 }
 
 interface FetchCityByIdFromApi {
-
     suspend fun fetchWeatherByIdFromApi(cityId: Int): Result<CurrentWeatherEntityModel>
-
 }
 
 interface FetchFutureWeatherByIdFromApi {
@@ -87,31 +86,22 @@ interface FetchFutureWeatherByIdFromApi {
 }
 
 interface InsertCurrentWeatherIntoDatabase {
-
     suspend fun insertCurrentWeatherIntoDatabase(city: CurrentWeatherDatabaseModel)
-
 }
 
 interface InsertFutureWeatherIntoDatabase {
-
     suspend fun insertFutureWeatherIntoDatabase(city: FutureWeatherDatabaseModel)
-
 }
 
 interface GetAllCities {
-
     suspend fun getAllCities(): List<CurrentWeatherDatabaseModel>
-
 }
 
 interface InsertNewCity {
-
     suspend fun insertNewCity(cityName: String)
-
 }
 
 interface DeleteCityFromDatabase {
-
     suspend fun deleteCityFromDatabase(cityId: Int)
 }
 

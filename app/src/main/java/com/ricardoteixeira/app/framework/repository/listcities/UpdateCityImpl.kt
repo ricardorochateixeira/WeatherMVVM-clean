@@ -6,9 +6,8 @@ import com.ricardoteixeira.data.repository.UpdateCity
 import javax.inject.Inject
 
 class UpdateCityImpl
-@Inject constructor(private val weatherCityDao: WeatherCityDao): UpdateCity {
+@Inject constructor(private val weatherCityDao: WeatherCityDao) : UpdateCity {
     override suspend fun updateCity(city: CurrentWeatherDatabaseModel) {
         weatherCityDao.updateCity(city)
     }
-
 }

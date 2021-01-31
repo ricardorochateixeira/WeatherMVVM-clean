@@ -60,7 +60,7 @@ data class CurrentWeatherDatabaseModel(
     val sunrise: Int?
 
 
-): Parcelable {
+) : Parcelable {
 
     val sunsetFormated: String
         get() = DateFormat.getDateTimeInstance().format(sunset?.toLong())

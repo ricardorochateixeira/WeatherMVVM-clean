@@ -27,5 +27,4 @@ interface WeatherCityDao {
     fun getFavoriteCities(): List<CurrentWeatherDatabaseModel?>
 
 
-
 }

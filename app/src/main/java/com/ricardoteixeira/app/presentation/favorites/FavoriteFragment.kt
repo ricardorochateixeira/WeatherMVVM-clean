@@ -9,7 +9,7 @@ import com.ricardoteixeira.weathermvvm_clean.databinding.FavoriteFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavoriteFragment: Fragment(R.layout.favorite_fragment) {
+class FavoriteFragment : Fragment(R.layout.favorite_fragment) {
 
     private val viewModel: FavoriteViewModel by viewModels()
 
@@ -23,7 +23,7 @@ class FavoriteFragment: Fragment(R.layout.favorite_fragment) {
 
         _binding = FavoriteFragmentBinding.bind(view)
         binding.apply {
-            listFavoritesRv.apply{
+            listFavoritesRv.apply {
                 favoriteAdapter = FavoriteAdapter()
                 adapter = favoriteAdapter
             }

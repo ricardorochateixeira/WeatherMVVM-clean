@@ -47,15 +47,29 @@ class ListCitiesAdapter(
         fun bind(currentWeatherEntityModel: CurrentWeatherEntityModel) {
             binding.apply {
                 cityName.text = currentWeatherEntityModel.cityName
-                cityTemperature.text = itemView.context.getString(R.string.temperature_text_adapters, currentWeatherEntityModel.actualTemp?.toInt().toString())
-                description.text = currentWeatherEntityModel.weatherDescription?.capitalize(Locale.ROOT)
+                cityTemperature.text = itemView.context.getString(
+                    R.string.temperature_text_adapters,
+                    currentWeatherEntityModel.actualTemp?.toInt().toString()
+                )
+                description.text =
+                    currentWeatherEntityModel.weatherDescription?.capitalize(Locale.ROOT)
                 weatherImage.setWeatherImage(currentWeatherEntityModel)
                 if (currentWeatherEntityModel.isFavorite) {
-                    favouriteCity.setImageDrawable(AppCompatResources.getDrawable(root.context, R.drawable.ic_favorite))
-                    itemView.isFocusable= false
+                    favouriteCity.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            root.context,
+                            R.drawable.ic_favorite
+                        )
+                    )
+                    itemView.isFocusable = false
                 } else {
-                    favouriteCity.setImageDrawable(AppCompatResources.getDrawable(root.context, R.drawable.ic_favorite_border))
-                    itemView.isFocusable= true
+                    favouriteCity.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            root.context,
+                            R.drawable.ic_favorite_border
+                        )
+                    )
+                    itemView.isFocusable = true
                 }
                 favouriteCity.setOnClickListener {
                     val position = adapterPosition
@@ -64,11 +78,21 @@ class ListCitiesAdapter(
                         listener.onFavoriteClick(city)
                     }
                     if (currentWeatherEntityModel.isFavorite) {
-                        favouriteCity.setImageDrawable(AppCompatResources.getDrawable(root.context, R.drawable.ic_favorite))
-                        itemView.isFocusable= false
+                        favouriteCity.setImageDrawable(
+                            AppCompatResources.getDrawable(
+                                root.context,
+                                R.drawable.ic_favorite
+                            )
+                        )
+                        itemView.isFocusable = false
                     } else {
-                        favouriteCity.setImageDrawable(AppCompatResources.getDrawable(root.context, R.drawable.ic_favorite_border))
-                        itemView.isFocusable= true
+                        favouriteCity.setImageDrawable(
+                            AppCompatResources.getDrawable(
+                                root.context,
+                                R.drawable.ic_favorite_border
+                            )
+                        )
+                        itemView.isFocusable = true
                     }
                 }
             }

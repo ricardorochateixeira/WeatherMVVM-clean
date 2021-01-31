@@ -16,14 +16,14 @@ import javax.inject.Singleton
 private const val TAG = "PreferencesManager"
 
 @Singleton
-class PreferencesManager @Inject constructor(@ApplicationContext context: Context){
+class PreferencesManager @Inject constructor(@ApplicationContext context: Context) {
 
     private val dataStore = context.createDataStore("user_preferences")
 
     val preferencesFlow = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
-                Log.e(TAG, "Error reading preferences", exception )
+                Log.e(TAG, "Error reading preferences", exception)
                 emit(emptyPreferences())
             } else {
                 throw exception
@@ -39,7 +39,7 @@ class PreferencesManager @Inject constructor(@ApplicationContext context: Contex
     val cityIdFlow = dataStore.data
         .catch { exception ->
             if (exception is IOException) {
-                Log.e(TAG, "Error reading preferences", exception )
+                Log.e(TAG, "Error reading preferences", exception)
                 emit(emptyPreferences())
             } else {
                 throw exception
@@ -47,7 +47,7 @@ class PreferencesManager @Inject constructor(@ApplicationContext context: Contex
         }
         .map { preferences ->
             val cityId = preferences[PreferencesKeys.CITY_ID] ?: 0
-            CityIdToShowDetails(cityId!!)
+            CityIdToShowDetails(cityId)
         }
 
     private object PreferencesKeys {

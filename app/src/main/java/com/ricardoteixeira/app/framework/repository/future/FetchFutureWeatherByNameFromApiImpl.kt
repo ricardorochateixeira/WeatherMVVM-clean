@@ -10,7 +10,10 @@ import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
 import javax.inject.Inject
 
 class FetchFutureWeatherByNameFromApiImpl
-@Inject constructor(private val futureWeatherDao: FutureWeatherDao, private val weatherService: WeatherService):
+@Inject constructor(
+    private val futureWeatherDao: FutureWeatherDao,
+    private val weatherService: WeatherService
+) :
     FetchFutureWeatherByNameFromApi {
     override suspend fun fetchFutureWeatherByNameFromApi(cityName: String): Result<FutureWeatherEntityModel> =
         try {

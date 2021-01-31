@@ -6,7 +6,7 @@ import com.ricardoteixeira.data.repository.InsertCurrentWeatherIntoDatabase
 import javax.inject.Inject
 
 class InsertCurrentWeatherIntoDatabaseImpl
-@Inject constructor(private val weatherDao: WeatherCityDao): InsertCurrentWeatherIntoDatabase {
+@Inject constructor(private val weatherDao: WeatherCityDao) : InsertCurrentWeatherIntoDatabase {
 
     override suspend fun insertCurrentWeatherIntoDatabase(city: CurrentWeatherDatabaseModel) {
         weatherDao.insertCity(city)

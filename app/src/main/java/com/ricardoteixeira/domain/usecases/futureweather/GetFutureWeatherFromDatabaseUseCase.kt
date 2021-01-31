@@ -5,10 +5,10 @@ import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
 import javax.inject.Inject
 
 class GetFutureWeatherFromDatabaseUseCase
-@Inject constructor(private var getFutureWeatherFromDatabase: GetFutureWeatherFromDatabase): GetFutureWeatherFromDatabase{
+@Inject constructor(private var getFutureWeatherFromDatabase: GetFutureWeatherFromDatabase) :
+    GetFutureWeatherFromDatabase {
     override suspend fun getFutureWeatherFromDatabase(cityId: Int): FutureWeatherEntityModel {
         return getFutureWeatherFromDatabase.getFutureWeatherFromDatabase(cityId)
     }
-
 }
 

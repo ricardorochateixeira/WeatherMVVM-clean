@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
 import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
 
 @Dao

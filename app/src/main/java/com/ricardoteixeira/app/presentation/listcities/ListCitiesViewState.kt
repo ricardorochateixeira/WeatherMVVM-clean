@@ -19,24 +19,28 @@ sealed class UIComponentType {
 
     class Toast(val message: String?) : UIComponentType()
 
-    class Dialog: UIComponentType()
+    class Dialog : UIComponentType()
 
-    class AreYouSureDialog(val callback: AreYouSureCallback): UIComponentType()
+    class AreYouSureDialog(val callback: AreYouSureCallback) : UIComponentType()
 
-    class SnackBar (val message: String? = null,  val undoCallback: Boolean = false, val onDismissCallback: ToDoCallback? = null): UIComponentType()
+    class SnackBar(
+        val message: String? = null,
+        val undoCallback: Boolean = false,
+        val onDismissCallback: ToDoCallback? = null
+    ) : UIComponentType()
 
-    class None: UIComponentType()
+    class None : UIComponentType()
 
 }
 
 sealed class MessageType {
-    class Success: MessageType()
+    class Success : MessageType()
 
-    class Error: MessageType()
+    class Error : MessageType()
 
-    class Info: MessageType()
+    class Info : MessageType()
 
-    class None: MessageType()
+    class None : MessageType()
 }
 
 interface AreYouSureCallback {

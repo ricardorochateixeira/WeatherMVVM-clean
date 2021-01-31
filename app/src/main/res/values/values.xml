@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="standard_padding"> 8dp</dimen>
-    <dimen name="half_standard_padding"> 4dp</dimen>
+    <dimen name="standard_padding">8dp</dimen>
+    <dimen name="half_standard_padding">4dp</dimen>
 
     <dimen name="standard_margin">8dp</dimen>
     <dimen name="double_standard_margin">16dp</dimen>

@@ -1,10 +1,10 @@
 package com.ricardoteixeira.app.framework.api.mappers
 
 import com.ricardoteixeira.app.framework.api.mappers.futureweather.toDatabase
-import com.ricardoteixeira.app.framework.api.models.futureweather.GeneralFutureWeatherApi
 import com.ricardoteixeira.app.framework.api.models.futureweather.FutureWeatherApiModel
-import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
+import com.ricardoteixeira.app.framework.api.models.futureweather.GeneralFutureWeatherApi
 import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
+import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
 
 fun FutureWeatherApiModel.toDatabase(): FutureWeatherDatabaseModel {
     return FutureWeatherDatabaseModel(

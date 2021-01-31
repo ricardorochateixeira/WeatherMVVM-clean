@@ -3,7 +3,7 @@ package com.ricardoteixeira.app.framework.api.mappers.currentweather
 import com.ricardoteixeira.app.framework.api.models.currentweather.CurrentWeatherApiModel
 import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
 
- fun CurrentWeatherApiModel.toDatabase(): CurrentWeatherDatabaseModel {
+fun CurrentWeatherApiModel.toDatabase(): CurrentWeatherDatabaseModel {
 
     return CurrentWeatherDatabaseModel(
         cityId = id,

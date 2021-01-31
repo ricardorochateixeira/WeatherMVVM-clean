@@ -74,7 +74,7 @@
                 android:paddingEnd="@dimen/half_standard_padding"
                 android:text="@string/maximum_temperature"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
 
             <TextView
                 android:id="@+id/minimum_temperature_value"
@@ -85,7 +85,7 @@
                 android:paddingStart="@dimen/standard_padding"
                 android:paddingEnd="@dimen/standard_padding"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
         </LinearLayout>
 
         <LinearLayout
@@ -105,7 +105,7 @@
                 android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/minimum_temperature_text"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
 
             <TextView
                 android:id="@+id/maximum_temperature_value"
@@ -116,7 +116,7 @@
                 android:paddingStart="@dimen/standard_padding"
                 android:paddingEnd="@dimen/standard_padding"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
         </LinearLayout>
 
         <LinearLayout
@@ -136,7 +136,7 @@
                 android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/feels_like_temperature_text"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
 
             <TextView
                 android:id="@+id/feels_like_value"
@@ -147,7 +147,7 @@
                 android:paddingStart="@dimen/standard_padding"
                 android:paddingEnd="@dimen/standard_padding"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
         </LinearLayout>
 
         <LinearLayout
@@ -167,7 +167,7 @@
                 android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/wind_speed_text"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
 
             <TextView
                 android:id="@+id/wind_speed_value"
@@ -178,7 +178,7 @@
                 android:paddingStart="@dimen/standard_padding"
                 android:paddingEnd="@dimen/standard_padding"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
         </LinearLayout>
 
         <LinearLayout
@@ -198,7 +198,7 @@
                 android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/humidity_text"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
 
             <TextView
                 android:id="@+id/humidity_value"
@@ -209,7 +209,7 @@
                 android:paddingStart="@dimen/standard_padding"
                 android:paddingEnd="@dimen/standard_padding"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
         </LinearLayout>
 
         <LinearLayout
@@ -229,7 +229,7 @@
                 android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/sunrise_text"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
 
             <TextView
                 android:id="@+id/sunrise_value"
@@ -240,7 +240,7 @@
                 android:paddingStart="@dimen/standard_padding"
                 android:paddingEnd="@dimen/standard_padding"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
         </LinearLayout>
 
         <LinearLayout
@@ -260,7 +260,7 @@
                 android:paddingEnd="@dimen/standard_padding"
                 android:text="@string/sunset_text"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
 
             <TextView
                 android:id="@+id/sunset_value"
@@ -271,7 +271,7 @@
                 android:paddingStart="@dimen/standard_padding"
                 android:paddingEnd="@dimen/standard_padding"
                 android:textSize="@dimen/standard_text_size"
-                android:padding="@dimen/half_standard_padding"/>
+                android:padding="@dimen/half_standard_padding" />
         </LinearLayout>
 
     </LinearLayout>

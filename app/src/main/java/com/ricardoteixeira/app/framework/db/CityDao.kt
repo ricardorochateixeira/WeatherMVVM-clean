@@ -5,11 +5,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.ricardoteixeira.app.framework.db.model.city.CityDatabaseModel
-import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface  CityDao {
+interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCity(city: CityDatabaseModel): Long
 

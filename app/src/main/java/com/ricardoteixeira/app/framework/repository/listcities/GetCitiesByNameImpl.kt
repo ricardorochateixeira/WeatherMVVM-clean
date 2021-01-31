@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetCitiesByNameImpl
-    @Inject constructor(private val cityDao: CityDao): GetCitiesByName {
+@Inject constructor(private val cityDao: CityDao) : GetCitiesByName {
     override fun getCitiesByName(searchQuery: String): Flow<List<CityDatabaseModel>> {
         return cityDao.getCitiesByName(searchQuery)
     }

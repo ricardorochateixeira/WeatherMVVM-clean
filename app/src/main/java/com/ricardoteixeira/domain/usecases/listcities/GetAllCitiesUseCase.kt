@@ -8,10 +8,11 @@ import javax.inject.Inject
 
 
 class GetAllCitiesUseCase
-    @Inject constructor(private val weatherRepository: WeatherRepository):
+@Inject constructor(private val weatherRepository: WeatherRepository) :
     BaseUseCase<Unit, Result<List<CurrentWeatherEntityModel>>> {
 
-    override suspend fun invoke(params: Unit): Result<List<CurrentWeatherEntityModel>>  = weatherRepository.decideWhereToFetch()
+    override suspend fun invoke(params: Unit): Result<List<CurrentWeatherEntityModel>> =
+        weatherRepository.decideWhereToFetch()
 
 
 }

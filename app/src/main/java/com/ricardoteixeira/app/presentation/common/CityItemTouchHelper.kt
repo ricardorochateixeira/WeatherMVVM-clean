@@ -4,7 +4,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 
-class CityItemTouchHelperCallback(private val itemTouchHelperAdapter: CityItemTouchHelperAdapter): ItemTouchHelper.Callback() {
+class CityItemTouchHelperCallback(private val itemTouchHelperAdapter: CityItemTouchHelperAdapter) :
+    ItemTouchHelper.Callback() {
     override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
@@ -33,5 +34,5 @@ class CityItemTouchHelperCallback(private val itemTouchHelperAdapter: CityItemTo
 }
 
 interface CityItemTouchHelperAdapter {
-    fun onItemSwiped(viewHolder: RecyclerView.ViewHolder, position:Int)
+    fun onItemSwiped(viewHolder: RecyclerView.ViewHolder, position: Int)
 }

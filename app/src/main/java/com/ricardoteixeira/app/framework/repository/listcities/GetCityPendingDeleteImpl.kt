@@ -7,9 +7,8 @@ import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
 import javax.inject.Inject
 
 class GetCityPendingDeleteImpl
-@Inject constructor(private val weatherDao: WeatherCityDao): GetCityPendingDelete {
+@Inject constructor(private val weatherDao: WeatherCityDao) : GetCityPendingDelete {
     override suspend fun getCityPendingDelete(): CurrentWeatherEntityModel? {
         return weatherDao.getCityPendingDelete()?.toEntity()
     }
-
 }
