@@ -36,19 +36,13 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var preferences: PreferencesManager
 
-    private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(p0: LocationResult?) {
-            super.onLocationResult(p0)
-        }
-    }
-
-    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        val navHostFragment: NavHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment: NavHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         val navController: NavController = navHostFragment.navController
 
@@ -67,7 +61,6 @@ class MainActivity : AppCompatActivity() {
 
         navController.graph = graph
 
-
         bottom_nav.setupWithNavController(navController)
 
         preferences.cityIdFlow.asLiveData().observe(this) {
@@ -81,41 +74,7 @@ class MainActivity : AppCompatActivity() {
                 menu.getItem(2).isEnabled = true
             }
         }
-
-/*        requestLocationPermission()
-
-        if (hasLocationPermission()) {
-        } else {
-            requestLocationPermission()
-        }*/
     }
-
-    /*private fun requestLocationPermission() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-            MY_PERMISSION_ACCESS_FINE_LOCATION
-        )
-    }
-
-    private fun hasLocationPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            android.Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "Please set location manually in settings", Toast.LENGTH_LONG)
-                .show()
-        }
-    }*/
 }
 
 

@@ -11,7 +11,7 @@ interface WeatherCityDao {
     @Query("DELETE FROM city_weather WHERE cityId = :cityId")
     suspend fun deleteCity(cityId: Int): Int
 
-    @Query("SELECT * FROM  city_weather WHERE is_delete_pending = 0 ORDER BY request_time DESC")
+    @Query("SELECT * FROM  city_weather  ORDER BY request_time DESC")
     fun getCities(): List<CurrentWeatherDatabaseModel>
 
     @Update

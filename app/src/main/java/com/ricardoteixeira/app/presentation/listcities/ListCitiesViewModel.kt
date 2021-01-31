@@ -51,7 +51,7 @@ class ListCitiesViewModel
     val mainState: LiveData<ListCitiesViewState>
         get() = _mutableMainState
 
-    var currents: ArrayList<CurrentWeatherEntityModel> = arrayListOf()
+    var citiesArrayList: ArrayList<CurrentWeatherEntityModel> = arrayListOf()
     var citiesList: List<CurrentWeatherEntityModel> = listOf()
 
     val preferencesFlow = preferences.preferencesFlow.asLiveData()
@@ -71,12 +71,12 @@ class ListCitiesViewModel
 
     fun fetchWeatherByName(cityName: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            citiesList = currents.toList()
+            citiesList = citiesArrayList.toList()
             fetchFutureWeatherByNameUseCase(cityName)
             when (val data = fetchCityByNameFromApiUseCase(cityName)) {
                 is Result.Success -> {
-                    currents.add(0, data.data)
-                    citiesList = currents.toList()
+                    citiesArrayList.add(0, data.data)
+                    citiesList = citiesArrayList.toList()
                     _mutableMainState.postValue(
                         ListCitiesViewState(
                             isShowingSnackBar = true, error = null, result = citiesList,
@@ -107,12 +107,12 @@ class ListCitiesViewModel
 
     fun fetchWeatherById(cityId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            citiesList = currents.toList()
+            citiesList = citiesArrayList.toList()
             fetchFutureWeatherByIdUseCase(cityId)
             when (val data = fetchCityByIdFromApiUseCase(cityId)) {
                 is Result.Success -> {
-                    currents.add(0, data.data)
-                    citiesList = currents.toList()
+                    citiesArrayList.add(0, data.data)
+                    citiesList = citiesArrayList.toList()
                     _mutableMainState.postValue(
                         ListCitiesViewState(
                             isShowingSnackBar = true, error = null, result = citiesList,
@@ -158,15 +158,15 @@ class ListCitiesViewModel
                             )
                         )
                     } else {
-                        currents = arrayListOf()
-                        currents.addAll(result.data.filter { !it.isUpdatePending })
-                        citiesList = currents.toList()
+                        citiesArrayList = arrayListOf()
+                        citiesArrayList.addAll(result.data)
+                        citiesList = citiesArrayList.toList()
                         when (sortOrder) {
                             SortOrder.BY_DATE -> _mutableMainState.postValue(
                                 ListCitiesViewState(
                                     isShowingSnackBar = true,
                                     error = null,
-                                    result = citiesList.sortedByDescending { it.requestTime },
+                                    result = citiesList.filter { !it.isUpdatePending }.sortedByDescending { it.requestTime },
                                     responseType = ResponseType(
                                         uiComponentType = UIComponentType.None(),
                                         messageType = MessageType.Success()
@@ -177,7 +177,7 @@ class ListCitiesViewModel
                                 ListCitiesViewState(
                                     isShowingSnackBar = true,
                                     error = null,
-                                    result = citiesList.sortedBy { it.cityName },
+                                    result = citiesList.filter { !it.isUpdatePending }.sortedBy { it.cityName },
                                     responseType = ResponseType(
                                         uiComponentType = UIComponentType.None(),
                                         messageType = MessageType.Success()
@@ -188,7 +188,7 @@ class ListCitiesViewModel
                                 ListCitiesViewState(
                                     isShowingSnackBar = true,
                                     error = null,
-                                    result = citiesList.sortedByDescending { it.isFavorite },
+                                    result = citiesList.filter { !it.isUpdatePending }.sortedByDescending { it.isFavorite },
                                     responseType = ResponseType(
                                         uiComponentType = UIComponentType.None(),
                                         messageType = MessageType.Success()
@@ -217,9 +217,9 @@ class ListCitiesViewModel
 
     fun isDeletePending(cityCurrentWeatherEntityModel: CurrentWeatherEntityModel?) {
         val cityUpdated = cityCurrentWeatherEntityModel?.copy(isUpdatePending = true)
-        val index = currents.indexOf(cityCurrentWeatherEntityModel)
-        currents[index].isUpdatePending = true
-        citiesList = currents.toList()
+        val index = citiesArrayList.indexOf(cityCurrentWeatherEntityModel)
+        citiesArrayList[index].isUpdatePending = true
+        citiesList = citiesArrayList.toList()
         _mutableMainState.value = ListCitiesViewState(
             isShowingSnackBar = true, error = null, result = citiesList.filter { !it.isUpdatePending },
             responseType = ResponseType(
@@ -237,7 +237,7 @@ class ListCitiesViewModel
 
     fun favoriteCity(current: CurrentWeatherEntityModel) {
 
-        val index = currents.indexOf(current)
+        val index = citiesArrayList.indexOf(current)
 
         if (current.isFavorite) {
             current.isFavorite = false
@@ -245,9 +245,9 @@ class ListCitiesViewModel
                 updateCity(current.toDatabase())
             }
 
-            currents[index].isFavorite = false
+            citiesArrayList[index].isFavorite = false
 
-            citiesList = currents.toList()
+            citiesList = citiesArrayList.toList()
             _mutableMainState.value?.copy(
                 isShowingSnackBar = true, error = null, result = citiesList,
                 responseType = ResponseType(
@@ -263,8 +263,8 @@ class ListCitiesViewModel
                 updateCity(current.toDatabase())
             }
 
-            currents[index].isFavorite = true
-            citiesList = currents.toList()
+            citiesArrayList[index].isFavorite = true
+            citiesList = citiesArrayList.toList()
 
             _mutableMainState.value?.copy(
                 isShowingSnackBar = true,
@@ -280,10 +280,10 @@ class ListCitiesViewModel
     }
 
     fun restoreCity() {
-        val index = currents.indexOfFirst { it.isUpdatePending }
-        currents[index].isUpdatePending = false
-        val cityUpdated = currents[index]
-        citiesList = currents.toList()
+        val index = citiesArrayList.indexOfFirst { it.isUpdatePending }
+        citiesArrayList[index].isUpdatePending = false
+        val cityUpdated = citiesArrayList[index]
+        citiesList = citiesArrayList.toList()
 
         _mutableMainState.value =
             ListCitiesViewState(
@@ -310,10 +310,10 @@ class ListCitiesViewModel
                     deleteCityUseCase(city.cityId!!)
                 }
             }
-            val index = currents.indexOfFirst { it.isUpdatePending }
+            val index = citiesArrayList.indexOfFirst { it.isUpdatePending }
             if (index != -1) {
-                currents.remove(currents[index])
-                citiesList = currents.toList()
+                citiesArrayList.remove(citiesArrayList[index])
+                citiesList = citiesArrayList.toList()
                 _mutableMainState.postValue(
                     ListCitiesViewState(
                         isShowingSnackBar = true, error = null, result = citiesList,
@@ -329,14 +329,10 @@ class ListCitiesViewModel
         }
     }
 
-    fun stopShowingSnackBar() {
-        _mutableMainState.value?.copy(isShowingSnackBar = false)
-    }
-
     fun refreshCities(sortOrder: SortOrder) {
         viewModelScope.launch(Dispatchers.IO) {
 
-            when (refreshCitiesUseCase(currents.toMutableList())) {
+            when (refreshCitiesUseCase(citiesArrayList.toMutableList())) {
                 is Result.Success -> {
                     getCities(sortOrder)
                 }

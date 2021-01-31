@@ -33,7 +33,8 @@ import javax.inject.Inject
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
-    ListCitiesAdapter.OnItemClickListener, CityItemTouchHelperAdapter, SearchAdapter.OnItemClickListener {
+    ListCitiesAdapter.OnItemClickListener, CityItemTouchHelperAdapter,
+    SearchAdapter.OnItemClickListener {
 
     private val viewModel: ListCitiesViewModel by viewModels()
 
@@ -74,21 +75,31 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
             transition()
         }
 
-        viewModel.mainState.observe(viewLifecycleOwner, {
+        viewModel.preferencesFlow.observe(viewLifecycleOwner, { filterPreferences ->
+            println("testeeeeeeeeeeepreferences")
+            getAllCities(filterPreferences.sortOrder)
+            updateCityOrder(filterPreferences.sortOrder)
+            swipeRefreshLayout.setOnRefreshListener {
+                refreshItems(filterPreferences.sortOrder)
+            }
+        }
+        )
+
+        viewModel.mainState.observe(viewLifecycleOwner, { listCitiesViewState ->
             search_cities.setText("")
             search_cities.clearFocus()
             first_screen.transitionToStart()
-            citiesAdapter.submitList(it.result)
+            citiesAdapter.submitList(listCitiesViewState.result)
 
-            if (it.result.isNotEmpty()) {
-                viewModel.updateCityId(it.result[0].cityId!!)
+            if (listCitiesViewState.result.isNotEmpty()) {
+                viewModel.updateCityId(listCitiesViewState.result[0].cityId!!)
             } else {
                 viewModel.updateCityId(0)
             }
 
             list_cities_rv.post { list_cities_rv.scrollToPosition(0) }
 
-            updateUi(it.responseType)
+            updateUi(listCitiesViewState.responseType)
 
             sort_cities.setOnClickListener {
                 filterMenu()
@@ -100,7 +111,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
             onBackPressed()
         }
 
-        search_cities.addTextChangedListener(object: TextWatcher{
+        search_cities.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -126,15 +137,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
             searchAdapter.submitList(it)
         })
 
-        viewModel.preferencesFlow.observe(viewLifecycleOwner, { filterPreferences ->
-            //viewModel.sortCities(filterPreferences.sortOrder)
-            getAllCities(filterPreferences.sortOrder)
-            updateCityOrder(filterPreferences.sortOrder)
-            swipeRefreshLayout.setOnRefreshListener {
-                refreshItems(filterPreferences.sortOrder)
-            }
-        }
-        )
+
     }
 
     private fun refreshItems(sortOrder: SortOrder) {
@@ -189,7 +192,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         viewModel.restoreCity()
     }
 
-    private fun displayToast(message: String) { }
+    private fun displayToast(message: String) {}
 
     override fun onCityClick(current: CurrentWeatherEntityModel) {
         viewModel.updateCityId(current.cityId!!)
@@ -264,13 +267,10 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
 
     }
 
-    private fun handleSearch(){
+    private fun handleSearch() {
         search_cities.setText("")
         search_cities.clearFocus()
         hideKeyboard()
-        Handler().postDelayed({
-            first_screen.transitionToStart()
-        }, 1000)
     }
 
     private fun onBackPressed() {
@@ -283,11 +283,11 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
 
     private fun onInitialEditTextClick() {
         search_cities.setOnFocusChangeListener { _, _ ->
-                first_screen.transitionToEnd()
+            first_screen.transitionToEnd()
         }
     }
 
-    private fun transition () {
+    private fun transition() {
         if (first_screen.currentState == first_screen.startState) {
             first_screen.transitionToEnd()
         } else {
