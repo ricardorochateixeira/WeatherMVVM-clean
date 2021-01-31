@@ -1,0 +1,3399 @@
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/FromApiToDbModel.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/FromApiToDbModel.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/FromApiToDbModel.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
+@@ -1,25 +0,0 @@
+-package com.ricardoteixeira.app.framework.api.mappers
+-
+-import com.ricardoteixeira.app.framework.api.models.WeatherCityApiModel
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+-
+- fun WeatherCityApiModel.toDatabase(): WeatherCityDatabaseModel {
+-
+-    return WeatherCityDatabaseModel(
+-        cityId = id,
+-        cityName = name,
+-        actualTemp = main?.temp,
+-        feelsLikeTemp = main?.feelsLike,
+-        tempMin = main?.tempMin,
+-        tempMax = main?.tempMax,
+-        weatherId = weather?.get(0)?.weatherId,
+-        weatherDescription = weather?.get(0)?.description,
+-        requestTime = dt!!.toInt(),
+-        humidity = main?.humidity,
+-        windSpeed = wind?.speed,
+-        sunrise = sys?.sunrise,
+-        sunset = sys?.sunset
+-
+-    )
+-
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/WeatherCityApiModel.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/WeatherCityApiModel.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/WeatherCityApiModel.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
+@@ -1,35 +0,0 @@
+-package com.ricardoteixeira.app.framework.api.models
+-
+-import com.squareup.moshi.Json
+-
+-data class WeatherCityApiModel(
+-
+-    @Json(name = "cod") var cod: Int?,
+-
+-    @Json(name = "coord") var coord: Coord?,
+-
+-    @Json(name = "dt") var dt: Int?,
+-
+-    @Json(name = "id") var id: Int?,
+-
+-    @Json(name = "main") var main: Main?,
+-
+-    @Json(name = "name") var name: String?,
+-
+-    @Json(name = "sys") var sys: Sys?,
+-
+-    @Json(name = "timezone") var timezone: Int?,
+-
+-    @Json(name = "visibility") var visibility: Int?,
+-
+-    @Json(name = "weather")var weather: List<Weather?>?,
+-
+-    @Json(name = "wind") var wind: Wind?
+-)
+-
+-
+-
+-
+-
+-
+-
+Index: app/src/main/java/com/ricardoteixeira/data/mappers/JsonToEntity.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/data/mappers/JsonToEntity.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/data/mappers/JsonToEntity.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
+@@ -1,22 +0,0 @@
+-package com.ricardoteixeira.data.mappers
+-
+-import com.ricardoteixeira.app.framework.api.models.WeatherCityApiModel
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
+-
+-internal fun WeatherCityApiModel.toEntity(): WeatherCityEntity {
+-    return WeatherCityEntity(
+-        cityName = name,
+-        cityId = id,
+-        actualTemp = main?.temp,
+-        tempMax = main?.tempMax,
+-        tempMin = main?.tempMin,
+-        feelsLikeTemp = main?.feelsLike,
+-        weatherId = weather?.get(0)?.weatherId,
+-        weatherDescription = weather?.get(0)?.description,
+-        requestTime = dt!!,
+-        windSpeed = wind?.speed,
+-        humidity = main?.humidity,
+-        sunset = sys?.sunset,
+-        sunrise = sys?.sunrise
+-    )
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/FutureWeatherApiModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/FutureWeatherApiModel.kt	(date 1611226118611)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/FutureWeatherApiModel.kt	(date 1611226118611)
+@@ -0,0 +1,18 @@
++package com.ricardoteixeira.app.framework.api.models.futureweather
++
++
++import com.squareup.moshi.Json
++
++data class FutureWeatherApiModel(
++    @Json(name = "city")
++    var cityFutureWeatherApi: CityFutureWeatherApi?,
++    @Json(name = "cnt")
++    var cnt: Int?,
++    @Json(name = "cod")
++    var cod: String?,
++    @Json(name = "list")
++    var list: List<GeneralFutureWeatherApi?>?,
++    @Json(name = "message")
++    var message: Int?
++)
++
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/CityFutureWeatherApi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/CityFutureWeatherApi.kt	(date 1611226118755)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/CityFutureWeatherApi.kt	(date 1611226118755)
+@@ -0,0 +1,20 @@
++package com.ricardoteixeira.app.framework.api.models.futureweather
++
++import com.squareup.moshi.Json
++
++data class CityFutureWeatherApi (
++    @Json(name = "country")
++    var country: String?,
++    @Json(name = "id")
++    var id: Int?,
++    @Json(name = "name")
++    var name: String?,
++    @Json(name = "population")
++    var population: Int?,
++    @Json(name = "sunrise")
++    var sunrise: Int?,
++    @Json(name = "sunset")
++    var sunset: Int?,
++    @Json(name = "timezone")
++    var timezone: Int?
++    )
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/GeneralFutureWeatherApi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/GeneralFutureWeatherApi.kt	(date 1611226118720)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/GeneralFutureWeatherApi.kt	(date 1611226118720)
+@@ -0,0 +1,22 @@
++package com.ricardoteixeira.app.framework.api.models.futureweather
++
++import com.squareup.moshi.Json
++
++data class GeneralFutureWeatherApi(
++    @Json(name = "clouds")
++    var cloudsFutureWeatherApi: CloudsFutureWeatherApi?,
++    @Json(name = "dt")
++    var dt: Int?,
++    @Json(name = "dt_txt")
++    var dtTxt: String?,
++    @Json(name = "main")
++    var mainFutureWeatherApi: MainFutureWeatherApi?,
++    @Json(name = "sys")
++    var sysFutureWeatherApi: SysFutureWeatherApi?,
++    @Json(name = "visibility")
++    var visibility: Int?,
++    @Json(name = "weather")
++    var descriptionFutureWeatherApi: List<DescriptionFutureWeatherApi?>?,
++    @Json(name = "wind")
++    var windFutureWeatherApi: WindFutureWeatherApi?
++)
+Index: app/src/main/java/com/ricardoteixeira/app/framework/repository/GetFavoriteCitiesImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/repository/GetFavoriteCitiesImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/GetFavoriteCitiesImpl.kt	(date 1611226814984)
+@@ -2,13 +2,12 @@
+ 
+ import com.ricardoteixeira.app.framework.db.WeatherCityDao
+ import com.ricardoteixeira.app.framework.db.mappers.toEntity
+-import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.data.repository.GetFavoriteCities
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import javax.inject.Inject
+ 
+ class GetFavoriteCitiesImpl @Inject constructor(private val weatherDao: WeatherCityDao): GetFavoriteCities {
+-    override suspend fun getFavoriteCities(): List<WeatherCityEntity> {
++    override suspend fun getFavoriteCities(): List<CurrentWeatherEntityModel> {
+         val result = weatherDao.getFavoriteCities()
+         if (result.isEmpty()) {
+             return emptyList()
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/WindFutureWeatherApi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/WindFutureWeatherApi.kt	(date 1611226118555)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/WindFutureWeatherApi.kt	(date 1611226118555)
+@@ -0,0 +1,10 @@
++package com.ricardoteixeira.app.framework.api.models.futureweather
++
++import com.squareup.moshi.Json
++
++data class WindFutureWeatherApi(
++    @Json(name = "deg")
++    var deg: Int?,
++    @Json(name = "speed")
++    var speed: Double?
++)
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/FutureWeatherDatabaseModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/FutureWeatherDatabaseModel.kt	(date 1611226817252)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/FutureWeatherDatabaseModel.kt	(date 1611226817252)
+@@ -0,0 +1,20 @@
++package com.ricardoteixeira.app.framework.db.model.future
++
++import androidx.room.ColumnInfo
++import androidx.room.Entity
++import androidx.room.PrimaryKey
++import androidx.room.TypeConverters
++
++@Entity(tableName = "future_weather")
++
++data class FutureWeatherDatabaseModel(
++    @PrimaryKey(autoGenerate = false)
++    val cityId: Int?,
++
++    @ColumnInfo(name = "city_name")
++    val cityName: String?,
++
++    @TypeConverters(WeatherConverter::class)
++    @ColumnInfo(name = "list_future_weather")
++    val generalFutureWeather: List<GeneralFutureWeatherDatabase>
++)
+Index: app/src/main/java/com/ricardoteixeira/domain/usecases/favorite/GetFavoriteCitiesUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/usecases/favorite/GetFavoriteCitiesUseCase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/domain/usecases/favorite/GetFavoriteCitiesUseCase.kt	(date 1611226817608)
+@@ -1,14 +1,12 @@
+ package com.ricardoteixeira.domain.usecases.favorite
+ 
+-import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.data.repository.GetFavoriteCities
+-import com.ricardoteixeira.data.repository.WeatherRepository
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
+ import javax.inject.Inject
+ 
+ class GetFavoriteCitiesUseCase @Inject constructor(private val getFavoriteCities: GetFavoriteCities):
+-    BaseUseCase<Unit, List<WeatherCityEntity>> {
++    BaseUseCase<Unit, List<CurrentWeatherEntityModel>> {
+ 
+-    override suspend fun invoke(params: Unit): List<WeatherCityEntity> = getFavoriteCities.getFavoriteCities()
++    override suspend fun invoke(params: Unit): List<CurrentWeatherEntityModel> = getFavoriteCities.getFavoriteCities()
+ }
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/CloudsFutureWeatherApi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/CloudsFutureWeatherApi.kt	(date 1611226118505)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/CloudsFutureWeatherApi.kt	(date 1611226118505)
+@@ -0,0 +1,8 @@
++package com.ricardoteixeira.app.framework.api.models.futureweather
++
++import com.squareup.moshi.Json
++
++data class CloudsFutureWeatherApi(
++    @Json(name = "all")
++    var all: Int?
++)
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/MainFutureWeatherApi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/MainFutureWeatherApi.kt	(date 1611226118596)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/MainFutureWeatherApi.kt	(date 1611226118596)
+@@ -0,0 +1,24 @@
++package com.ricardoteixeira.app.framework.api.models.futureweather
++
++import com.squareup.moshi.Json
++
++data class MainFutureWeatherApi(
++    @Json(name = "feels_like")
++    var feelsLike: Double?,
++    @Json(name = "grnd_level")
++    var grndLevel: Int?,
++    @Json(name = "humidity")
++    var humidity: Int?,
++    @Json(name = "pressure")
++    var pressure: Int?,
++    @Json(name = "sea_level")
++    var seaLevel: Int?,
++    @Json(name = "temp")
++    var temp: Double?,
++    @Json(name = "temp_kf")
++    var tempKf: Double?,
++    @Json(name = "temp_max")
++    var tempMax: Double?,
++    @Json(name = "temp_min")
++    var tempMin: Double?
++)
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/SysFutureWeatherApi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/SysFutureWeatherApi.kt	(date 1611226118705)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/SysFutureWeatherApi.kt	(date 1611226118705)
+@@ -0,0 +1,8 @@
++package com.ricardoteixeira.app.framework.api.models.futureweather
++
++import com.squareup.moshi.Json
++
++data class SysFutureWeatherApi(
++    @Json(name = "pod")
++    var pod: String?
++)
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/DescriptionFutureWeatherApi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/DescriptionFutureWeatherApi.kt	(date 1611226118471)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/futureweather/DescriptionFutureWeatherApi.kt	(date 1611226118471)
+@@ -0,0 +1,10 @@
++package com.ricardoteixeira.app.framework.api.models.futureweather
++
++import com.squareup.moshi.Json
++
++data class DescriptionFutureWeatherApi(
++    var description: String?,
++    var icon: String?,
++    var id: Int?,
++    var main: String?
++)
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/MainFutureWeatherDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/MainFutureWeatherDatabase.kt	(date 1611226817700)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/MainFutureWeatherDatabase.kt	(date 1611226817700)
+@@ -0,0 +1,11 @@
++package com.ricardoteixeira.app.framework.db.model.future
++
++import com.squareup.moshi.Json
++
++data class MainFutureWeatherDatabase (
++    var feelsLike: Double?,
++    var temp: Double?,
++    var tempKf: Double?,
++    var tempMax: Double?,
++    var tempMin: Double?
++)
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/DescriptionFutureWeatherDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/DescriptionFutureWeatherDatabase.kt	(date 1611226818592)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/DescriptionFutureWeatherDatabase.kt	(date 1611226818592)
+@@ -0,0 +1,8 @@
++package com.ricardoteixeira.app.framework.db.model.future
++
++import com.squareup.moshi.Json
++
++data class DescriptionFutureWeatherDatabase(
++    var description: String?,
++    var main: String?
++)
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/WeatherConverter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/WeatherConverter.kt	(date 1611226814175)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/WeatherConverter.kt	(date 1611226814175)
+@@ -0,0 +1,22 @@
++package com.ricardoteixeira.app.framework.db.model.future
++
++import androidx.room.TypeConverter
++import com.google.gson.Gson
++import com.google.gson.reflect.TypeToken
++
++class WeatherConverter {
++
++    @TypeConverter
++    fun fromString(value: String?): List<GeneralFutureWeatherDatabase?>? {
++        val listType = object : TypeToken<List<GeneralFutureWeatherDatabase?>?>() {}.type
++        return Gson().fromJson(value, listType)
++    }
++
++    @TypeConverter
++    fun fromAList(list: List<GeneralFutureWeatherDatabase?>?): String? {
++        val gson = Gson()
++        return gson.toJson(list)
++    }
++
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/favorites/FavoriteAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/favorites/FavoriteAdapter.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/favorites/FavoriteAdapter.kt	(date 1611230118927)
+@@ -6,10 +6,10 @@
+ import androidx.recyclerview.widget.RecyclerView
+ import com.ricardoteixeira.app.presentation.listcities.ListCitiesAdapter
+ import com.ricardoteixeira.app.utils.setWeatherImage
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.weathermvvm_clean.databinding.CityFavoriteItemBinding
+ 
+-class FavoriteAdapter: ListAdapter<WeatherCityEntity, FavoriteAdapter.ViewHolder>(
++class FavoriteAdapter: ListAdapter<CurrentWeatherEntityModel, FavoriteAdapter.ViewHolder>(
+     ListCitiesAdapter.DiffCallback()
+ ) {
+     override fun onCreateViewHolder(
+@@ -28,23 +28,14 @@
+     inner class ViewHolder(private val binding: CityFavoriteItemBinding):
+         RecyclerView.ViewHolder(binding.root) {
+ 
+-            init {
+-                binding.apply {
+-                    val position = adapterPosition
+-                    if (position != RecyclerView.NO_POSITION) {
+-                        val city = getItem(position)
+-                    }
+-                }
+-            }
+-
+-        fun bind(weatherCityEntity: WeatherCityEntity) {
++        fun bind(currentWeatherEntityModel: CurrentWeatherEntityModel) {
+             binding.apply {
+-                cityNameFavorite.text = weatherCityEntity.cityName
+-                cityTemperatureFavorite.text = "${weatherCityEntity.actualTemp.toString()} ºC"
+-                descriptionFavorite.text = weatherCityEntity.weatherDescription?.capitalize()
+-                weatherImageFavorite.setWeatherImage(weatherCityEntity)
+-                minimumTemperatureValueFavorite.text = "${weatherCityEntity.tempMin.toString()} ºC"
+-                maximumTemperatureValueFavorite.text = "${weatherCityEntity.tempMax.toString()} ºC"
++                cityNameFavorite.text = currentWeatherEntityModel.cityName
++                cityTemperatureFavorite.text = "${currentWeatherEntityModel.actualTemp.toString()} ºC"
++                descriptionFavorite.text = currentWeatherEntityModel.weatherDescription?.capitalize()
++                weatherImageFavorite.setWeatherImage(currentWeatherEntityModel)
++                minimumTemperatureValueFavorite.text = "${currentWeatherEntityModel.tempMin.toString()} ºC"
++                maximumTemperatureValueFavorite.text = "${currentWeatherEntityModel.tempMax.toString()} ºC"
+             }
+         }
+     }
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/GeneralFutureWeatherDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/GeneralFutureWeatherDatabase.kt	(date 1611226814949)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/model/future/GeneralFutureWeatherDatabase.kt	(date 1611226814949)
+@@ -0,0 +1,8 @@
++package com.ricardoteixeira.app.framework.db.model.future
++
++data class GeneralFutureWeatherDatabase(
++    var dt: Int?,
++    var dtTxt: String?,
++    var mainFutureWeather: MainFutureWeatherDatabase?,
++    var descriptionFutureWeather: List<DescriptionFutureWeatherDatabase?>?
++)
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/favorites/FavoriteViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/favorites/FavoriteViewModel.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/favorites/FavoriteViewModel.kt	(date 1610634186372)
+@@ -5,12 +5,9 @@
+ import androidx.lifecycle.MutableLiveData
+ import androidx.lifecycle.ViewModel
+ import androidx.lifecycle.viewModelScope
+-import com.ricardoteixeira.app.presentation.listcities.ListCitiesViewState
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
+ import com.ricardoteixeira.domain.usecases.favorite.GetFavoriteCitiesUseCase
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.launch
+-import javax.inject.Inject
+ 
+ class FavoriteViewModel @ViewModelInject constructor(
+     private val getFavoriteCitiesUseCase: GetFavoriteCitiesUseCase
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/MainFutureWeatherFromApiToDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/MainFutureWeatherFromApiToDatabase.kt	(date 1611226819056)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/MainFutureWeatherFromApiToDatabase.kt	(date 1611226819056)
+@@ -0,0 +1,16 @@
++package com.ricardoteixeira.app.framework.api.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.api.models.futureweather.MainFutureWeatherApi
++import com.ricardoteixeira.app.framework.db.model.future.MainFutureWeatherDatabase
++
++fun MainFutureWeatherApi.toDatabase(): MainFutureWeatherDatabase {
++
++    return MainFutureWeatherDatabase(
++        feelsLike = feelsLike,
++        temp = temp,
++        tempKf = tempKf,
++        tempMax = tempMax,
++        tempMin = tempMin
++    )
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/DescriptionFutureWeatherFromApiToDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/DescriptionFutureWeatherFromApiToDatabase.kt	(date 1611226819124)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/DescriptionFutureWeatherFromApiToDatabase.kt	(date 1611226819124)
+@@ -0,0 +1,13 @@
++package com.ricardoteixeira.app.framework.api.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.api.models.futureweather.DescriptionFutureWeatherApi
++import com.ricardoteixeira.app.framework.db.model.future.DescriptionFutureWeatherDatabase
++
++fun DescriptionFutureWeatherApi.toDatabase(): DescriptionFutureWeatherDatabase {
++
++    return DescriptionFutureWeatherDatabase(
++        description = description,
++        main = main
++    )
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/domain/models/future/FutureWeatherEntityModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/models/future/FutureWeatherEntityModel.kt	(date 1611226814624)
++++ app/src/main/java/com/ricardoteixeira/domain/models/future/FutureWeatherEntityModel.kt	(date 1611226814624)
+@@ -0,0 +1,7 @@
++package com.ricardoteixeira.domain.models.future
++
++data class FutureWeatherEntityModel(
++    val cityId: Int?,
++    val cityName: String?,
++    val generalFutureWeather: List<GeneralFutureWeatherEntity>
++)
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/GeneralFutureWeatherFromApiToDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/GeneralFutureWeatherFromApiToDatabase.kt	(date 1611226818971)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/GeneralFutureWeatherFromApiToDatabase.kt	(date 1611226818971)
+@@ -0,0 +1,28 @@
++package com.ricardoteixeira.app.framework.api.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.api.models.futureweather.GeneralFutureWeatherApi
++import com.ricardoteixeira.app.framework.api.models.futureweather.DescriptionFutureWeatherApi
++import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
++import com.ricardoteixeira.app.framework.db.model.future.DescriptionFutureWeatherDatabase
++
++fun GeneralFutureWeatherApi.toDatabase(): GeneralFutureWeatherDatabase {
++
++    return GeneralFutureWeatherDatabase(
++        dt = dt,
++        dtTxt = dtTxt,
++        mainFutureWeather = mainFutureWeatherApi?.toDatabase(),
++        descriptionFutureWeather = provideWeatherList(descriptionFutureWeatherApi)
++    )
++
++}
++
++fun provideWeatherList (descriptionFutureWeatherApi: List<DescriptionFutureWeatherApi?>?): List<DescriptionFutureWeatherDatabase> {
++    lateinit var descriptionFutureWeatherDatabase: List<DescriptionFutureWeatherDatabase>
++
++    if (descriptionFutureWeatherApi != null) {
++        descriptionFutureWeatherDatabase = descriptionFutureWeatherApi.map { it!!.toDatabase() }
++    }
++    return descriptionFutureWeatherDatabase
++}
++
++
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/FutureWeatherFromApiToDatabaseModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/FutureWeatherFromApiToDatabaseModel.kt	(date 1611226814267)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/futureweather/FutureWeatherFromApiToDatabaseModel.kt	(date 1611226814267)
+@@ -0,0 +1,24 @@
++package com.ricardoteixeira.app.framework.api.mappers
++
++import com.ricardoteixeira.app.framework.api.mappers.futureweather.toDatabase
++import com.ricardoteixeira.app.framework.api.models.futureweather.GeneralFutureWeatherApi
++import com.ricardoteixeira.app.framework.api.models.futureweather.FutureWeatherApiModel
++import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
++import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
++
++fun FutureWeatherApiModel.toDatabase(): FutureWeatherDatabaseModel {
++    return FutureWeatherDatabaseModel(
++        cityId = cityFutureWeatherApi?.id,
++        cityName = cityFutureWeatherApi?.name,
++        generalFutureWeather = provideFutureWeatherList(generalFutureWeatherApiApiModel = list)
++    )
++
++}
++
++fun provideFutureWeatherList(generalFutureWeatherApiApiModel: List<GeneralFutureWeatherApi?>?): List<GeneralFutureWeatherDatabase> {
++    lateinit var generalFutureWeather: List<GeneralFutureWeatherDatabase>
++    if (generalFutureWeatherApiApiModel != null) {
++        generalFutureWeather = generalFutureWeatherApiApiModel.map { it!!.toDatabase() }
++    }
++    return generalFutureWeather
++}
+Index: app/src/main/java/com/ricardoteixeira/di/ViewModelModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/di/ViewModelModule.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/di/ViewModelModule.kt	(date 1610557714578)
+@@ -3,6 +3,7 @@
+ import com.ricardoteixeira.data.repository.*
+ import com.ricardoteixeira.domain.usecases.details.GetCityByIdUseCase
+ import com.ricardoteixeira.domain.usecases.favorite.GetFavoriteCitiesUseCase
++import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherUseCase
+ import com.ricardoteixeira.domain.usecases.listcities.*
+ import dagger.Module
+ import dagger.Provides
+@@ -16,6 +17,9 @@
+     @Provides
+     fun provideInsertCityUseCase(fetchCityFromApi: FetchCityFromApi): FetchCityUseCase = FetchCityUseCase(fetchCityFromApi)
+ 
++    @Provides
++    fun provideInsertFutureCityUseCase(fetchFutureWeatherFromApi: FetchFutureWeatherFromApi): FetchFutureWeatherUseCase = FetchFutureWeatherUseCase(fetchFutureWeatherFromApi)
++
+     @Provides
+     fun provideInsertCityIntoDatabase(insertCityIntoDatabase: InsertCityIntoDatabase): InsertCityIntoDatabaseUseCase = InsertCityIntoDatabaseUseCase(insertCityIntoDatabase)
+ 
+@@ -39,4 +43,6 @@
+ 
+     @Provides
+     fun providesGetFavoriteCities(getFavoriteCities: GetFavoriteCities): GetFavoriteCitiesUseCase = GetFavoriteCitiesUseCase(getFavoriteCities)
++
++
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/di/UseCasesModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/di/UseCasesModule.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/di/UseCasesModule.kt	(date 1610637249184)
+@@ -2,7 +2,7 @@
+ 
+ import com.ricardoteixeira.app.framework.api.ApiHelper
+ import com.ricardoteixeira.app.framework.api.ApiHelperImpl
+-import com.ricardoteixeira.app.framework.api.InsertCityIntoDatabaseImpl
++import com.ricardoteixeira.app.framework.repository.InsertCityIntoDatabaseImpl
+ import com.ricardoteixeira.app.framework.repository.*
+ import com.ricardoteixeira.data.repository.*
+ import dagger.Binds
+@@ -23,6 +23,9 @@
+     @Binds
+     abstract fun provideInsertFromApi(insertCityFromApi: FetchCityFromApiImpl): FetchCityFromApi
+ 
++    @Binds
++    abstract fun provideInsertFutureFromApi(insertFutureWeatherFromApi: FetchFutureWeatherFromApiImpl): FetchFutureWeatherFromApi
++
+     @Binds
+     abstract fun provideInsertCityIntoDatabase(insertCityIntoDatabase: InsertCityIntoDatabaseImpl): InsertCityIntoDatabase
+ 
+@@ -46,4 +49,5 @@
+ 
+     @Binds
+     abstract fun getFavoriteCities(getFavoriteCities: GetFavoriteCitiesImpl): GetFavoriteCities
++
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/di/DatabaseModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/di/DatabaseModule.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/di/DatabaseModule.kt	(date 1610634409683)
+@@ -22,4 +22,7 @@
+ 
+     @Provides
+     fun provideWeatherCityDao(database: WeatherCityDatabase) = database.weatherCityDao()
++
++    @Provides
++    fun provideFutureWeatherDao(database: WeatherCityDatabase) = database.futureWeatherDao()
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/FutureWeatherModelDatabaseToEntity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/FutureWeatherModelDatabaseToEntity.kt	(date 1611226818620)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/FutureWeatherModelDatabaseToEntity.kt	(date 1611226818620)
+@@ -0,0 +1,20 @@
++package com.ricardoteixeira.app.framework.db.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
++import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
++import com.ricardoteixeira.domain.models.future.GeneralFutureWeatherEntity
++import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
++
++fun FutureWeatherDatabaseModel.toEntity(): FutureWeatherEntityModel {
++
++    return FutureWeatherEntityModel(
++        cityId = cityId,
++        cityName = cityName,
++        generalFutureWeather = provideFutureWeatherListToEntity(generalFutureWeather)
++    )
++
++}
++
++fun provideFutureWeatherListToEntity(generalFutureWeatherDatabase: List<GeneralFutureWeatherDatabase>): List<GeneralFutureWeatherEntity> {
++    return generalFutureWeatherDatabase.map { it.toEntity() }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/repository/FetchFutureWeatherFromApiImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/repository/FetchFutureWeatherFromApiImpl.kt	(date 1610636723355)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/FetchFutureWeatherFromApiImpl.kt	(date 1610636723355)
+@@ -0,0 +1,24 @@
++package com.ricardoteixeira.app.framework.repository
++
++import com.ricardoteixeira.app.framework.api.WeatherService
++import com.ricardoteixeira.app.framework.api.mappers.toDatabase
++import com.ricardoteixeira.app.framework.db.FutureWeatherDao
++import com.ricardoteixeira.app.framework.db.mappers.futureweather.toEntity
++import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
++import com.ricardoteixeira.app.utils.Result
++import com.ricardoteixeira.data.repository.FetchFutureWeatherFromApi
++import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
++import javax.inject.Inject
++
++class FetchFutureWeatherFromApiImpl
++@Inject constructor(private val futureWeatherDao: FutureWeatherDao, private val weatherService: WeatherService):
++    FetchFutureWeatherFromApi {
++    override suspend fun fetchFutureWeatherFromApi(cityName: String): Result<FutureWeatherEntityModel> =
++        try {
++            val city = weatherService.getFutureWeather(cityName)
++            futureWeatherDao.insertCity(city.toDatabase())
++            Result.Success(city.toDatabase().toEntity())
++        } catch (error: Throwable) {
++            Result.Failure(error.toString())
++        }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/domain/models/future/DescriptionFutureWeatherEntity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/models/future/DescriptionFutureWeatherEntity.kt	(date 1611226814816)
++++ app/src/main/java/com/ricardoteixeira/domain/models/future/DescriptionFutureWeatherEntity.kt	(date 1611226814816)
+@@ -0,0 +1,6 @@
++package com.ricardoteixeira.domain.models.future
++
++data class DescriptionFutureWeatherEntity(
++    var description: String?,
++    var main: String?
++)
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/DescriptionFromDatabaseToEntity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/DescriptionFromDatabaseToEntity.kt	(date 1611226814893)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/DescriptionFromDatabaseToEntity.kt	(date 1611226814893)
+@@ -0,0 +1,12 @@
++package com.ricardoteixeira.app.framework.db.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.db.model.future.DescriptionFutureWeatherDatabase
++import com.ricardoteixeira.domain.models.future.DescriptionFutureWeatherEntity
++
++fun DescriptionFutureWeatherDatabase.toEntity(): DescriptionFutureWeatherEntity {
++
++    return DescriptionFutureWeatherEntity(
++        description = description,
++        main = main
++    )
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/FutureEntityModelToDatabaseModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/FutureEntityModelToDatabaseModel.kt	(date 1611226818657)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/FutureEntityModelToDatabaseModel.kt	(date 1611226818657)
+@@ -0,0 +1,20 @@
++package com.ricardoteixeira.app.framework.db.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
++import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
++import com.ricardoteixeira.domain.models.future.GeneralFutureWeatherEntity
++import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
++
++fun FutureWeatherEntityModel.toDatabase(): FutureWeatherDatabaseModel {
++
++    return FutureWeatherDatabaseModel(
++        cityId = cityId,
++        cityName = cityName,
++        generalFutureWeather = provideFutureWeatherListToDatabase(generalFutureWeather)
++    )
++
++}
++
++fun provideFutureWeatherListToDatabase(generalFutureWeatherEntity: List<GeneralFutureWeatherEntity>): List<GeneralFutureWeatherDatabase> {
++    return generalFutureWeatherEntity.map { it.toDatabase() }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/utils/Result.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/utils/Result.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/utils/Result.kt	(date 1610634186345)
+@@ -1,8 +1,5 @@
+ package com.ricardoteixeira.app.utils
+ 
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
+-
+ 
+ sealed class Result<out T: Any>{
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/utils/BindImages.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/utils/BindImages.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/utils/BindImages.kt	(date 1611226814255)
+@@ -1,11 +1,10 @@
+ package com.ricardoteixeira.app.utils
+ 
+ import android.widget.ImageView
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.weathermvvm_clean.R
+ 
+-fun ImageView.setWeatherImage(item: WeatherCityEntity?) {
++fun ImageView.setWeatherImage(item: CurrentWeatherEntityModel?) {
+     item?.let {
+         setImageResource(when (item.weatherId ) {
+             in 200..299 -> R.drawable.ic_thunder
+Index: app/src/main/java/com/ricardoteixeira/domain/models/future/GeneralFutureWeatherEntity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/models/future/GeneralFutureWeatherEntity.kt	(date 1611226813965)
++++ app/src/main/java/com/ricardoteixeira/domain/models/future/GeneralFutureWeatherEntity.kt	(date 1611226813965)
+@@ -0,0 +1,9 @@
++package com.ricardoteixeira.domain.models.future
++
++data class GeneralFutureWeatherEntity (
++        var dt: Int?,
++        var dtTxt: String?,
++        var mainFutureWeather: MainFutureWeatherEntity?,
++        var descriptionFutureWeather: List<DescriptionFutureWeatherEntity?>?
++
++        )
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/domain/models/future/MainFutureWeatherEntity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/models/future/MainFutureWeatherEntity.kt	(date 1611226819182)
++++ app/src/main/java/com/ricardoteixeira/domain/models/future/MainFutureWeatherEntity.kt	(date 1611226819182)
+@@ -0,0 +1,7 @@
++package com.ricardoteixeira.domain.models.future
++
++data class MainFutureWeatherEntity(var feelsLike: Double?,
++                                   var temp: Double?,
++                                   var tempKf: Double?,
++                                   var tempMax: Double?,
++                                   var tempMin: Double?)
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/DescriptionFromEntityToDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/DescriptionFromEntityToDatabase.kt	(date 1611226818100)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/DescriptionFromEntityToDatabase.kt	(date 1611226818100)
+@@ -0,0 +1,12 @@
++package com.ricardoteixeira.app.framework.db.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.db.model.future.DescriptionFutureWeatherDatabase
++import com.ricardoteixeira.domain.models.future.DescriptionFutureWeatherEntity
++
++fun DescriptionFutureWeatherEntity.toDatabase(): DescriptionFutureWeatherDatabase {
++
++    return DescriptionFutureWeatherDatabase(
++        description = description,
++        main = main
++    )
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/GeneralWeatherDatabaseModelToEntityModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/GeneralWeatherDatabaseModelToEntityModel.kt	(date 1611226817934)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/GeneralWeatherDatabaseModelToEntityModel.kt	(date 1611226817934)
+@@ -0,0 +1,24 @@
++package com.ricardoteixeira.app.framework.db.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
++import com.ricardoteixeira.app.framework.db.model.future.DescriptionFutureWeatherDatabase
++import com.ricardoteixeira.domain.models.future.GeneralFutureWeatherEntity
++import com.ricardoteixeira.domain.models.future.DescriptionFutureWeatherEntity
++
++fun GeneralFutureWeatherDatabase.toEntity(): GeneralFutureWeatherEntity {
++    return GeneralFutureWeatherEntity(
++        dt = dt,
++        dtTxt = dtTxt,
++        mainFutureWeather = mainFutureWeather?.toEntity(),
++        descriptionFutureWeather = provideWeatherListToEntity(descriptionFutureWeather)
++    )
++}
++
++fun provideWeatherListToEntity (descriptionFutureWeather: List<DescriptionFutureWeatherDatabase?>?): List<DescriptionFutureWeatherEntity> {
++    lateinit var descriptionFutureWeatherDatabase: List<DescriptionFutureWeatherEntity>
++
++    if (descriptionFutureWeather != null) {
++        descriptionFutureWeatherDatabase = descriptionFutureWeather.map { it!!.toEntity() }
++    }
++    return descriptionFutureWeatherDatabase
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/WeatherCityDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/WeatherCityDatabase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/WeatherCityDatabase.kt	(date 1611226813825)
+@@ -2,11 +2,19 @@
+ 
+ import androidx.room.Database
+ import androidx.room.RoomDatabase
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
++import androidx.room.TypeConverters
++import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
++import com.ricardoteixeira.app.framework.db.model.future.WeatherConverter
+ 
+-@Database(entities = [WeatherCityDatabaseModel::class], version = 1)
++@Database(entities = [CurrentWeatherDatabaseModel::class,
++                     FutureWeatherDatabaseModel::class], version = 1)
++@TypeConverters(WeatherConverter::class)
++
+ abstract class WeatherCityDatabase: RoomDatabase() {
+ 
+     abstract fun weatherCityDao(): WeatherCityDao
+ 
++    abstract fun futureWeatherDao(): FutureWeatherDao
++
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/MainDatabaseToEntity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/MainDatabaseToEntity.kt	(date 1611226814758)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/MainDatabaseToEntity.kt	(date 1611226814758)
+@@ -0,0 +1,14 @@
++package com.ricardoteixeira.app.framework.db.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.db.model.future.MainFutureWeatherDatabase
++import com.ricardoteixeira.domain.models.future.MainFutureWeatherEntity
++
++fun MainFutureWeatherDatabase.toEntity(): MainFutureWeatherEntity {
++    return MainFutureWeatherEntity(
++        feelsLike = feelsLike,
++        temp = temp,
++        tempKf = tempKf,
++        tempMin = tempMin,
++        tempMax = tempMax
++    )
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/WeatherCityDao.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/WeatherCityDao.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/WeatherCityDao.kt	(date 1611226818781)
+@@ -1,34 +1,30 @@
+ package com.ricardoteixeira.app.framework.db
+ 
+ import androidx.room.*
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+-import com.ricardoteixeira.app.utils.Result
+-import com.ricardoteixeira.app.utils.SortOrder
+-import kotlinx.coroutines.flow.Flow
+-import retrofit2.http.GET
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
+ 
+ @Dao
+ interface WeatherCityDao {
+     @Insert(onConflict = OnConflictStrategy.REPLACE)
+-    suspend fun insertCity(city: WeatherCityDatabaseModel): Long
++    suspend fun insertCity(city: CurrentWeatherDatabaseModel): Long
+ 
+     @Query("DELETE FROM city_weather WHERE cityId = :cityId")
+     suspend fun deleteCity(cityId: Int): Int
+ 
+     @Query("SELECT * FROM  city_weather WHERE is_delete_pending = 0 ORDER BY request_time DESC")
+-    fun getCities(): List<WeatherCityDatabaseModel>
++    fun getCities(): List<CurrentWeatherDatabaseModel>
+ 
+     @Update
+-    suspend fun updateCity(city: WeatherCityDatabaseModel)
++    suspend fun updateCity(city: CurrentWeatherDatabaseModel)
+ 
+     @Query("SELECT * FROM  city_weather WHERE is_delete_pending = 1")
+-    fun getCityPendingDelete(): WeatherCityDatabaseModel?
++    fun getCityPendingDelete(): CurrentWeatherDatabaseModel?
+ 
+     @Query("SELECT * FROM  city_weather WHERE cityId = :cityId")
+-    fun getCityById(cityId: Int): WeatherCityDatabaseModel?
++    fun getCityById(cityId: Int): CurrentWeatherDatabaseModel?
+ 
+     @Query("SELECT * FROM  city_weather WHERE is_favorite = 1")
+-    fun getFavoriteCities(): List<WeatherCityDatabaseModel?>
++    fun getFavoriteCities(): List<CurrentWeatherDatabaseModel?>
+ 
+ 
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/MainEntityToDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/MainEntityToDatabase.kt	(date 1611226818959)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/MainEntityToDatabase.kt	(date 1611226818959)
+@@ -0,0 +1,14 @@
++package com.ricardoteixeira.app.framework.db.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.db.model.future.MainFutureWeatherDatabase
++import com.ricardoteixeira.domain.models.future.MainFutureWeatherEntity
++
++fun MainFutureWeatherEntity.toDatabase(): MainFutureWeatherDatabase {
++    return MainFutureWeatherDatabase(
++        feelsLike = feelsLike,
++        temp = temp,
++        tempKf = tempKf,
++        tempMin = tempMin,
++        tempMax = tempMax
++    )
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/model/WeatherCityDatabaseModel.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/model/WeatherCityDatabaseModel.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/model/current/CurrentWeatherDatabaseModel.kt	(date 1611226813981)
+@@ -1,4 +1,4 @@
+-package com.ricardoteixeira.app.framework.db.model
++package com.ricardoteixeira.app.framework.db.model.current
+ 
+ import android.os.Parcelable
+ import androidx.room.ColumnInfo
+@@ -10,7 +10,7 @@
+ @Parcelize
+ @Entity(tableName = "city_weather")
+ 
+-data class WeatherCityDatabaseModel(
++data class CurrentWeatherDatabaseModel(
+     @PrimaryKey(autoGenerate = false)
+     val cityId: Int?,
+ 
+@@ -72,7 +72,7 @@
+         if (this === other) return true
+         if (javaClass != other?.javaClass) return false
+ 
+-        other as WeatherCityDatabaseModel
++        other as CurrentWeatherDatabaseModel
+ 
+         if (cityId != other.cityId) return false
+         if (cityName != other.cityName) return false
+Index: app/src/main/java/com/ricardoteixeira/domain/usecases/futureweather/FetchFutureWeatherUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/usecases/futureweather/FetchFutureWeatherUseCase.kt	(date 1610636723344)
++++ app/src/main/java/com/ricardoteixeira/domain/usecases/futureweather/FetchFutureWeatherUseCase.kt	(date 1610636723344)
+@@ -0,0 +1,16 @@
++package com.ricardoteixeira.domain.usecases.futureweather
++
++import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
++import com.ricardoteixeira.app.utils.Result
++import com.ricardoteixeira.data.repository.FetchFutureWeatherFromApi
++import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
++import com.ricardoteixeira.domain.usecases.common.BaseUseCase
++import javax.inject.Inject
++
++class FetchFutureWeatherUseCase
++@Inject constructor(private var fetchFutureWeather: FetchFutureWeatherFromApi) :
++    BaseUseCase<String, Result<FutureWeatherEntityModel>>{
++    override suspend fun invoke(params: String): Result<FutureWeatherEntityModel> {
++        return fetchFutureWeather.fetchFutureWeatherFromApi(params)
++    }
++}
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/DomainToDatabase.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/DomainToDatabase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/currentweather/EntityToDatabaseModel.kt	(date 1611226813813)
+@@ -1,11 +1,11 @@
+ package com.ricardoteixeira.app.framework.db.mappers
+ 
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ 
+-inline fun WeatherCityEntity.toDatabase(): WeatherCityDatabaseModel {
++fun CurrentWeatherEntityModel.toDatabase(): CurrentWeatherDatabaseModel {
+ 
+-    return WeatherCityDatabaseModel(
++    return CurrentWeatherDatabaseModel(
+         cityName = cityName,
+         cityId = cityId,
+         actualTemp = actualTemp,
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/GeneralFutureWeatherEntityToDatabase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/GeneralFutureWeatherEntityToDatabase.kt	(date 1611226818715)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/futureweather/GeneralFutureWeatherEntityToDatabase.kt	(date 1611226818715)
+@@ -0,0 +1,24 @@
++package com.ricardoteixeira.app.framework.db.mappers.futureweather
++
++import com.ricardoteixeira.app.framework.db.model.future.GeneralFutureWeatherDatabase
++import com.ricardoteixeira.app.framework.db.model.future.DescriptionFutureWeatherDatabase
++import com.ricardoteixeira.domain.models.future.GeneralFutureWeatherEntity
++import com.ricardoteixeira.domain.models.future.DescriptionFutureWeatherEntity
++
++fun GeneralFutureWeatherEntity.toDatabase(): GeneralFutureWeatherDatabase {
++    return GeneralFutureWeatherDatabase(
++        dt = dt,
++        dtTxt = dtTxt,
++        mainFutureWeather = mainFutureWeather?.toDatabase(),
++        descriptionFutureWeather = provideWeatherListToDatabase(descriptionFutureWeather)
++    )
++}
++
++fun provideWeatherListToDatabase (descriptionFutureWeatherEntity: List<DescriptionFutureWeatherEntity?>?): List<DescriptionFutureWeatherDatabase> {
++    lateinit var DescriptionFutureWeatherDatabase: List<DescriptionFutureWeatherDatabase>
++
++    if (descriptionFutureWeatherEntity != null) {
++        DescriptionFutureWeatherDatabase = descriptionFutureWeatherEntity.map { it!!.toDatabase() }
++    }
++    return DescriptionFutureWeatherDatabase
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/DatabaseToDomain.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/DatabaseToDomain.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/mappers/currentweather/DatabaseToEntityModel.kt	(date 1611226815819)
+@@ -1,11 +1,10 @@
+ package com.ricardoteixeira.app.framework.db.mappers
+ 
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
++fun CurrentWeatherDatabaseModel.toEntity(): CurrentWeatherEntityModel {
+ 
+- fun WeatherCityDatabaseModel.toEntity(): WeatherCityEntity{
+-
+-    return WeatherCityEntity(
++    return CurrentWeatherEntityModel(
+         cityName = cityName,
+         cityId = cityId,
+         actualTemp = actualTemp,
+@@ -22,4 +21,4 @@
+         sunrise = sunrise,
+         sunset = sunset
+     )
+-}
+\ No newline at end of file
++}
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/ApiHelper.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/ApiHelper.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/ApiHelper.kt	(date 1611226023037)
+@@ -1,11 +1,13 @@
+ package com.ricardoteixeira.app.framework.api
+ 
+-import com.ricardoteixeira.app.framework.api.models.WeatherCityApiModel
++import com.ricardoteixeira.app.framework.api.models.currentweather.CurrentWeatherApiModel
++import com.ricardoteixeira.app.framework.api.models.futureweather.FutureWeatherApiModel
+ import com.ricardoteixeira.app.utils.Result
+-import kotlinx.coroutines.flow.Flow
+ 
+ interface ApiHelper {
+ 
+-    suspend fun getWeather(q: String): Result<WeatherCityApiModel>
++    suspend fun getWeather(q: String): Result<CurrentWeatherApiModel>
++
++    suspend fun getFutureWeather(q: String):Result<FutureWeatherApiModel>
+ 
+ }
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/ApiHelperImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/ApiHelperImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/ApiHelperImpl.kt	(date 1610549463685)
+@@ -1,5 +1,6 @@
+ package com.ricardoteixeira.app.framework.api
+ 
++import com.ricardoteixeira.app.framework.api.models.futureweather.FutureWeatherApiModel
+ import com.ricardoteixeira.app.utils.Result
+ import javax.inject.Inject
+ 
+@@ -12,6 +13,13 @@
+     }catch (error: Throwable){
+         Result.Failure(error.message!!)
+     }
++
++    override suspend fun getFutureWeather(q: String): Result<FutureWeatherApiModel>  = try {
++        val data = weatherService.getFutureWeather(q)
++        Result.Success(data)
++    }catch (error: Throwable){
++        Result.Failure(error.message!!)
++    }
+ 
+ }
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/InsertCityIntoDatabaseImpl.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/InsertCityIntoDatabaseImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/InsertCityIntoDatabaseImpl.kt	(date 1611226818532)
+@@ -1,14 +1,14 @@
+-package com.ricardoteixeira.app.framework.api
++package com.ricardoteixeira.app.framework.repository
+ 
+ import com.ricardoteixeira.app.framework.db.WeatherCityDao
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
+ import com.ricardoteixeira.data.repository.InsertCityIntoDatabase
+ import javax.inject.Inject
+ 
+ class InsertCityIntoDatabaseImpl
+ @Inject constructor(private val weatherDao: WeatherCityDao): InsertCityIntoDatabase {
+ 
+-    override suspend fun insertCityIntoDatabase(city: WeatherCityDatabaseModel) {
++    override suspend fun insertCityIntoDatabase(city: CurrentWeatherDatabaseModel) {
+         weatherDao.insertCity(city)
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/WeatherService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/WeatherService.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/WeatherService.kt	(date 1611226023123)
+@@ -1,6 +1,7 @@
+ package com.ricardoteixeira.app.framework.api
+ 
+-import com.ricardoteixeira.app.framework.api.models.WeatherCityApiModel
++import com.ricardoteixeira.app.framework.api.models.currentweather.CurrentWeatherApiModel
++import com.ricardoteixeira.app.framework.api.models.futureweather.FutureWeatherApiModel
+ import retrofit2.http.GET
+ import retrofit2.http.Query
+ 
+@@ -8,5 +9,9 @@
+ 
+     @GET("data/2.5/weather")
+     suspend fun getCurrentWeather(@Query("q") q: String,
+-    @Query("units") units: String = "metric"): WeatherCityApiModel
++    @Query("units") units: String = "metric"): CurrentWeatherApiModel
++
++    @GET("data/2.5/forecast")
++    suspend fun getFutureWeather(@Query("q") q: String,
++     @Query("units") units: String = "metric"): FutureWeatherApiModel
+ }
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/Wind.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/Wind.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/currentweather/WindCurrentWeather.kt	(date 1611225779391)
+@@ -1,9 +1,9 @@
+-package com.ricardoteixeira.app.framework.api.models
++package com.ricardoteixeira.app.framework.api.models.currentweather
+ 
+ import com.squareup.moshi.Json
+ 
+ 
+-data class Wind(
++data class WindCurrentWeather(
+     @Json(name = "deg") var deg: Int?,
+ 
+     @Json(name = "speed") var speed: Double?
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/favorites/FavoriteViewState.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/favorites/FavoriteViewState.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/favorites/FavoriteViewState.kt	(date 1611226813907)
+@@ -1,10 +1,9 @@
+ package com.ricardoteixeira.app.presentation.favorites
+ 
+-import com.ricardoteixeira.app.presentation.listcities.ResponseType
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ 
+ data class FavoriteViewState (
+     val error: String?,
+-    val result: List<WeatherCityEntity>
++    val result: List<CurrentWeatherEntityModel>
+         )
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/Coord.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/Coord.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/currentweather/CoordCurrentWeather.kt	(date 1611225779533)
+@@ -1,8 +1,8 @@
+-package com.ricardoteixeira.app.framework.api.models
++package com.ricardoteixeira.app.framework.api.models.currentweather
+ 
+ import com.squareup.moshi.Json
+ 
+-data class Coord(
++data class CoordCurrentWeather(
+ 
+     @Json(name = "lat") var lat: Double?,
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/currentweather/CurrentWeatherApiModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/currentweather/CurrentWeatherApiModel.kt	(date 1611226023186)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/currentweather/CurrentWeatherApiModel.kt	(date 1611226023186)
+@@ -0,0 +1,35 @@
++package com.ricardoteixeira.app.framework.api.models.currentweather
++
++import com.squareup.moshi.Json
++
++data class CurrentWeatherApiModel(
++
++    @Json(name = "cod") var cod: Int?,
++
++    @Json(name = "coord") var coord: CoordCurrentWeather?,
++
++    @Json(name = "dt") var dt: Int?,
++
++    @Json(name = "id") var id: Int?,
++
++    @Json(name = "main") var main: MainCurrentWeather?,
++
++    @Json(name = "name") var name: String?,
++
++    @Json(name = "sys") var sysCurrentWeather: SysCurrentWeather?,
++
++    @Json(name = "timezone") var timezone: Int?,
++
++    @Json(name = "visibility") var visibility: Int?,
++
++    @Json(name = "weather")var descriptionCurrentWeather: List<DescriptionCurrentWeather?>?,
++
++    @Json(name = "wind") var windCurrentWeather: WindCurrentWeather?
++)
++
++
++
++
++
++
++
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/Sys.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/Sys.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/currentweather/SysCurrentWeather.kt	(date 1611225779659)
+@@ -1,8 +1,8 @@
+-package com.ricardoteixeira.app.framework.api.models
++package com.ricardoteixeira.app.framework.api.models.currentweather
+ 
+ import com.squareup.moshi.Json
+ 
+-data class Sys(
++data class SysCurrentWeather(
+ 
+     @field:Json(name = "country") var country: String?,
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/Main.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/Main.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/currentweather/MainCurrentWeather.kt	(date 1611225779483)
+@@ -1,8 +1,8 @@
+-package com.ricardoteixeira.app.framework.api.models
++package com.ricardoteixeira.app.framework.api.models.currentweather
+ 
+ import com.squareup.moshi.Json
+ 
+-data class Main(
++data class MainCurrentWeather(
+ 
+     @Json(name = "feels_like") var feelsLike: Double?,
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/models/Weather.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/models/Weather.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/models/currentweather/DescriptionCurrentWeather.kt	(date 1611226023004)
+@@ -1,8 +1,8 @@
+-package com.ricardoteixeira.app.framework.api.models
++package com.ricardoteixeira.app.framework.api.models.currentweather
+ 
+ import com.squareup.moshi.Json
+ 
+-data class Weather(
++data class DescriptionCurrentWeather(
+ 
+     @Json(name = "description") var description: String?,
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/currentweather/CurrentWeatherFromApiToDatabaseModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/currentweather/CurrentWeatherFromApiToDatabaseModel.kt	(date 1611226814963)
++++ app/src/main/java/com/ricardoteixeira/app/framework/api/mappers/currentweather/CurrentWeatherFromApiToDatabaseModel.kt	(date 1611226814963)
+@@ -0,0 +1,25 @@
++package com.ricardoteixeira.app.framework.api.mappers.currentweather
++
++import com.ricardoteixeira.app.framework.api.models.currentweather.CurrentWeatherApiModel
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
++
++ fun CurrentWeatherApiModel.toDatabase(): CurrentWeatherDatabaseModel {
++
++    return CurrentWeatherDatabaseModel(
++        cityId = id,
++        cityName = name,
++        actualTemp = main?.temp,
++        feelsLikeTemp = main?.feelsLike,
++        tempMin = main?.tempMin,
++        tempMax = main?.tempMax,
++        weatherId = descriptionCurrentWeather?.get(0)?.weatherId,
++        weatherDescription = descriptionCurrentWeather?.get(0)?.description,
++        requestTime = dt!!.toInt(),
++        humidity = main?.humidity,
++        windSpeed = windCurrentWeather?.speed,
++        sunrise = sysCurrentWeather?.sunrise,
++        sunset = sysCurrentWeather?.sunset
++
++    )
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/db/FutureWeatherDao.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/db/FutureWeatherDao.kt	(date 1610634410454)
++++ app/src/main/java/com/ricardoteixeira/app/framework/db/FutureWeatherDao.kt	(date 1610634410454)
+@@ -0,0 +1,13 @@
++package com.ricardoteixeira.app.framework.db
++
++import androidx.room.Dao
++import androidx.room.Insert
++import androidx.room.OnConflictStrategy
++import com.ricardoteixeira.app.framework.db.model.future.FutureWeatherDatabaseModel
++
++@Dao
++interface FutureWeatherDao {
++
++    @Insert(onConflict = OnConflictStrategy.REPLACE)
++    suspend fun insertCity(city: FutureWeatherDatabaseModel): Long
++}
+Index: app/src/main/java/com/ricardoteixeira/app/framework/repository/InsertNewCityImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/repository/InsertNewCityImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/InsertNewCityImpl.kt	(date 1610557906635)
+@@ -1,7 +1,7 @@
+ package com.ricardoteixeira.app.framework.repository
+ 
+ import com.ricardoteixeira.app.framework.api.ApiHelper
+-import com.ricardoteixeira.app.framework.api.mappers.toDatabase
++import com.ricardoteixeira.app.framework.api.mappers.currentweather.toDatabase
+ import com.ricardoteixeira.app.framework.db.WeatherCityDao
+ import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.data.repository.InsertNewCity
+Index: app/src/main/java/com/ricardoteixeira/app/framework/repository/FetchCityFromApiImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/repository/FetchCityFromApiImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/FetchCityFromApiImpl.kt	(date 1611226818210)
+@@ -1,18 +1,18 @@
+ package com.ricardoteixeira.app.framework.repository
+ 
+ import com.ricardoteixeira.app.framework.api.WeatherService
+-import com.ricardoteixeira.app.framework.api.mappers.toDatabase
++import com.ricardoteixeira.app.framework.api.mappers.currentweather.toDatabase
+ import com.ricardoteixeira.app.framework.db.WeatherCityDao
+ import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.data.mappers.toEntity
+ import com.ricardoteixeira.data.repository.FetchCityFromApi
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import javax.inject.Inject
+ 
+ class FetchCityFromApiImpl
+     @Inject constructor(private val weatherCityDao: WeatherCityDao, private val weatherService: WeatherService): FetchCityFromApi {
+ 
+-    override suspend fun fetchWeatherFromApi(cityName: String): Result<WeatherCityEntity> =
++    override suspend fun fetchWeatherFromApi(cityName: String): Result<CurrentWeatherEntityModel> =
+         try {
+             val city = weatherService.getCurrentWeather(cityName)
+             weatherCityDao.insertCity(city.toDatabase())
+Index: app/src/main/java/com/ricardoteixeira/app/framework/repository/UpdateCityImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/repository/UpdateCityImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/UpdateCityImpl.kt	(date 1611226818499)
+@@ -1,13 +1,13 @@
+ package com.ricardoteixeira.app.framework.repository
+ 
+ import com.ricardoteixeira.app.framework.db.WeatherCityDao
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
+ import com.ricardoteixeira.data.repository.UpdateCity
+ import javax.inject.Inject
+ 
+ class UpdateCityImpl
+ @Inject constructor(private val weatherCityDao: WeatherCityDao): UpdateCity {
+-    override suspend fun updateCity(city: WeatherCityDatabaseModel) {
++    override suspend fun updateCity(city: CurrentWeatherDatabaseModel) {
+         weatherCityDao.updateCity(city)
+     }
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/framework/repository/GetCityByIdImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/repository/GetCityByIdImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/GetCityByIdImpl.kt	(date 1611226819237)
+@@ -2,14 +2,13 @@
+ 
+ import com.ricardoteixeira.app.framework.db.WeatherCityDao
+ import com.ricardoteixeira.app.framework.db.mappers.toEntity
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
+ import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.data.repository.GetCityById
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import javax.inject.Inject
+ 
+ class GetCityByIdImpl @Inject constructor(private val weatherCityDao: WeatherCityDao): GetCityById {
+-    override suspend fun getCityById(cityId: Int): Result<WeatherCityEntity> {
++    override suspend fun getCityById(cityId: Int): Result<CurrentWeatherEntityModel> {
+         return  weatherCityDao.getCityById(cityId)?.let { Result.Success(data = it.toEntity()) } ?: Result.Failure(error = "Error")
+ 
+     }
+Index: app/src/main/java/com/ricardoteixeira/app/framework/repository/GetCityPendingDeleteImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/repository/GetCityPendingDeleteImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/GetCityPendingDeleteImpl.kt	(date 1611226818307)
+@@ -3,12 +3,12 @@
+ import com.ricardoteixeira.app.framework.db.WeatherCityDao
+ import com.ricardoteixeira.app.framework.db.mappers.toEntity
+ import com.ricardoteixeira.data.repository.GetCityPendingDelete
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import javax.inject.Inject
+ 
+ class GetCityPendingDeleteImpl
+ @Inject constructor(private val weatherDao: WeatherCityDao): GetCityPendingDelete {
+-    override suspend fun getCityPendingDelete(): WeatherCityEntity? {
++    override suspend fun getCityPendingDelete(): CurrentWeatherEntityModel? {
+         return weatherDao.getCityPendingDelete()?.toEntity()
+     }
+ 
+Index: app/src/main/java/com/ricardoteixeira/app/framework/repository/RefreshCitiesImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/repository/RefreshCitiesImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/RefreshCitiesImpl.kt	(date 1611228886759)
+@@ -6,31 +6,30 @@
+ import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.data.repository.FetchCityFromApi
+ import com.ricardoteixeira.data.repository.RefreshCities
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import javax.inject.Inject
+ 
+ class RefreshCitiesImpl
+     @Inject constructor(private val weatherCityDao: WeatherCityDao, private val fetchCityFromApi: FetchCityFromApi): RefreshCities {
+-    override suspend fun refreshCities(cities: MutableList<WeatherCityEntity>): Result<List<WeatherCityEntity?>> {
+-        for (city in cities) {
++    override suspend fun refreshCities(currentListOfCities: MutableList<CurrentWeatherEntityModel>): Result<List<CurrentWeatherEntityModel?>> {
++        for (city in currentListOfCities) {
+             val newWeather = city.cityName?.let { fetchCityFromApi.fetchWeatherFromApi(it) }
+             if (newWeather is Result.Success) {
+                 weatherCityDao.insertCity(newWeather.data.toDatabase())
+-                val index = cities.indexOf(city)
+-                val newWeather = newWeather.data.toDatabase().toEntity()
+-                cities[index].copy(actualTemp = newWeather.actualTemp,
+-                tempMin = newWeather.tempMin,
+-                tempMax = newWeather.tempMax,
+-                feelsLikeTemp = newWeather.feelsLikeTemp,
+-                weatherId = newWeather.weatherId,
+-                weatherDescription = newWeather.weatherDescription,
+-                requestTime = newWeather.requestTime)
+-                weatherCityDao.insertCity(cities[index].toDatabase())
++                val index = currentListOfCities.indexOf(city)
++                val newWeatherToInsert = newWeather.data.toDatabase().toEntity()
++                currentListOfCities[index].copy(actualTemp = newWeatherToInsert.actualTemp,
++                tempMin = newWeatherToInsert.tempMin,
++                tempMax = newWeatherToInsert.tempMax,
++                feelsLikeTemp = newWeatherToInsert.feelsLikeTemp,
++                weatherId = newWeatherToInsert.weatherId,
++                weatherDescription = newWeatherToInsert.weatherDescription,
++                requestTime = newWeatherToInsert.requestTime)
++                weatherCityDao.insertCity(currentListOfCities[index].toDatabase())
+             } else {
+                 Result.Failure(error = "Error fetching city")
+             }
+         }
+-        return Result.Success(data = cities.toList())
+-        return Result.Failure("Error")
++        return Result.Success(data = currentListOfCities.toList())
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/framework/repository/GetAllCitiesImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/framework/repository/GetAllCitiesImpl.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/framework/repository/GetAllCitiesImpl.kt	(date 1611226819069)
+@@ -1,14 +1,14 @@
+ package com.ricardoteixeira.app.framework.repository
+ 
+ import com.ricardoteixeira.app.framework.db.WeatherCityDao
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
+ import com.ricardoteixeira.data.repository.GetAllCities
+ import javax.inject.Inject
+ 
+ class GetAllCitiesImpl
+     @Inject constructor(private val weatherDao: WeatherCityDao): GetAllCities {
+ 
+-    override suspend fun getAllCities(): List<WeatherCityDatabaseModel> {
++    override suspend fun getAllCities(): List<CurrentWeatherDatabaseModel> {
+         return weatherDao.getCities()
+     }
+ 
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ build.gradle	(date 1611230027851)
+@@ -10,20 +10,20 @@
+         coroutinesVersion = "1.3.9"
+         dataStoreVersion = "1.0.0-alpha02"
+         espressoVersion = "3.3.0"
+-        fragmentVersion = "1.3.0-beta01"
++        fragmentVersion = "1.3.0-rc01"
+         gradleVersion = "4.1.0"
+         hiltAndroidXVersion = "1.0.0-alpha02"
+         hiltVersion = "2.28.3-alpha"
+         junitVersion = "4.13.1"
+-        kotlinVersion = "1.4.10"
++        kotlinVersion = "1.4.21"
+         ktxVersion = "1.3.2"
+-        lifecycleVersion = "2.2.0"
+-        materialVersion = "1.3.0-alpha03"
+-        navigationVersion = "2.3.1"
+-        roomVersion = "2.2.5"
++        lifecycleVersion = "2.3.0-rc01"
++        materialVersion = "1.3.0-rc01"
++        navigationVersion = "2.3.2"
++        roomVersion = "2.2.6"
+         testExtJunitVersion = "1.1.2"
+-        version_retrofit = "2.9.0"
+-        version_moshi = "1.11.0"
++        versionRetrofit = "2.9.0"
++        versionMoshi = "1.11.0"
+ 
+     }
+ 
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/build.gradle	(date 1611229959086)
+@@ -85,18 +85,18 @@
+     implementation "androidx.datastore:datastore-preferences:$dataStoreVersion"
+ 
+     //Retrofit
+-    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+-    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
++    implementation "com.squareup.retrofit2:retrofit:$versionRetrofit"
++    implementation "com.squareup.retrofit2:converter-moshi:$versionRetrofit"
+     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+     implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
+ 
+     // moshi
+-    implementation "com.squareup.moshi:moshi:$version_moshi"
++    implementation "com.squareup.moshi:moshi:$versionMoshi"
+     implementation "com.squareup.moshi:moshi-kotlin:1.11.0"
+ 
+     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+ 
+-
++    implementation "com.squareup.retrofit2:converter-gson:$versionRetrofit"
+ 
+     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.8.0'
+ }
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/details/DetailsViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/details/DetailsViewModel.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/details/DetailsViewModel.kt	(date 1611226814402)
+@@ -5,15 +5,11 @@
+ import androidx.lifecycle.MutableLiveData
+ import androidx.lifecycle.ViewModel
+ import androidx.lifecycle.viewModelScope
+-import com.ricardoteixeira.app.presentation.listcities.*
+ import com.ricardoteixeira.app.utils.PreferencesManager
+ import com.ricardoteixeira.app.utils.Result
+-import com.ricardoteixeira.app.utils.SortOrder
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.domain.usecases.details.GetCityByIdUseCase
+ import kotlinx.coroutines.Dispatchers
+-import kotlinx.coroutines.GlobalScope
+-import kotlinx.coroutines.flow.Flow
+ import kotlinx.coroutines.flow.collect
+ import kotlinx.coroutines.launch
+ 
+@@ -22,8 +18,8 @@
+                              private val preferences: PreferencesManager): ViewModel() {
+ 
+ 
+-    private val _mutableDetailState: MutableLiveData<WeatherCityEntity?> = MutableLiveData()
+-    val detailState: LiveData<WeatherCityEntity?>
++    private val _mutableDetailState: MutableLiveData<CurrentWeatherEntityModel?> = MutableLiveData()
++    val detailState: LiveData<CurrentWeatherEntityModel?>
+         get() = _mutableDetailState
+ 
+     private val cityIdFlow = preferences.cityIdFlow
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/details/DetailsFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/details/DetailsFragment.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/details/DetailsFragment.kt	(date 1610634186001)
+@@ -7,20 +7,12 @@
+ import androidx.lifecycle.Observer
+ import androidx.lifecycle.lifecycleScope
+ import androidx.navigation.fragment.findNavController
+-import com.ricardoteixeira.app.presentation.listcities.ListCitiesFragmentDirections
+ import com.ricardoteixeira.app.utils.setWeatherImage
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
+ import com.ricardoteixeira.weathermvvm_clean.R
+ import dagger.hilt.android.AndroidEntryPoint
+-import kotlinx.android.synthetic.main.city_weather_item.*
+-import kotlinx.android.synthetic.main.city_weather_item.city_name
+ import kotlinx.android.synthetic.main.details_fragment.*
+-import kotlinx.coroutines.flow.collect
+ import kotlinx.coroutines.launch
+-import java.text.DateFormat
+ import java.text.SimpleDateFormat
+-import java.time.Instant
+-import java.util.*
+ 
+ @AndroidEntryPoint
+ class DetailsFragment: Fragment(R.layout.details_fragment) {
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/sevendays/SevenDaysFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/sevendays/SevenDaysFragment.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/sevendays/SevenDaysFragment.kt	(date 1610638084455)
+@@ -5,7 +5,7 @@
+ import androidx.fragment.app.Fragment
+ import com.ricardoteixeira.weathermvvm_clean.R
+ 
+-class SevenDaysFragment: Fragment(R.layout.seven_days_fragment) {
++class SevenDaysFragment: Fragment(R.layout.forecast_fragment) {
+ 
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+         super.onViewCreated(view, savedInstanceState)
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesViewState.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesViewState.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesViewState.kt	(date 1611226818769)
+@@ -1,12 +1,12 @@
+ package com.ricardoteixeira.app.presentation.listcities
+ 
+ import android.view.View
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ 
+ data class ListCitiesViewState(
+     val isShowingSnackBar: Boolean,
+     val error: String?,
+-    val result: List<WeatherCityEntity>,
++    val result: List<CurrentWeatherEntityModel>,
+     val responseType: ResponseType
+ )
+ 
+Index: app/src/main/res/layout/list_cities_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/list_cities_fragment.xml	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/res/layout/list_cities_fragment.xml	(date 1611068190722)
+@@ -18,15 +18,15 @@
+         android:text="@string/main_page_text"
+         android:textAlignment="center"
+         android:textColor="@color/secondaryTextColor"
+-        android:textSize="24sp"
++        android:textSize="@dimen/standard_subtitle_size"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+ 
+     <ImageView
+         android:id="@+id/sort_cities"
+-        android:layout_width="46dp"
+-        android:layout_height="46dp"
++        android:layout_width="@dimen/weather_smaller_image_size"
++        android:layout_height="@dimen/weather_smaller_image_size"
+         android:src="@drawable/ic_sort_black"
+         app:layout_constraintStart_toEndOf="@id/search_cities"
+         app:layout_constraintTop_toTopOf="@id/search_cities" />
+@@ -36,15 +36,14 @@
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:visibility="invisible"
+-        app:layout_constraintBottom_toBottomOf="@+id/list_cities_rv"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="@+id/search_results_rv" />
+ 
+     <ImageView
+         android:id="@+id/search_image"
+-        android:layout_width="46dp"
+-        android:layout_height="46dp"
++        android:layout_width="@dimen/weather_smaller_image_size"
++        android:layout_height="@dimen/weather_smaller_image_size"
+         android:src="@drawable/ic_search"
+         app:layout_constraintEnd_toStartOf="@id/search_cities"
+         app:layout_constraintTop_toTopOf="@id/search_cities" />
+@@ -54,13 +53,13 @@
+         android:id="@+id/search_results_rv"
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+-        android:layout_margin="16dp"
++        android:layout_margin="@dimen/double_standard_margin"
+         app:layout_constraintTop_toBottomOf="@id/search_cities" />
+     <EditText
+         android:id="@+id/search_cities"
+-        android:layout_width="254dp"
+-        android:layout_height="54dp"
+-        android:layout_margin="16dp"
++        android:layout_width="@dimen/text_view_width_bigger"
++        android:layout_height="@dimen/text_view_bigger_height"
++        android:layout_margin="@dimen/double_standard_margin"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/app_name" />
+@@ -76,7 +75,7 @@
+         android:id="@+id/list_cities_rv"
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+-        android:layout_margin="16dp"
++        android:layout_margin="@dimen/double_standard_margin"
+         android:orientation="vertical"
+         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+         app:layout_constraintBottom_toBottomOf="parent"
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesViewModel.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesViewModel.kt	(date 1611226814363)
+@@ -3,21 +3,19 @@
+ import androidx.hilt.lifecycle.ViewModelInject
+ import androidx.lifecycle.*
+ import com.ricardoteixeira.app.framework.db.mappers.toDatabase
+-import com.ricardoteixeira.app.utils.FilterPreferences
+ import com.ricardoteixeira.app.utils.PreferencesManager
+ import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.app.utils.SortOrder
+ import com.ricardoteixeira.data.repository.InsertCityIntoDatabase
+ import com.ricardoteixeira.data.repository.UpdateCity
+ import com.ricardoteixeira.data.repository.WeatherRepository
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
++import com.ricardoteixeira.domain.usecases.futureweather.FetchFutureWeatherUseCase
+ import com.ricardoteixeira.domain.usecases.listcities.DeleteCityUseCase
+ import com.ricardoteixeira.domain.usecases.listcities.FetchCityUseCase
+ import com.ricardoteixeira.domain.usecases.listcities.GetCityPendingDeleteUseCase
+ import com.ricardoteixeira.domain.usecases.listcities.RefreshCitiesUseCase
+ import kotlinx.coroutines.Dispatchers
+-import kotlinx.coroutines.flow.Flow
+-import kotlinx.coroutines.flow.collect
+ import kotlinx.coroutines.launch
+ 
+ const val FETCH_CITY_SUCCESS_MESSAGE = "City Added Successfully"
+@@ -42,6 +40,7 @@
+     var getCityPendingDeleteUseCase: GetCityPendingDeleteUseCase,
+     var deleteCityUseCase: DeleteCityUseCase,
+     var refreshCitiesUseCase: RefreshCitiesUseCase,
++    val fetchFutureWeatherUseCase: FetchFutureWeatherUseCase,
+     private val preferences: PreferencesManager
+ ) : ViewModel() {
+ 
+@@ -49,21 +48,26 @@
+     val mainState: LiveData<ListCitiesViewState>
+         get() = _mutableMainState
+ 
+-    var cities: ArrayList<WeatherCityEntity> = arrayListOf()
+-    var citiesList: List<WeatherCityEntity> = listOf()
++    var currents: ArrayList<CurrentWeatherEntityModel> = arrayListOf()
++    var citiesList: List<CurrentWeatherEntityModel> = listOf()
+ 
+     val preferencesFlow = preferences.preferencesFlow.asLiveData()
+ 
+ 
+     fun fetchCity(cityName: String) {
+-        viewModelScope.launch {
+-            citiesList = cities.toList()
++        viewModelScope.launch(Dispatchers.IO) {
++            citiesList = currents.toList()
++            val teste = fetchFutureWeatherUseCase(cityName)
++            when(teste) {
++                is Result.Success -> println("testeeeeeeeviewmodel ${teste.data}")
++                is Result.Failure -> println("testeeeeeeeviewmodel ${teste.error}")
++            }
+             when (val data = fetchCityUseCase(cityName)) {
+                 is Result.Success -> {
+-                    cities.add(0, data.data)
+-                    citiesList = cities.toList()
+-                    _mutableMainState.value =
+-                        _mutableMainState.value?.copy(
++                    currents.add(0, data.data)
++                    citiesList = currents.toList()
++                        _mutableMainState.postValue(
++                            ListCitiesViewState(
+                             isShowingSnackBar = true, error = null, result = citiesList,
+                             responseType = ResponseType(
+                                 uiComponentType = UIComponentType.SnackBar(
+@@ -72,17 +76,20 @@
+                                 ), messageType = MessageType.Success()
+                             )
+                         )
++                        )
+                 }
+ 
+-                is Result.Failure -> _mutableMainState.value =
+-                    _mutableMainState.value?.copy(
++                is Result.Failure -> _mutableMainState.postValue(
++                    ListCitiesViewState(
+                         isShowingSnackBar = true,
++                        result = citiesList,
+                         error = data.error,
+                         responseType = ResponseType(
+                             uiComponentType = UIComponentType.SnackBar(message = FETCH_CITY_ERROR_MESSAGE),
+                             messageType = MessageType.Error()
+                         )
+                     )
++                )
+             }
+         }
+     }
+@@ -97,7 +104,7 @@
+                             ListCitiesViewState(
+                                 isShowingSnackBar = true,
+                                 error = null,
+-                                result = listOf<WeatherCityEntity>(),
++                                result = listOf<CurrentWeatherEntityModel>(),
+                                 responseType = ResponseType(
+                                     uiComponentType = UIComponentType.SnackBar(message = CITIES_EMPTY_LOADED_SUCCESS_MESSAGE),
+                                     messageType = MessageType.Success()
+@@ -105,9 +112,9 @@
+                             )
+                         )
+                     } else {
+-                        cities = arrayListOf()
+-                        cities.addAll(result.data.filter { !it.isUpdatePending })
+-                        citiesList = cities.toList()
++                        currents = arrayListOf()
++                        currents.addAll(result.data.filter { !it.isUpdatePending })
++                        citiesList = currents.toList()
+                         _mutableMainState.postValue(
+                             ListCitiesViewState(
+                                 isShowingSnackBar = true,
+@@ -126,7 +133,7 @@
+                     ListCitiesViewState(
+                         isShowingSnackBar = true,
+                         error = result.error,
+-                        result = listOf<WeatherCityEntity>(),
++                        result = listOf<CurrentWeatherEntityModel>(),
+                         responseType = ResponseType(
+                             uiComponentType = UIComponentType.SnackBar(
+                                 message = CITIES_LOADED_ERROR_MESSAGE
+@@ -138,11 +145,11 @@
+         }
+     }
+ 
+-    fun isDeletePending(cityWeatherEntity: WeatherCityEntity?) {
+-        val cityUpdated = cityWeatherEntity?.copy(isUpdatePending = true)
+-        val index = cities.indexOf(cityWeatherEntity)
+-        cities[index].isUpdatePending = true
+-        citiesList = cities.filter { !it.isUpdatePending }.toList()
++    fun isDeletePending(cityCurrentWeatherEntityModel: CurrentWeatherEntityModel?) {
++        val cityUpdated = cityCurrentWeatherEntityModel?.copy(isUpdatePending = true)
++        val index = currents.indexOf(cityCurrentWeatherEntityModel)
++        currents[index].isUpdatePending = true
++        citiesList = currents.filter { !it.isUpdatePending }.toList()
+         _mutableMainState.value = ListCitiesViewState(
+             isShowingSnackBar = true, error = null, result = citiesList,
+             responseType = ResponseType(
+@@ -158,19 +165,19 @@
+         }
+     }
+ 
+-    fun favoriteCity(city: WeatherCityEntity) {
++    fun favoriteCity(current: CurrentWeatherEntityModel) {
+ 
+-        val index = cities.indexOf(city)
++        val index = currents.indexOf(current)
+ 
+-        if (city.isFavorite) {
+-            city.isFavorite = false
++        if (current.isFavorite) {
++            current.isFavorite = false
+             viewModelScope.launch {
+-                updateCity.updateCity(city.toDatabase())
++                updateCity.updateCity(current.toDatabase())
+             }
+ 
+-            cities[index].isFavorite = false
++            currents[index].isFavorite = false
+ 
+-            citiesList = cities.toList()
++            citiesList = currents.toList()
+             _mutableMainState.value?.copy(
+                 isShowingSnackBar = true, error = null, result = citiesList,
+                 responseType = ResponseType(
+@@ -180,14 +187,14 @@
+             )
+ 
+         } else {
+-            city.isFavorite = true
++            current.isFavorite = true
+ 
+             viewModelScope.launch {
+-                updateCity.updateCity(city.toDatabase())
++                updateCity.updateCity(current.toDatabase())
+             }
+ 
+-            cities[index].isFavorite = true
+-            citiesList = cities.toList()
++            currents[index].isFavorite = true
++            citiesList = currents.toList()
+ 
+             _mutableMainState.value?.copy(
+                 isShowingSnackBar = true,
+@@ -203,10 +210,10 @@
+     }
+ 
+     fun restoreCity() {
+-        val index = cities.indexOfFirst { it.isUpdatePending }
+-        cities[index].isUpdatePending = false
+-        citiesList = cities.toList()
+-        val cityUpdated = cities[index]
++        val index = currents.indexOfFirst { it.isUpdatePending }
++        currents[index].isUpdatePending = false
++        citiesList = currents.toList()
++        val cityUpdated = currents[index]
+         _mutableMainState.value =
+             ListCitiesViewState(
+                 isShowingSnackBar = true, error = null, result = citiesList,
+@@ -232,12 +239,12 @@
+                     deleteCityUseCase(city.cityId!!)
+                 }
+             }
+-            val index = cities.indexOfFirst { it.isUpdatePending }
++            val index = currents.indexOfFirst { it.isUpdatePending }
+             if (index == -1) {
+ 
+             } else {
+-                cities.remove(cities[index])
+-                citiesList = cities.toList()
++                currents.remove(currents[index])
++                citiesList = currents.toList()
+                 _mutableMainState.postValue(
+                     ListCitiesViewState(
+                         isShowingSnackBar = true, error = null, result = citiesList,
+@@ -259,7 +266,7 @@
+ 
+     fun refreshCities(sortOrder: SortOrder) {
+         viewModelScope.launch(Dispatchers.IO) {
+-            val result = refreshCitiesUseCase(cities.toMutableList())
++            val result = refreshCitiesUseCase(currents.toMutableList())
+ 
+             when (result) {
+                 is Result.Success -> {
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesAdapter.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesAdapter.kt	(date 1611226814662)
+@@ -7,15 +7,14 @@
+ import androidx.recyclerview.widget.ListAdapter
+ import androidx.recyclerview.widget.RecyclerView
+ import com.ricardoteixeira.app.utils.setWeatherImage
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.weathermvvm_clean.R
+ import com.ricardoteixeira.weathermvvm_clean.databinding.CityWeatherItemBinding
+-import kotlinx.android.synthetic.main.city_weather_item.*
+ 
+ 
+ class ListCitiesAdapter(
+     private var listener: OnItemClickListener,
+-) : ListAdapter<WeatherCityEntity, ListCitiesAdapter.ViewHolder>(DiffCallback()) {
++) : ListAdapter<CurrentWeatherEntityModel, ListCitiesAdapter.ViewHolder>(DiffCallback()) {
+ 
+ 
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+@@ -44,13 +43,13 @@
+             }
+         }
+ 
+-        fun bind(weatherCityEntity: WeatherCityEntity) {
++        fun bind(currentWeatherEntityModel: CurrentWeatherEntityModel) {
+             binding.apply {
+-                cityName.text = weatherCityEntity.cityName
+-                cityTemperature.text = "${weatherCityEntity.actualTemp.toString()} ºC"
+-                description.text = weatherCityEntity.weatherDescription?.capitalize()
+-                weatherImage.setWeatherImage(weatherCityEntity)
+-                if (weatherCityEntity.isFavorite) {
++                cityName.text = currentWeatherEntityModel.cityName
++                cityTemperature.text = "${currentWeatherEntityModel.actualTemp.toString()} ºC"
++                description.text = currentWeatherEntityModel.weatherDescription?.capitalize()
++                weatherImage.setWeatherImage(currentWeatherEntityModel)
++                if (currentWeatherEntityModel.isFavorite) {
+                     favouriteCity.setImageDrawable(AppCompatResources.getDrawable(root.context, R.drawable.ic_favorite))
+                     itemView.isFocusable= false
+                 } else {
+@@ -63,7 +62,7 @@
+                         val city = getItem(position)
+                         listener.onFavoriteClick(city)
+                     }
+-                    if (weatherCityEntity.isFavorite) {
++                    if (currentWeatherEntityModel.isFavorite) {
+                         favouriteCity.setImageDrawable(AppCompatResources.getDrawable(root.context, R.drawable.ic_favorite))
+                         itemView.isFocusable= false
+                     } else {
+@@ -76,28 +75,28 @@
+     }
+ 
+     interface OnItemClickListener {
+-        fun onCityClick(city: WeatherCityEntity)
++        fun onCityClick(current: CurrentWeatherEntityModel)
+ 
+-        fun onFavoriteClick(city: WeatherCityEntity)
++        fun onFavoriteClick(current: CurrentWeatherEntityModel)
+     }
+ 
+-    class DiffCallback : DiffUtil.ItemCallback<WeatherCityEntity>() {
++    class DiffCallback : DiffUtil.ItemCallback<CurrentWeatherEntityModel>() {
+         override fun areItemsTheSame(
+-            oldItem: WeatherCityEntity,
+-            newItem: WeatherCityEntity
++            oldItem: CurrentWeatherEntityModel,
++            newItem: CurrentWeatherEntityModel
+         ): Boolean {
+             return oldItem.cityId == newItem.cityId
+         }
+ 
+         override fun areContentsTheSame(
+-            oldItem: WeatherCityEntity,
+-            newItem: WeatherCityEntity
++            oldItem: CurrentWeatherEntityModel,
++            newItem: CurrentWeatherEntityModel
+         ): Boolean {
+             return oldItem == newItem
+         }
+     }
+ 
+-    fun getCity(index: Int): WeatherCityEntity? {
++    fun getCity(index: Int): CurrentWeatherEntityModel? {
+         return try {
+             currentList[index]
+         } catch (e: IndexOutOfBoundsException) {
+Index: app/src/main/res/layout/seven_days_fragment.xml
+===================================================================
+--- app/src/main/res/layout/seven_days_fragment.xml	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/res/layout/forecast_fragment.xml	(date 1611068190749)
+@@ -4,15 +4,30 @@
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
++    xmlns:tools="http://schemas.android.com/tools"
+     android:background="@drawable/gradient">
+ 
+     <TextView
+-        android:layout_width="wrap_content"
++        android:id="@+id/forecast_title"
++        android:layout_width="@dimen/text_view_width_extra_bigger"
+         android:layout_height="wrap_content"
+-        android:text="seven days"
++        android:layout_margin="@dimen/standard_margin"
++        android:textAlignment="center"
++        android:textSize="@dimen/standard_title_size"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
++        android:padding="@dimen/standard_padding"
++        android:text="@string/forecast_title"
++        tools:layout_editor_absoluteX="8dp" />
++
++    <androidx.recyclerview.widget.RecyclerView
++        android:layout_width="match_parent"
++        android:layout_height="0dp"
++        android:layout_margin="@dimen/standard_margin"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toTopOf="parent" />
++        app:layout_constraintTop_toBottomOf="@+id/forecast_title" />
+ 
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesFragment.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/app/presentation/listcities/ListCitiesFragment.kt	(date 1611226814144)
+@@ -6,7 +6,6 @@
+ import androidx.fragment.app.Fragment
+ import androidx.fragment.app.viewModels
+ import androidx.lifecycle.Observer
+-import androidx.lifecycle.asLiveData
+ import androidx.lifecycle.lifecycleScope
+ import androidx.navigation.fragment.findNavController
+ import androidx.recyclerview.widget.ItemTouchHelper
+@@ -15,11 +14,10 @@
+ import com.google.android.material.snackbar.Snackbar
+ import com.ricardoteixeira.app.presentation.common.CityItemTouchHelperAdapter
+ import com.ricardoteixeira.app.presentation.common.CityItemTouchHelperCallback
+-import com.ricardoteixeira.app.utils.FilterPreferences
+ import com.ricardoteixeira.app.utils.PreferencesManager
+ import com.ricardoteixeira.app.utils.SortOrder
+ import com.ricardoteixeira.app.utils.hideKeyboard
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.weathermvvm_clean.R
+ import com.ricardoteixeira.weathermvvm_clean.databinding.ListCitiesFragmentBinding
+ import dagger.hilt.android.AndroidEntryPoint
+@@ -152,11 +150,11 @@
+         handleSearch()
+     }
+ 
+-    override fun onCityClick(city: WeatherCityEntity) {
+-        viewModel.updateCityId(city.cityId!!)
++    override fun onCityClick(current: CurrentWeatherEntityModel) {
++        viewModel.updateCityId(current.cityId!!)
+         findNavController().navigate(
+             ListCitiesFragmentDirections.actionListCitiesFragmentToDetailsFragment(
+-                city.cityId!!
++                current.cityId
+             )
+         )
+     }
+@@ -176,8 +174,8 @@
+         }
+     }
+ 
+-    override fun onFavoriteClick(city: WeatherCityEntity) {
+-        viewModel.favoriteCity(city)
++    override fun onFavoriteClick(current: CurrentWeatherEntityModel) {
++        viewModel.favoriteCity(current)
+     }
+ 
+     private fun filterMenu() {
+Index: app/src/main/res/layout/favorite_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/favorite_fragment.xml	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/res/layout/favorite_fragment.xml	(date 1611068190821)
+@@ -8,15 +8,15 @@
+ 
+     <TextView
+         android:id="@+id/favorite_title"
+-        android:layout_width="264dp"
++        android:layout_width="@dimen/text_view_width_bigger"
+         android:layout_height="wrap_content"
+-        android:layout_margin="8dp"
++        android:layout_margin="@dimen/standard_margin"
+         android:textAlignment="center"
+-        android:textSize="32sp"
++        android:textSize="@dimen/standard_title_size"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+-        android:padding="8dp"
++        android:padding="@dimen/standard_padding"
+         android:text="@string/favorites_title"
+         tools:layout_editor_absoluteX="8dp" />
+ 
+@@ -33,7 +33,7 @@
+         android:id="@+id/list_favorites_rv"
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+-        android:layout_margin="16dp"
++        android:layout_margin="@dimen/double_standard_margin"
+         android:orientation="vertical"
+         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+         app:layout_constraintBottom_toBottomOf="parent"
+Index: app/src/main/res/layout/city_favorite_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/city_favorite_item.xml	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/res/layout/city_favorite_item.xml	(date 1611066947412)
+@@ -4,67 +4,66 @@
+     android:layout_height="wrap_content"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:background="@drawable/grid"
+-    android:padding="4dp"
+-    android:layout_margin="8dp">
++    android:padding="@dimen/half_standard_padding"
++    android:layout_margin="@dimen/standard_margin">
+ 
+     <ImageView
+         android:id="@+id/weather_image_favorite"
+-        android:layout_margin="16dp"
+-        android:layout_width="72dp"
+-        android:layout_height="72dp"
++        android:layout_margin="@dimen/double_standard_margin"
++        android:layout_width="@dimen/weather_standard_image_size"
++        android:layout_height="@dimen/weather_standard_image_size"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintStart_toStartOf="parent" />
+ 
+     <TextView
+         android:id="@+id/city_name_favorite"
+-        android:layout_width="164dp"
+-        android:layout_height="32dp"
++        android:layout_width="@dimen/text_view_width"
++        android:layout_height="@dimen/text_view_height"
+         android:text="@string/city_name"
+-        android:textSize="18sp"
++        android:textSize="@dimen/standard_text_size"
+         android:textAlignment="textStart"
+         android:gravity="center"
+         app:layout_constraintTop_toTopOf="@id/weather_image_favorite"
+         app:layout_constraintStart_toEndOf="@id/weather_image_favorite"
+-        android:layout_marginStart="16dp" />
++        android:layout_marginStart="@dimen/double_standard_margin" />
+ 
+     <TextView
+         android:id="@+id/description_favorite"
+-        android:layout_width="164dp"
+-        android:layout_height="32dp"
+-        android:textSize="16sp"
++        android:layout_width="@dimen/text_view_width"
++        android:layout_height="@dimen/text_view_height"
++        android:textSize="@dimen/standard_text_size"
+         android:text="@string/description"
+         android:textAlignment="textStart"
+         android:gravity="center"
+         app:layout_constraintBottom_toBottomOf="@id/weather_image_favorite"
+         app:layout_constraintStart_toEndOf="@id/weather_image_favorite"
+-        android:layout_marginStart="16dp"
+-        android:layout_marginBottom="4dp"/>
++        android:layout_marginStart="@dimen/double_standard_margin"
++        android:layout_marginBottom="@dimen/half_standard_margin"/>
+ 
+     <TextView
+         android:id="@+id/city_temperature_favorite"
+         android:layout_width="wrap_content"
+-        android:layout_height="32dp"
+-        android:text="@string/temperature_text_size"
++        android:layout_height="@dimen/text_view_height"
+         android:gravity="center_vertical"
+-        android:padding="8dp"
+-        android:textSize="14sp"
++        android:padding="@dimen/standard_padding"
++        android:textSize="@dimen/standard_text_size"
+         app:layout_constraintTop_toTopOf="@id/city_name_favorite"
+         app:layout_constraintBottom_toBottomOf="@+id/weather_image_favorite"
+         app:layout_constraintStart_toEndOf="@id/description_favorite"
+-        android:layout_marginStart="16dp" />
++        android:layout_marginStart="@dimen/double_standard_margin" />
+ 
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_marginTop="8dp"
++        android:layout_marginTop="@dimen/standard_margin"
+         android:orientation="vertical"
+         app:layout_constraintTop_toBottomOf="@+id/weather_image_favorite">
+ 
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_margin="8dp"
+-        android:layout_marginTop="8dp"
++        android:layout_margin="@dimen/standard_margin"
++        android:layout_marginTop="@dimen/standard_margin"
+         android:orientation="horizontal">
+ 
+         <TextView
+@@ -73,11 +72,11 @@
+             android:layout_height="wrap_content"
+             android:gravity="center"
+             android:layout_width="0dp"
+-            android:paddingStart="8dp"
++            android:paddingStart="@dimen/standard_padding"
+             android:text="@string/maximum_temperature"
+             android:textAlignment="textStart"
+-            android:textSize="16sp"
+-            android:padding="4dp"/>
++            android:textSize="@dimen/standard_text_size"
++            android:padding="@dimen/half_standard_padding"/>
+ 
+         <TextView
+             android:id="@+id/minimum_temperature_value_favorite"
+@@ -85,17 +84,17 @@
+             android:layout_height="wrap_content"
+             android:layout_width="0dp"
+             android:gravity="center"
+-            android:paddingStart="8dp"
++            android:paddingStart="@dimen/standard_padding"
+             android:textAlignment="textStart"
+-            android:textSize="16sp"
+-            android:padding="4dp"/>
++            android:textSize="@dimen/standard_text_size"
++            android:padding="@dimen/half_standard_padding"/>
+     </LinearLayout>
+ 
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_margin="8dp"
+-        android:layout_marginTop="8dp"
++        android:layout_margin="@dimen/standard_margin"
++        android:layout_marginTop="@dimen/standard_margin"
+         android:orientation="horizontal">
+ 
+         <TextView
+@@ -104,11 +103,11 @@
+             android:layout_height="wrap_content"
+             android:layout_width="0dp"
+             android:gravity="center"
+-            android:paddingStart="8dp"
++            android:paddingStart="@dimen/standard_padding"
+             android:text="@string/minimum_temperature_text"
+             android:textAlignment="textStart"
+-            android:textSize="16sp"
+-            android:padding="4dp"/>
++            android:textSize="@dimen/standard_text_size"
++            android:padding="@dimen/half_standard_padding"/>
+ 
+         <TextView
+             android:id="@+id/maximum_temperature_value_favorite"
+@@ -116,10 +115,10 @@
+             android:layout_height="wrap_content"
+             android:layout_width="0dp"
+             android:gravity="center"
+-            android:paddingStart="8dp"
++            android:paddingStart="@dimen/standard_padding"
+             android:textAlignment="textStart"
+-            android:textSize="16sp"
+-            android:padding="4dp"/>
++            android:textSize="@dimen/standard_text_size"
++            android:padding="@dimen/half_standard_padding"/>
+     </LinearLayout>
+ 
+     </LinearLayout>
+Index: app/src/main/res/layout/details_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/details_fragment.xml	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/res/layout/details_fragment.xml	(date 1611067090427)
+@@ -13,28 +13,28 @@
+         android:layout_height="wrap_content"
+         android:src="@drawable/ic_back"
+         app:layout_constraintStart_toStartOf="parent"
+-        android:layout_margin="8dp"
++        android:layout_margin="@dimen/standard_margin"
+         app:layout_constraintTop_toTopOf="@+id/city_name_details"
+         app:layout_constraintBottom_toBottomOf="@+id/city_name_details" />
+ 
+     <TextView
+         android:id="@+id/city_name_details"
+-        android:layout_width="264dp"
++        android:layout_width="@dimen/text_view_width_bigger"
+         android:layout_height="wrap_content"
+-        android:layout_margin="8dp"
++        android:layout_margin="@dimen/standard_margin"
+         android:textAlignment="center"
+-        android:textSize="32sp"
++        android:textSize="@dimen/standard_title_size"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+-        android:padding="8dp"
++        android:padding="@dimen/standard_padding"
+         tools:layout_editor_absoluteX="8dp" />
+ 
+     <ImageView
+         android:id="@+id/weather_image_detail"
+-        android:layout_width="144dp"
+-        android:layout_height="144dp"
+-        android:layout_margin="16dp"
++        android:layout_width="@dimen/weather_bigger_image_size"
++        android:layout_height="@dimen/weather_bigger_image_size"
++        android:layout_margin="@dimen/double_standard_margin"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@+id/city_name_details" />
+ 
+@@ -42,7 +42,7 @@
+         android:id="@+id/actual_temp_detail"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:textSize="32sp"
++        android:textSize="@dimen/standard_title_size"
+         app:layout_constraintBottom_toBottomOf="@id/weather_image_detail"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toEndOf="@id/weather_image_detail"
+@@ -51,15 +51,15 @@
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_marginTop="8dp"
++        android:layout_marginTop="@dimen/standard_margin"
+         android:orientation="vertical"
+         app:layout_constraintTop_toBottomOf="@+id/weather_image_detail">
+ 
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            android:layout_margin="8dp"
+-            android:layout_marginTop="8dp"
++            android:layout_margin="@dimen/standard_margin"
++            android:layout_marginTop="@dimen/standard_margin"
+             android:orientation="horizontal">
+ 
+             <TextView
+@@ -68,11 +68,11 @@
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+                 android:layout_width="0dp"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:text="@string/maximum_temperature"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+ 
+             <TextView
+                 android:id="@+id/minimum_temperature_value"
+@@ -80,17 +80,17 @@
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+         </LinearLayout>
+ 
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            android:layout_margin="8dp"
+-            android:layout_marginTop="8dp"
++            android:layout_margin="@dimen/standard_margin"
++            android:layout_marginTop="@dimen/standard_margin"
+             android:orientation="horizontal">
+ 
+             <TextView
+@@ -99,11 +99,11 @@
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:text="@string/minimum_temperature_text"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+ 
+             <TextView
+                 android:id="@+id/maximum_temperature_value"
+@@ -111,17 +111,17 @@
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+         </LinearLayout>
+ 
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            android:layout_margin="8dp"
+-            android:layout_marginTop="8dp"
++            android:layout_margin="@dimen/standard_margin"
++            android:layout_marginTop="@dimen/standard_margin"
+             android:orientation="horizontal">
+ 
+             <TextView
+@@ -130,11 +130,11 @@
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:text="@string/feels_like_temperature_text"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+ 
+             <TextView
+                 android:id="@+id/feels_like_value"
+@@ -142,17 +142,17 @@
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+         </LinearLayout>
+ 
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            android:layout_margin="8dp"
+-            android:layout_marginTop="8dp"
++            android:layout_margin="@dimen/standard_margin"
++            android:layout_marginTop="@dimen/standard_margin"
+             android:orientation="horizontal">
+ 
+             <TextView
+@@ -161,11 +161,11 @@
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:text="@string/wind_speed_text"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+ 
+             <TextView
+                 android:id="@+id/wind_speed_value"
+@@ -173,17 +173,17 @@
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+         </LinearLayout>
+ 
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            android:layout_margin="8dp"
+-            android:layout_marginTop="8dp"
++            android:layout_margin="@dimen/standard_margin"
++            android:layout_marginTop="@dimen/standard_margin"
+             android:orientation="horizontal">
+ 
+             <TextView
+@@ -192,11 +192,11 @@
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:text="@string/humidity_text"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+ 
+             <TextView
+                 android:id="@+id/humidity_value"
+@@ -204,17 +204,17 @@
+                 android:layout_weight="1"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+         </LinearLayout>
+ 
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            android:layout_margin="8dp"
+-            android:layout_marginTop="8dp"
++            android:layout_margin="@dimen/standard_margin"
++            android:layout_marginTop="@dimen/standard_margin"
+             android:orientation="horizontal">
+ 
+             <TextView
+@@ -223,11 +223,11 @@
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:text="@string/sunrise_text"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+ 
+             <TextView
+                 android:id="@+id/sunrise_value"
+@@ -237,8 +237,8 @@
+                 android:gravity="center"
+                 android:paddingStart="8dp"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+         </LinearLayout>
+ 
+         <LinearLayout
+@@ -254,11 +254,11 @@
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:text="@string/sunset_text"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+ 
+             <TextView
+                 android:id="@+id/sunset_value"
+@@ -266,10 +266,10 @@
+                 android:layout_weight="1"
+                 android:layout_height="wrap_content"
+                 android:gravity="center"
+-                android:paddingStart="8dp"
++                android:paddingStart="@dimen/standard_padding"
+                 android:textAlignment="textStart"
+-                android:textSize="16sp"
+-                android:padding="4dp"/>
++                android:textSize="@dimen/standard_text_size"
++                android:padding="@dimen/half_standard_padding"/>
+         </LinearLayout>
+ 
+     </LinearLayout>
+Index: app/src/main/java/com/ricardoteixeira/data/mappers/ApiToEntity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/data/mappers/ApiToEntity.kt	(date 1611226815808)
++++ app/src/main/java/com/ricardoteixeira/data/mappers/ApiToEntity.kt	(date 1611226815808)
+@@ -0,0 +1,22 @@
++package com.ricardoteixeira.data.mappers
++
++import com.ricardoteixeira.app.framework.api.models.currentweather.CurrentWeatherApiModel
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
++
++internal fun CurrentWeatherApiModel.toEntity(): CurrentWeatherEntityModel {
++    return CurrentWeatherEntityModel(
++        cityName = name,
++        cityId = id,
++        actualTemp = main?.temp,
++        tempMax = main?.tempMax,
++        tempMin = main?.tempMin,
++        feelsLikeTemp = main?.feelsLike,
++        weatherId = descriptionCurrentWeather?.get(0)?.weatherId,
++        weatherDescription = descriptionCurrentWeather?.get(0)?.description,
++        requestTime = dt!!,
++        windSpeed = windCurrentWeather?.speed,
++        humidity = main?.humidity,
++        sunset = sysCurrentWeather?.sunset,
++        sunrise = sysCurrentWeather?.sunrise
++    )
++}
+\ No newline at end of file
+Index: app/src/main/res/layout/city_weather_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/city_weather_item.xml	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/res/layout/city_weather_item.xml	(date 1611066947512)
+@@ -4,62 +4,61 @@
+     android:layout_height="112dp"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:background="@drawable/grid"
+-    android:padding="4dp"
+-    android:layout_margin="8dp"
++    android:padding="@dimen/half_standard_padding"
++    android:layout_margin="@dimen/standard_margin"
+     >
+ 
+     <ImageView
+         android:id="@+id/weather_image"
+-        android:layout_margin="16dp"
+-        android:layout_width="72dp"
+-        android:layout_height="72dp"
++        android:layout_margin="@dimen/double_standard_margin"
++        android:layout_width="@dimen/weather_standard_image_size"
++        android:layout_height="@dimen/weather_standard_image_size"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintStart_toStartOf="parent" />
+ 
+     <TextView
+         android:id="@+id/city_name"
+-        android:layout_width="164dp"
+-        android:layout_height="32dp"
++        android:layout_width="@dimen/text_view_width"
++        android:layout_height="@dimen/text_view_height"
+         android:text="@string/city_name"
+-        android:textSize="18sp"
++        android:textSize="@dimen/standard_text_size"
+         android:textAlignment="textStart"
+         android:gravity="center"
+         app:layout_constraintTop_toTopOf="@id/weather_image"
+         app:layout_constraintStart_toEndOf="@id/weather_image"
+-        android:layout_marginStart="16dp" />
++        android:layout_marginStart="@dimen/double_standard_margin" />
+ 
+     <TextView
+         android:id="@+id/description"
+-        android:layout_width="164dp"
+-        android:layout_height="32dp"
+-        android:textSize="16sp"
++        android:layout_width="@dimen/text_view_width"
++        android:layout_height="@dimen/text_view_height"
++        android:textSize="@dimen/standard_text_size"
+         android:text="@string/description"
+         android:textAlignment="textStart"
+         android:gravity="center"
+         app:layout_constraintBottom_toBottomOf="@id/weather_image"
+         app:layout_constraintStart_toEndOf="@id/weather_image"
+-        android:layout_marginStart="16dp"
+-        android:layout_marginBottom="4dp"/>
++        android:layout_marginStart="@dimen/double_standard_margin"
++        android:layout_marginBottom="@dimen/half_standard_margin"/>
+ 
+     <TextView
+         android:id="@+id/city_temperature"
+         android:layout_width="wrap_content"
+-        android:layout_height="32dp"
+-        android:text="@string/temperature_text_size"
++        android:layout_height="@dimen/text_view_height"
+         android:gravity="center_vertical"
+-        android:padding="8dp"
+-        android:textSize="14sp"
++        android:padding="@dimen/standard_padding"
++        android:textSize="@dimen/standard_text_size"
+         app:layout_constraintTop_toTopOf="@id/city_name"
+         app:layout_constraintBottom_toBottomOf="@+id/description"
+         app:layout_constraintStart_toEndOf="@id/description"
+-        android:layout_marginStart="16dp"
++        android:layout_marginStart="@dimen/double_standard_margin"
+         />
+ 
+     <ImageButton
+         android:id="@+id/favourite_city"
+-        android:layout_width="32dp"
+-        android:layout_height="32dp"
+-        android:layout_margin="8dp"
++        android:layout_width="@dimen/text_view_width_smaller"
++        android:layout_height="@dimen/text_view_height"
++        android:layout_margin="@dimen/standard_margin"
+         android:background="@android:color/transparent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+Index: app/src/main/java/com/ricardoteixeira/data/repository/WeatherRepository.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/data/repository/WeatherRepository.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/data/repository/Repository.kt	(date 1611228816765)
+@@ -2,9 +2,10 @@
+ 
+ import com.ricardoteixeira.app.framework.db.mappers.toDatabase
+ import com.ricardoteixeira.app.framework.db.mappers.toEntity
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
+ import com.ricardoteixeira.app.utils.Result
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
++import com.ricardoteixeira.domain.models.future.FutureWeatherEntityModel
+ 
+ class WeatherRepository(
+     private val getAllCities: GetAllCities,
+@@ -14,11 +15,11 @@
+     private val insertCityIntoDatabase: InsertCityIntoDatabase
+ ) {
+ 
+-    suspend fun decideWhereToFetch(): Result<List<WeatherCityEntity>> {
++    suspend fun decideWhereToFetch(): Result<List<CurrentWeatherEntityModel>> {
+ 
+         val cities = getAllCities.getAllCities().toMutableList()
+         if (cities.isEmpty()) {
+-            return Result.Success(data = emptyList<WeatherCityEntity>())
++            return Result.Success(data = emptyList<CurrentWeatherEntityModel>())
+         } else {
+             for (city in cities) {
+                 val timestamp = System.currentTimeMillis().toString()
+@@ -37,8 +38,6 @@
+                             weatherDescription = newWeather.data.weatherDescription,
+                             requestTime = newWeather.data.requestTime)
+                         insertCityIntoDatabase.insertCityIntoDatabase(newCity)
+-                    } else {
+-                        Result.Failure(error = error("error"))
+                     }
+                     return Result.Success(data = cities.map { it.toEntity() })
+                 } else {
+@@ -53,19 +52,19 @@
+ 
+ interface FetchCityFromApi {
+ 
+-    suspend fun fetchWeatherFromApi(cityName: String): Result<WeatherCityEntity>
++    suspend fun fetchWeatherFromApi(cityName: String): Result<CurrentWeatherEntityModel>
+ 
+ }
+ 
+ interface InsertCityIntoDatabase {
+ 
+-    suspend fun insertCityIntoDatabase(city: WeatherCityDatabaseModel)
++    suspend fun insertCityIntoDatabase(city: CurrentWeatherDatabaseModel)
+ 
+ }
+ 
+ interface GetAllCities {
+ 
+-    suspend fun getAllCities(): List<WeatherCityDatabaseModel>
++    suspend fun getAllCities(): List<CurrentWeatherDatabaseModel>
+ 
+ }
+ 
+@@ -81,21 +80,26 @@
+ }
+ 
+ interface UpdateCity {
+-    suspend fun updateCity(city: WeatherCityDatabaseModel)
++    suspend fun updateCity(city: CurrentWeatherDatabaseModel)
+ }
+ 
+ interface GetCityPendingDelete {
+-    suspend fun getCityPendingDelete(): WeatherCityEntity?
++    suspend fun getCityPendingDelete(): CurrentWeatherEntityModel?
+ }
+ 
+ interface RefreshCities {
+-    suspend fun refreshCities(cities: MutableList<WeatherCityEntity>): Result<List<WeatherCityEntity?>>
++    suspend fun refreshCities(currentListOfCities: MutableList<CurrentWeatherEntityModel>): Result<List<CurrentWeatherEntityModel?>>
+ }
+ 
+ interface GetCityById {
+-    suspend fun getCityById(cityId: Int): Result<WeatherCityEntity>
++    suspend fun getCityById(cityId: Int): Result<CurrentWeatherEntityModel>
+ }
+ 
+ interface GetFavoriteCities {
+-    suspend fun getFavoriteCities(): List<WeatherCityEntity>
++    suspend fun getFavoriteCities(): List<CurrentWeatherEntityModel>
++}
++
++interface FetchFutureWeatherFromApi {
++
++    suspend fun fetchFutureWeatherFromApi(cityName: String): Result<FutureWeatherEntityModel>
+ }
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/res/values/strings.xml	(date 1610638559045)
+@@ -17,5 +17,6 @@
+     <string name="favorites_title">Favorites</string>
+     <string name="sunrise_text">Sunrise</string>
+     <string name="sunset_text">Sunset</string>
++    <string name="forecast_title">How will be the weather in the next days?</string>
+ 
+ </resources>
+\ No newline at end of file
+Index: app/src/main/res/values/values.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/values.xml	(date 1611068190768)
++++ app/src/main/res/values/values.xml	(date 1611068190768)
+@@ -0,0 +1,26 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <dimen name="standard_padding"> 8dp</dimen>
++    <dimen name="half_standard_padding"> 4dp</dimen>
++
++    <dimen name="standard_margin">8dp</dimen>
++    <dimen name="double_standard_margin">16dp</dimen>
++    <dimen name="half_standard_margin">4dp</dimen>
++
++    <dimen name="weather_standard_image_size">72dp</dimen>
++    <dimen name="weather_bigger_image_size">144dp</dimen>
++    <dimen name="weather_smaller_image_size">46dp</dimen>
++
++    <dimen name="standard_text_size">16sp</dimen>
++    <dimen name="standard_title_size">32sp</dimen>
++    <dimen name="standard_subtitle_size">24sp</dimen>
++
++
++    <dimen name="text_view_width">164dp</dimen>
++    <dimen name="text_view_width_smaller">32dp</dimen>
++    <dimen name="text_view_width_bigger">264dp</dimen>
++    <dimen name="text_view_width_extra_bigger">400dp</dimen>
++
++    <dimen name="text_view_height">32dp</dimen>
++    <dimen name="text_view_bigger_height">54dp</dimen>
++</resources>
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/domain/models/WeatherCityEntity.kt
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/models/WeatherCityEntity.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/domain/models/current/CurrentWeatherEntityModel.kt	(date 1611226813921)
+@@ -1,7 +1,7 @@
+-package com.ricardoteixeira.domain.models
++package com.ricardoteixeira.domain.models.current
+ 
+ 
+-data class WeatherCityEntity(
++data class CurrentWeatherEntityModel(
+     val cityName: String?,
+     val cityId: Int?,
+     val actualTemp: Double?,
+Index: app/src/main/java/com/ricardoteixeira/domain/usecases/details/GetCityByIdUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/usecases/details/GetCityByIdUseCase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/domain/usecases/details/GetCityByIdUseCase.kt	(date 1611226814100)
+@@ -1,14 +1,13 @@
+ package com.ricardoteixeira.domain.usecases.details
+ 
+ import com.ricardoteixeira.app.utils.Result
+-import com.ricardoteixeira.data.repository.DeleteCityFromDatabase
+ import com.ricardoteixeira.data.repository.GetCityById
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
+ import javax.inject.Inject
+ 
+-class GetCityByIdUseCase @Inject constructor(private val getCityById: GetCityById):BaseUseCase<Int, Result<WeatherCityEntity>>{
+-    override suspend fun invoke(params: Int): Result<WeatherCityEntity> {
++class GetCityByIdUseCase @Inject constructor(private val getCityById: GetCityById):BaseUseCase<Int, Result<CurrentWeatherEntityModel>>{
++    override suspend fun invoke(params: Int): Result<CurrentWeatherEntityModel> {
+         return getCityById.getCityById(params)
+     }
+ }
+Index: app/src/main/res/layout/future_weather_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/future_weather_item.xml	(date 1611073688371)
++++ app/src/main/res/layout/future_weather_item.xml	(date 1611073688371)
+@@ -0,0 +1,37 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.constraintlayout.widget.ConstraintLayout
++    xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    android:background="@drawable/grid"
++    android:padding="@dimen/half_standard_padding"
++    android:layout_margin="@dimen/standard_margin"
++    >
++
++    <TextView
++        android:id="@+id/future_weather_date"
++        android:layout_width="@dimen/text_view_width_bigger"
++        android:layout_height="@dimen/text_view_height"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        android:text="date"
++        android:layout_margin="@dimen/standard_margin"
++        />
++
++    <ImageView
++        android:id="@+id/future_Weather_image"
++        android:layout_margin="@dimen/standard_margin"
++        android:layout_marginBottom="@dimen/half_standard_margin"
++        android:layout_width="@dimen/weather_standard_image_size"
++        android:layout_height="@dimen/weather_standard_image_size"
++        app:layout_constraintTop_toBottomOf="@id/future_weather_date"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintBottom_toBottomOf="parent"/>
++
++    <LinearLayout
++        android:id="@+id/future_Weather_feels_like_temperature"
++        android:layout_width="0dp"
++        android:layout_height="@dimen/text_view_height" />
++
++</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/RefreshCitiesUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/RefreshCitiesUseCase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/RefreshCitiesUseCase.kt	(date 1611226814033)
+@@ -2,12 +2,12 @@
+ 
+ import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.data.repository.RefreshCities
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
+ 
+ class RefreshCitiesUseCase(private val refreshCities: RefreshCities):
+-    BaseUseCase<MutableList<WeatherCityEntity>, Result<List<WeatherCityEntity?>>> {
+-    override suspend fun invoke(params: MutableList<WeatherCityEntity>): Result<List<WeatherCityEntity?>> {
++    BaseUseCase<MutableList<CurrentWeatherEntityModel>, Result<List<CurrentWeatherEntityModel?>>> {
++    override suspend fun invoke(params: MutableList<CurrentWeatherEntityModel>): Result<List<CurrentWeatherEntityModel?>> {
+         return refreshCities.refreshCities(params)
+     }
+ 
+Index: app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/FetchCityUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/FetchCityUseCase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/FetchCityUseCase.kt	(date 1611226814312)
+@@ -2,15 +2,15 @@
+ 
+ import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.data.repository.FetchCityFromApi
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
+ import javax.inject.Inject
+ 
+ class FetchCityUseCase
+     @Inject constructor(private var fetchNewCity: FetchCityFromApi) :
+-    BaseUseCase<String, Result<WeatherCityEntity>> {
++    BaseUseCase<String, Result<CurrentWeatherEntityModel>> {
+ 
+-    override suspend fun invoke(params: String): Result<WeatherCityEntity> {
++    override suspend fun invoke(params: String): Result<CurrentWeatherEntityModel> {
+         return fetchNewCity.fetchWeatherFromApi(params)
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/GetAllCitiesUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/GetAllCitiesUseCase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/GetAllCitiesUseCase.kt	(date 1611226817918)
+@@ -2,16 +2,16 @@
+ 
+ import com.ricardoteixeira.app.utils.Result
+ import com.ricardoteixeira.data.repository.WeatherRepository
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
+ import javax.inject.Inject
+ 
+ 
+ class GetAllCitiesUseCase
+     @Inject constructor(private val weatherRepository: WeatherRepository):
+-    BaseUseCase<Unit, Result<List<WeatherCityEntity>>> {
++    BaseUseCase<Unit, Result<List<CurrentWeatherEntityModel>>> {
+ 
+-    override suspend fun invoke(params: Unit): Result<List<WeatherCityEntity>>  = weatherRepository.decideWhereToFetch()
++    override suspend fun invoke(params: Unit): Result<List<CurrentWeatherEntityModel>>  = weatherRepository.decideWhereToFetch()
+ 
+ 
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/UpdateCityUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/UpdateCityUseCase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/UpdateCityUseCase.kt	(date 1611226818432)
+@@ -1,12 +1,12 @@
+ package com.ricardoteixeira.domain.usecases.listcities
+ 
+-import com.ricardoteixeira.app.framework.db.model.WeatherCityDatabaseModel
++import com.ricardoteixeira.app.framework.db.model.current.CurrentWeatherDatabaseModel
+ import com.ricardoteixeira.data.repository.UpdateCity
+ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
+ 
+ class UpdateCityUseCase(private val updateCity: UpdateCity):
+-    BaseUseCase<WeatherCityDatabaseModel, Unit> {
+-    override suspend fun invoke(params: WeatherCityDatabaseModel) {
++    BaseUseCase<CurrentWeatherDatabaseModel, Unit> {
++    override suspend fun invoke(params: CurrentWeatherDatabaseModel) {
+         return updateCity.updateCity(params)
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/GetCityPendingDeleteUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/GetCityPendingDeleteUseCase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/GetCityPendingDeleteUseCase.kt	(date 1611226818859)
+@@ -1,14 +1,14 @@
+ package com.ricardoteixeira.domain.usecases.listcities
+ 
+ import com.ricardoteixeira.data.repository.GetCityPendingDelete
+-import com.ricardoteixeira.domain.models.WeatherCityEntity
++import com.ricardoteixeira.domain.models.current.CurrentWeatherEntityModel
+ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
+ import javax.inject.Inject
+ 
+ class GetCityPendingDeleteUseCase
+ @Inject constructor(private val getCityPendingDelete: GetCityPendingDelete):
+-    BaseUseCase<Unit, WeatherCityEntity?> {
+-    override suspend fun invoke(params: Unit): WeatherCityEntity? {
++    BaseUseCase<Unit, CurrentWeatherEntityModel?> {
++    override suspend fun invoke(params: Unit): CurrentWeatherEntityModel? {
+         return getCityPendingDelete.getCityPendingDelete()
+     }
+ }
+Index: app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/InsertCityIntoDatabaseUseCase.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/InsertCityIntoDatabaseUseCase.kt	(revision a1ffdc2bb91c7c3ca47b533b32da78324d478351)
++++ app/src/main/java/com/ricardoteixeira/domain/usecases/listcities/InsertCityIntoDatabaseUseCase.kt	(date 1611226023353)
+@@ -1,15 +1,15 @@
+ package com.ricardoteixeira.domain.usecases.listcities
+ 
+-import com.ricardoteixeira.app.framework.api.mappers.toDatabase
+-import com.ricardoteixeira.app.framework.api.models.WeatherCityApiModel
++import com.ricardoteixeira.app.framework.api.mappers.currentweather.toDatabase
++import com.ricardoteixeira.app.framework.api.models.currentweather.CurrentWeatherApiModel
+ import com.ricardoteixeira.data.repository.InsertCityIntoDatabase
+ import com.ricardoteixeira.domain.usecases.common.BaseUseCase
+ import javax.inject.Inject
+ 
+ class InsertCityIntoDatabaseUseCase
+ @Inject constructor(private val insertCityIntoDatabase: InsertCityIntoDatabase):
+-    BaseUseCase<WeatherCityApiModel, Unit> {
+-    override suspend fun invoke(params: WeatherCityApiModel) {
++    BaseUseCase<CurrentWeatherApiModel, Unit> {
++    override suspend fun invoke(params: CurrentWeatherApiModel) {
+         insertCityIntoDatabase.insertCityIntoDatabase(params.toDatabase())
+     }
+ }
+\ No newline at end of file

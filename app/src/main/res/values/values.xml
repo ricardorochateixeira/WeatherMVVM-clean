@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="standard_padding">8dp</dimen>
+    <dimen name="half_standard_padding">4dp</dimen>
+
+    <dimen name="standard_margin">8dp</dimen>
+    <dimen name="double_standard_margin">16dp</dimen>
+    <dimen name="half_standard_margin">4dp</dimen>
+
+    <dimen name="weather_standard_image_size">72dp</dimen>
+    <dimen name="weather_bigger_image_size">144dp</dimen>
+    <dimen name="weather_smaller_image_size">32dp</dimen>
+
+    <dimen name="standard_text_size">16sp</dimen>
+    <dimen name="standard_title_size">32sp</dimen>
+    <dimen name="standard_subtitle_size">24sp</dimen>
+
+
+    <dimen name="text_view_width">164dp</dimen>
+    <dimen name="text_view_width_smaller">32dp</dimen>
+    <dimen name="text_view_width_bigger">264dp</dimen>
+    <dimen name="text_view_width_extra_bigger">400dp</dimen>
+
+    <dimen name="text_view_height">32dp</dimen>
+    <dimen name="text_view_bigger_height">54dp</dimen>
+</resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/listCitiesFragment"
@@ -8,9 +7,9 @@
         android:icon="@drawable/ic_list" />
 
     <item
-        android:id="@+id/eachHourFragment"
+        android:id="@+id/detailsFragment"
         android:title="@string/menu_hour"
-        android:icon="@drawable/ic_hour"/>
+        android:icon="@drawable/ic_hour" />
 
     <item
         android:id="@+id/sevenDaysFragment"
@@ -20,6 +19,6 @@
     <item
         android:id="@+id/favoriteFragment"
         android:title="@string/menu_favourite_cities"
-        android:icon="@drawable/ic_favorite"/>
+        android:icon="@drawable/ic_favorite" />
 
 </menu>

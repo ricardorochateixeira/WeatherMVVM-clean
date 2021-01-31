@@ -1,23 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation"
-    app:startDestination="@id/listCitiesFragment">
+    android:id="@+id/navigation">
+
     <fragment
         android:id="@+id/listCitiesFragment"
-        android:name="com.ricardoteixeira.app.ui.listcities.ListCitiesFragment"
-        android:label="ListCitiesFragment" />
+        android:name="com.ricardoteixeira.app.presentation.listcities.ListCitiesFragment"
+        android:label="ListCitiesFragment">
+        <action
+            android:id="@+id/action_listCitiesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+
     <fragment
-        android:id="@+id/eachHourFragment"
-        android:name="com.ricardoteixeira.app.ui.eachhour.EachHourFragment"
-        android:label="EachHourFragment" />
+        android:id="@+id/detailsFragment"
+        android:name="com.ricardoteixeira.app.presentation.details.DetailsFragment"
+        android:label="DetailsFragment">
+        <argument
+            android:name="cityId"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_detailsFragment_to_listCitiesFragment"
+            app:destination="@id/listCitiesFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_sevenDaysFragment"
+            app:destination="@id/sevenDaysFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.ricardoteixeira.app.ui.favorites.FavoriteFragment"
+        android:name="com.ricardoteixeira.app.presentation.favorites.FavoriteFragment"
         android:label="FavoriteFragment" />
     <fragment
         android:id="@+id/sevenDaysFragment"
-        android:name="com.ricardoteixeira.app.ui.sevendays.SevenDaysFragment"
-        android:label="SevenDaysFragment" />
+        android:name="com.ricardoteixeira.app.presentation.future.FutureDaysFragment"
+        android:label="SevenDaysFragment">
+        <argument
+            android:name="cityId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.ricardoteixeira.app.presentation.splash.SplashFragment"
+        android:label="SplashFragment">
+        <action
+            android:id="@+id/action_splashFragment_to_listCitiesFragment"
+            app:destination="@id/listCitiesFragment" />
+    </fragment>
 </navigation>

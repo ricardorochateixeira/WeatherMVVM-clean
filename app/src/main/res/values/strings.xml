@@ -1,9 +1,39 @@
 <resources>
-    <string name="app_name">WeatherMVVM</string>
+    <string name="app_name">Weather Forecast</string>
     <string name="menu_all_cities">All Cities</string>
     <string name="menu_favourite_cities">Favourite</string>
     <string name="menu_hour">Each Hour</string>
     <string name="menu_seven_days">7 Days</string>
     <string name="main_page_text">How is the weather today?</string>
+    <string name="text_undo">Undo</string>
+    <string name="city_name">City name</string>
+    <string name="description">Description</string>
+    <string name="temperature_text_size">20</string>
+    <string name="maximum_temperature">Maximum Temperature</string>
+    <string name="minimum_temperature_text">Minimum Temperature</string>
+    <string name="feels_like_temperature_text">Feels like Temperature</string>
+    <string name="wind_speed_text">Wind Speed</string>
+    <string name="humidity_text">Humidity</string>
+    <string name="favorites_title">Favorites</string>
+    <string name="sunrise_text">Sunrise</string>
+    <string name="sunset_text">Sunset</string>
+    <string name="forecast_title">How will be the weather in %1$s in the next days?</string>
+    <string name="back_button_detail_screen_text">Button to go to main screen</string>
+    <string name="weather_image">Weather image</string>
+    <string name="favorite_button">Favorite button</string>
+    <string name="sort_button">Sort button</string>
+    <string name="search_button">Search button</string>
+    <string name="insert_city_name">Insert city name</string>
+
+    <string name="temperature_text_adapters"> %1$s ºC</string>
+    <string name="minimum_temperature_text_adapters"> %1$s ºC</string>
+    <string name="maximum_temperature_text_adapters"> %1$s ºC</string>
+    <string name="feels_like_temperature_text_adapters"> %1$s ºC</string>
+    <string name="wind_speed_text_adapters"> %1$s m/s</string>
+    <string name="humidity_text_adapters"> %1$s %%</string>
+    <string name="back_button_list_cities_fragment">Back button</string>
+
+    <string name="search_city_text">%1$s, %2$s</string>
+    <string name="splash_screen_text">We are setting up the application for you. Please wait a moment</string>
 
 </resources>

@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
-object  DatabaseModule {
+object DatabaseModule {
 
     @Provides
     @Singleton
@@ -22,4 +22,10 @@ object  DatabaseModule {
 
     @Provides
     fun provideWeatherCityDao(database: WeatherCityDatabase) = database.weatherCityDao()
+
+    @Provides
+    fun provideFutureWeatherDao(database: WeatherCityDatabase) = database.futureWeatherDao()
+
+    @Provides
+    fun provideCityDao(database: WeatherCityDatabase) = database.cityDao()
 }
