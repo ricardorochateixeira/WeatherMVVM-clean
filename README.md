@@ -2,13 +2,14 @@
 Weather Forecast is an Android Application developed using Kotlin. This application was developed for demonstration purposes and for learning.
 
 ### Features
-Some of the features implemented untill this moment are listed below:
+Some of the features implemented until this moment are listed below:
 
 * Search city by name with auto complete;
+* Sort cities by name, date created, and show favorites first;
 * Swipe to delete and undo;
 * Current and future weather (next 5 days each 3 hours);
-* Possibility to add cities to favorites.
-* Dark mode
+* Possibility to add cities to favorites;
+* Dark mode.
 
 <img src="https://github.com/ricardorochateixeira/WeatherMVVM-clean/blob/DEV/screenshots/record_giff.gif" width="144" height="304"> <img src="https://github.com/ricardorochateixeira/WeatherMVVM-clean/blob/DEV/screenshots/screenshot4.jpg" width="144" height="304"> <img src="https://github.com/ricardorochateixeira/WeatherMVVM-clean/blob/DEV/screenshots/screenshot2.jpg" width="144" height="304"> <img src="https://github.com/ricardorochateixeira/WeatherMVVM-clean/blob/DEV/screenshots/screenshot3.jpg" width="144" height="304"> 
 
@@ -31,7 +32,7 @@ Some of Android Jetpack Components used are:
 * DataStore;
 * SharedPreferences;
 * ViewBinding;
-* LiveData:
+* LiveData.
 
 Some libraries used are:
 
