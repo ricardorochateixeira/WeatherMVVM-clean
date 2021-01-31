@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
@@ -67,8 +68,6 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
             }
         }
 
-
-
         onInitialEditTextClick()
 
         search_cities.setOnClickListener {
@@ -108,6 +107,15 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewModel.searchQuery.value = p0.toString()
+
+                search_cities.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+                    if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                        fetchWeatherByName(p0.toString())
+                        handleSearch()
+                        return@OnKeyListener true
+                    }
+                    false
+                })
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -134,6 +142,10 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         swipeRefreshLayout.isRefreshing = false
     }
 
+    private fun fetchWeatherByName(cityName: String) {
+        viewModel.fetchWeatherByName(cityName)
+    }
+
     private fun updateUi(response: ResponseType) {
         when (response.uiComponentType) {
             is UIComponentType.SnackBar -> displaySnackbar(
@@ -154,7 +166,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         if (!undoCallback) {
             Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
         } else {
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG)
                 .setAction(R.string.text_undo, SnackbarUndoListener(object : SnackBarUndoCallback {
                     override fun undo() {
                         restoreCity()
@@ -166,7 +178,6 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
                         deleteCity()
                     }
                 }).show()
-            viewModel.stopShowingSnackBar()
         }
     }
 
@@ -249,13 +260,17 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
     override fun onCityClick(current: CityDatabaseModel) {
         viewModel.fetchWeatherById(current.cityId!!)
 
+        handleSearch()
+
+    }
+
+    private fun handleSearch(){
         search_cities.setText("")
         search_cities.clearFocus()
         hideKeyboard()
         Handler().postDelayed({
             first_screen.transitionToStart()
         }, 1000)
-
     }
 
     private fun onBackPressed() {
@@ -276,7 +291,7 @@ class ListCitiesFragment : Fragment(R.layout.list_cities_fragment),
         if (first_screen.currentState == first_screen.startState) {
             first_screen.transitionToEnd()
         } else {
-            hideKeyboard()
+            handleSearch()
             first_screen.transitionToStart()
         }
     }

@@ -24,7 +24,9 @@ const val CITIES_EMPTY_LOADED_SUCCESS_MESSAGE = "No cities in database"
 const val CITIES_LOADED_ERROR_MESSAGE = "Problem while loading cities"
 
 const val CITY_RESTORED_SUCCESSFULLY = "City restored successfully"
-const val ITEM_REMOVED = "1 item removed from the list"
+const val ITEM_PENDING = "1 item removed from the list"
+
+const val ITEM_REMOVED = "Item deleted successfully!"
 
 const val UPDATE_CITY_SUCCESS_MESSAGE = "Cities refreshed successfully"
 const val UPDATE_CITY_ERROR_MESSAGE = "Cities updated failed!"
@@ -66,6 +68,42 @@ class ListCitiesViewModel
     }
 
     val cities = citiesFlow.asLiveData()
+
+    fun fetchWeatherByName(cityName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            citiesList = currents.toList()
+            fetchFutureWeatherByNameUseCase(cityName)
+            when (val data = fetchCityByNameFromApiUseCase(cityName)) {
+                is Result.Success -> {
+                    currents.add(0, data.data)
+                    citiesList = currents.toList()
+                    _mutableMainState.postValue(
+                        ListCitiesViewState(
+                            isShowingSnackBar = true, error = null, result = citiesList,
+                            responseType = ResponseType(
+                                uiComponentType = UIComponentType.SnackBar(
+                                    message = FETCH_CITY_SUCCESS_MESSAGE,
+                                    undoCallback = false
+                                ), messageType = MessageType.Success()
+                            )
+                        )
+                    )
+                }
+
+                is Result.Failure -> _mutableMainState.postValue(
+                    ListCitiesViewState(
+                        isShowingSnackBar = true,
+                        result = citiesList,
+                        error = data.error,
+                        responseType = ResponseType(
+                            uiComponentType = UIComponentType.SnackBar(message = FETCH_CITY_ERROR_MESSAGE),
+                            messageType = MessageType.Error()
+                        )
+                    )
+                )
+            }
+        }
+    }
 
     fun fetchWeatherById(cityId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -181,12 +219,12 @@ class ListCitiesViewModel
         val cityUpdated = cityCurrentWeatherEntityModel?.copy(isUpdatePending = true)
         val index = currents.indexOf(cityCurrentWeatherEntityModel)
         currents[index].isUpdatePending = true
-        citiesList = currents.filter { !it.isUpdatePending }.toList()
+        citiesList = currents.toList()
         _mutableMainState.value = ListCitiesViewState(
-            isShowingSnackBar = true, error = null, result = citiesList,
+            isShowingSnackBar = true, error = null, result = citiesList.filter { !it.isUpdatePending },
             responseType = ResponseType(
                 uiComponentType = UIComponentType.SnackBar(
-                    message = ITEM_REMOVED,
+                    message = ITEM_PENDING,
                     undoCallback = true
                 ), messageType = MessageType.Success()
             )
@@ -244,8 +282,9 @@ class ListCitiesViewModel
     fun restoreCity() {
         val index = currents.indexOfFirst { it.isUpdatePending }
         currents[index].isUpdatePending = false
-        citiesList = currents.toList()
         val cityUpdated = currents[index]
+        citiesList = currents.toList()
+
         _mutableMainState.value =
             ListCitiesViewState(
                 isShowingSnackBar = true, error = null, result = citiesList,

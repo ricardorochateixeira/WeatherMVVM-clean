@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeatherMVVM</string>
+    <string name="app_name">Weather Forecast</string>
     <string name="menu_all_cities">All Cities</string>
     <string name="menu_favourite_cities">Favourite</string>
     <string name="menu_hour">Each Hour</string>
