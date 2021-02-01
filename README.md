@@ -13,7 +13,7 @@ Some of the features implemented until this moment are listed below:
 
 <img src="https://github.com/ricardorochateixeira/WeatherMVVM-clean/blob/DEV/screenshots/record_giff.gif" width="144" height="304"> <img src="https://github.com/ricardorochateixeira/WeatherMVVM-clean/blob/DEV/screenshots/screenshot4.jpg" width="144" height="304"> <img src="https://github.com/ricardorochateixeira/WeatherMVVM-clean/blob/DEV/screenshots/screenshot2.jpg" width="144" height="304"> <img src="https://github.com/ricardorochateixeira/WeatherMVVM-clean/blob/DEV/screenshots/screenshot3.jpg" width="144" height="304"> 
 
-### App desgin and architecture
+### App design and architecture
 
 This project was developed using clean architecture. There are three main layers:
 
